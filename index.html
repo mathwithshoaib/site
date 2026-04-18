@@ -5,75 +5,220 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Muhammad Shoaib Khan · Shoaib-K · LUMS</title>
 <link rel="stylesheet" href="css/style.css">
+<style>
+/* ═══════════════════════════════════════════════
+   HOMEPAGE STYLES — FULLY MOBILE RESPONSIVE
+═══════════════════════════════════════════════ */
 
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding-top: calc(var(--nav-h) + 3px);
+  background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 100%);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; right: -200px; top: -100px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(200,134,10,.06), transparent 65%);
+  pointer-events: none;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: center;
+  padding: 60px 0;
+}
+.hero-img-wrap {
+  position: relative; display: flex; justify-content: center;
+}
+.hero-img {
+  width: 340px; height: 340px;
+  border-radius: 50%; object-fit: cover; object-position: top center;
+  border: 5px solid var(--surface);
+  box-shadow: 0 20px 60px rgba(27,42,74,.18);
+  position: relative; z-index: 1;
+}
+.hero-img-ring {
+  position: absolute; width: 360px; height: 360px;
+  border-radius: 50%; border: 2px dashed var(--amber-bd);
+  opacity: .4; animation: spin 20s linear infinite;
+}
+@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+.hero-text h1 { margin-bottom: 6px; color: var(--text); }
+.hero-text h1 em { color: var(--amber); font-style: italic; }
+.hero-role {
+  font-family: var(--fm); font-size: .82rem;
+  color: var(--text3); margin-bottom: 24px; letter-spacing: .04em;
+}
+.hero-desc {
+  color: var(--text2); font-size: 1.05rem;
+  line-height: 1.8; margin-bottom: 32px; max-width: 480px;
+}
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+.medals { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+.medal-pill {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 30px; padding: 8px 16px;
+  font-size: .82rem; color: var(--text2);
+  box-shadow: var(--shadow-sm);
+}
+.medal-icon { font-size: 1.1rem; }
+
+/* STATS STRIP */
+.stats-strip {
+  display: flex; gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden; background: var(--surface);
+  box-shadow: var(--shadow-sm); margin-top: 60px;
+}
+.stat {
+  flex: 1; padding: 24px; text-align: center;
+  border-right: 1px solid var(--border);
+}
+.stat:last-child { border-right: none; }
+.stat-n {
+  font-family: var(--fh); font-size: 2.2rem;
+  font-weight: 300; color: var(--amber); display: block;
+}
+.stat-l {
+  font-family: var(--fm); font-size: .68rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text3); margin-top: 4px;
+}
+
+/* RESEARCH SECTION GRID */
+.research-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px; align-items: center;
+}
+.code-card {
+  background: var(--surface2, #243050);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+}
+
+/* ═══════════════════════════════════════════════
+   MOBILE — 860px and below
+═══════════════════════════════════════════════ */
+@media (max-width: 860px) {
+
+  /* HERO: single column, photo shown smaller above text */
+  .hero { min-height: auto; padding-top: calc(var(--nav-h) + 3px); }
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 40px 0 32px;
+    text-align: center;
+  }
+
+  /* Show photo on mobile, smaller and centered */
+  .hero-img-wrap { order: -1; }
+  .hero-img { width: 180px; height: 180px; border-width: 3px; }
+  .hero-img-ring { width: 196px; height: 196px; }
+
+  .hero-text h1 { font-size: 2.2rem; }
+  .hero-role { font-size: .75rem; }
+  .hero-desc { font-size: .95rem; max-width: 100%; margin-bottom: 24px; }
+
+  /* Centre the buttons */
+  .hero-btns { justify-content: center; gap: 10px; }
+  .hero-btns .btn { padding: 9px 20px; font-size: .82rem; }
+
+  /* Centre and wrap medals */
+  .medals { justify-content: center; gap: 8px; margin-top: 20px; }
+  .medal-pill { font-size: .76rem; padding: 6px 12px; }
+
+  /* Stats: 2 columns grid */
+  .stats-strip {
+    flex-wrap: wrap;
+    margin-top: 32px;
+    border-radius: 10px;
+  }
+  .stat {
+    flex: 1 0 48%;
+    padding: 18px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .stat:nth-child(odd) { border-right: 1px solid var(--border); }
+  .stat:nth-child(even) { border-right: none; }
+  .stat:nth-last-child(-n+2) { border-bottom: none; }
+  .stat-n { font-size: 1.6rem; }
+  .stat-l { font-size: .6rem; }
+
+  /* Research section: stack vertically */
+  .research-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .code-card { font-size: .8rem; padding: 20px; }
+  .code-card div { font-size: .78rem !important; line-height: 1.9 !important; }
+}
+
+/* ═══════════════════════════════════════════════
+   SMALL MOBILE — 480px and below
+═══════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .hero-img { width: 140px; height: 140px; }
+  .hero-img-ring { width: 154px; height: 154px; }
+  .hero-text h1 { font-size: 1.9rem; }
+  .hero-btns { flex-direction: column; align-items: center; }
+  .hero-btns .btn { width: 100%; max-width: 280px; justify-content: center; }
+  .medals { flex-direction: column; align-items: center; }
+  .medal-pill { width: 100%; max-width: 280px; justify-content: center; }
+  .stat { flex: 1 0 100%; border-right: none !important; }
+  .stat:not(:last-child) { border-bottom: 1px solid var(--border); }
+}
+</style>
 </head>
-<body><div id="sk-progress"><div id="sk-progress-bar"></div></div>
+<body>
+
+<div id="sk-progress"><div id="sk-progress-bar"></div></div>
+
 <nav class="sk-nav">
   <a href="index.html" class="sk-nav-logo">
     Shoaib-K <span class="logo-badge">LUMS</span>
   </a>
   <div class="sk-nav-links" id="sk-nav-links">
+    <div class="sk-nav-item"><a href="index.html" class="sk-nav-link active">Home</a></div>
+    <div class="sk-nav-item"><a href="pages/education.html" class="sk-nav-link">Education</a></div>
     <div class="sk-nav-item">
-      <a href="index.html" class="sk-nav-link active">Home</a>
-    </div>
-    <div class="sk-nav-item">
-      <a href="pages/education.html" class="sk-nav-link ">Education</a>
-    </div>
-    <div class="sk-nav-item">
-      <span class="sk-nav-link ">Experience <span class="arrow">▾</span></span>
+      <span class="sk-nav-link">Experience <span class="arrow">▾</span></span>
       <div class="sk-dropdown">
         <a href="pages/experience-instructor.html"><span class="dd-icon">🎓</span> As an Instructor</a>
         <a href="pages/experience-ta.html"><span class="dd-icon">📚</span> As a TA</a>
         <a href="pages/math-circles.html"><span class="dd-icon">🔵</span> Math Circles</a>
       </div>
     </div>
-    <div class="sk-nav-item">
-      <a href="pages/courses.html" class="sk-nav-link ">Courses</a>
-    </div>
-    <div class="sk-nav-item">
-      <a href="pages/research.html" class="sk-nav-link ">Research</a>
-    </div>
-    <div class="sk-nav-item">
-      <a href="pages/hobbies.html" class="sk-nav-link ">Hobbies</a>
-    </div>
-    <div class="sk-nav-item">
-      <a href="pages/explore.html" class="sk-nav-link ">Explore</a>
-    </div>
-    <div class="sk-nav-item">
-      <a href="pages/contact.html" class="sk-nav-link ">Contact</a>
-    </div>
+    <div class="sk-nav-item"><a href="pages/courses.html" class="sk-nav-link">Courses</a></div>
+    <div class="sk-nav-item"><a href="pages/research.html" class="sk-nav-link">Research</a></div>
+    <div class="sk-nav-item"><a href="pages/hobbies.html" class="sk-nav-link">Hobbies</a></div>
+    <div class="sk-nav-item"><a href="pages/explore.html" class="sk-nav-link">Explore</a></div>
+    <div class="sk-nav-item"><a href="pages/contact.html" class="sk-nav-link">Contact</a></div>
   </div>
-  <div class="sk-hamburger" onclick="document.getElementById('sk-nav-links').classList.toggle('open')">
+  <div class="sk-hamburger" onclick="toggleMobileNav()">
     <span></span><span></span><span></span>
   </div>
 </nav>
-<style>
-.hero{min-height:100vh;display:flex;align-items:center;padding-top:calc(var(--nav-h)+3px);background:linear-gradient(135deg,var(--bg) 0%,var(--bg2) 100%);position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;right:-200px;top:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(200,134,10,.06),transparent 65%);pointer-events:none}
-.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;padding:60px 0}
-.hero-img-wrap{position:relative;display:flex;justify-content:center}
-.hero-img{width:340px;height:340px;border-radius:50%;object-fit:cover;object-position:top center;border:5px solid var(--surface);box-shadow:0 20px 60px rgba(27,42,74,.18);position:relative;z-index:1}
-.hero-img-ring{position:absolute;width:360px;height:360px;border-radius:50%;border:2px dashed var(--amber-bd);opacity:.4;animation:spin 20s linear infinite}
-@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-.hero-text h1{margin-bottom:6px;color:var(--navy)}
-.hero-text h1 em{color:var(--amber);font-style:italic}
-.hero-role{font-family:var(--fm);font-size:.82rem;color:var(--text3);margin-bottom:24px;letter-spacing:.04em}
-.hero-desc{color:var(--text2);font-size:1.05rem;line-height:1.8;margin-bottom:32px;max-width:480px}
-.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
-.medals{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px}
-.medal-pill{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:30px;padding:8px 16px;font-size:.82rem;color:var(--text2);box-shadow:var(--shadow-sm)}
-.medal-icon{font-size:1.1rem}
-.stats-strip{display:flex;gap:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--surface);box-shadow:var(--shadow-sm);margin-top:60px}
-.stat{flex:1;padding:24px;text-align:center;border-right:1px solid var(--border)}
-.stat:last-child{border-right:none}
-.stat-n{font-family:var(--fh);font-size:2.2rem;font-weight:300;color:var(--amber);display:block}
-.stat-l{font-family:var(--fm);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-top:4px}
-@media(max-width:860px){.hero-inner{grid-template-columns:1fr}.hero-img-wrap{display:none}.stats-strip{flex-wrap:wrap}.stat{flex:1 0 45%}}
-</style>
 
+<!-- ══ HERO ══════════════════════════════════════ -->
 <section class="hero">
 <div class="container">
   <div class="hero-inner">
+
+    <!-- Photo (shown above text on mobile via order:-1) -->
+    <div class="hero-img-wrap reveal">
+      <div class="hero-img-ring"></div>
+      <img src="images/shoaib.jpeg" alt="Muhammad Shoaib Khan" class="hero-img">
+    </div>
+
+    <!-- Text -->
     <div class="hero-text">
       <span class="eyebrow">Mathematician · Educator · Researcher</span>
       <h1>Muhammad<br><em>Shoaib Khan</em></h1>
@@ -90,12 +235,10 @@
         <div class="medal-pill"><span class="medal-icon">🌍</span> IMM — COMSATS + ICTP Italy</div>
       </div>
     </div>
-    <div class="hero-img-wrap reveal">
-      <div class="hero-img-ring"></div>
-      <img src="images/shoaib.jpeg" alt="Muhammad Shoaib Khan" class="hero-img">
-    </div>
+
   </div>
 
+  <!-- Stats Strip -->
   <div class="stats-strip reveal">
     <div class="stat"><span class="stat-n">4</span><div class="stat-l">Courses Taught</div></div>
     <div class="stat"><span class="stat-n">🥇</span><div class="stat-l">Gold Medal</div></div>
@@ -106,11 +249,11 @@
 </div>
 </section>
 
-<!-- QUICK LINKS -->
+<!-- ══ QUICK LINKS ════════════════════════════════ -->
 <section class="sk-section sk-section-alt">
 <div class="container">
   <span class="eyebrow">Explore the Site</span>
-  <h2 style="margin-bottom:36px">What Would You Like to See?</h2>
+  <h2 style="margin-bottom:32px">What Would You Like to See?</h2>
   <div class="grid-4 reveal-stagger">
     <a href="pages/education.html" class="card card-navy" style="text-decoration:none">
       <div style="font-size:2rem;margin-bottom:12px">🎓</div>
@@ -136,37 +279,40 @@
 </div>
 </section>
 
+<!-- ══ RESEARCH SNAPSHOT ══════════════════════════ -->
 <section class="sk-section">
 <div class="container">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center">
+  <div class="research-grid">
     <div class="reveal">
       <span class="eyebrow">Current Focus</span>
       <h2>Research in Mathematical Epidemiology</h2>
-      <p>My doctoral research develops compartmental ODE models for disease co-infection — studying how pathogens like influenza and pneumonia interact in shared host populations. The work involves computing $\mathcal{R}_0$ via the Next Generation Matrix, stability analysis, and bifurcation theory.</p>
+      <p>My doctoral research develops compartmental ODE models for disease co-infection — studying how pathogens like influenza and pneumonia interact in shared host populations. The work involves computing ℛ₀ via the Next Generation Matrix, stability analysis, and bifurcation theory.</p>
       <a href="pages/research.html" class="btn btn-outline" style="margin-top:8px">View Research →</a>
     </div>
-    <div class="card card-teal reveal" style="background:var(--navy);color:rgba(255,255,255,.9)">
-      <div style="font-family:var(--fm);font-size:.75rem;color:rgba(255,255,255,.4);margin-bottom:14px;letter-spacing:.15em">CO-INFECTION MODEL</div>
-      <div style="font-family:var(--fm);font-size:.88rem;line-height:2.2;color:rgba(255,255,255,.75)">
-        <span style="color:#e9a82e">dS</span>/dt = Λ − β₁<span style="color:#5eead4">I₁</span>S/N − β₂<span style="color:#a78bfa">I₂</span>S/N − μS<br>
-        <span style="color:#5eead4">dI₁</span>/dt = β₁<span style="color:#5eead4">I₁</span>S/N − (γ₁+μ)<span style="color:#5eead4">I₁</span><br>
-        <span style="color:#a78bfa">dI₂</span>/dt = β₂<span style="color:#a78bfa">I₂</span>S/N − (γ₂+μ)<span style="color:#a78bfa">I₂</span><br>
-        <span style="color:rgba(255,255,255,.4)">──────────────────</span><br>
-        <span style="color:#e9a82e">ℛ₀</span> = ρ(FV⁻¹)
+    <div class="code-card reveal">
+      <div style="font-family:var(--fm);font-size:.72rem;color:var(--text3);margin-bottom:14px;letter-spacing:.15em;text-transform:uppercase">Co-Infection Model</div>
+      <div style="font-family:var(--fm);font-size:.85rem;line-height:2.1;color:var(--text2)">
+        <span style="color:var(--amber)">dS</span>/dt = Λ − β₁<span style="color:var(--teal)">I₁</span>S/N − β₂<span style="color:var(--violet)">I₂</span>S/N − μS<br>
+        <span style="color:var(--teal)">dI₁</span>/dt = β₁<span style="color:var(--teal)">I₁</span>S/N − (γ₁+μ)<span style="color:var(--teal)">I₁</span><br>
+        <span style="color:var(--violet)">dI₂</span>/dt = β₂<span style="color:var(--violet)">I₂</span>S/N − (γ₂+μ)<span style="color:var(--violet)">I₂</span><br>
+        <span style="color:var(--text3)">──────────────────</span><br>
+        <span style="color:var(--amber)">ℛ₀</span> = ρ(FV⁻¹)
       </div>
     </div>
   </div>
 </div>
 </section>
+
+<!-- ══ FOOTER ══════════════════════════════════════ -->
 <footer class="sk-footer">
   <div class="sk-footer-inner">
     <div>
       <div class="sk-footer-logo">Shoaib-K</div>
-      <p style="color:rgba(255,255,255,.5);font-size:.875rem;margin-top:10px">Mathematician · Educator · Researcher<br>LUMS, Lahore, Pakistan</p>
-      <div style="display:flex;gap:12px;margin-top:16px">
-        <a href="https://www.facebook.com/shoaiib.k" target="_blank" style="color:rgba(255,255,255,.5);font-size:1.2rem">fb</a>
-        <a href="https://twitter.com/msking_shoaib" target="_blank" style="color:rgba(255,255,255,.5);font-size:1.2rem">tw</a>
-        <a href="https://instagram.com/msking.shoaib" target="_blank" style="color:rgba(255,255,255,.5);font-size:1.2rem">ig</a>
+      <p style="color:var(--text2);font-size:.875rem;margin-top:10px">Mathematician · Educator · Researcher<br>LUMS, Lahore, Pakistan</p>
+      <div style="display:flex;gap:14px;margin-top:16px">
+        <a href="https://www.facebook.com/shoaiib.k" target="_blank">Facebook</a>
+        <a href="https://twitter.com/msking_shoaib" target="_blank">Twitter</a>
+        <a href="https://instagram.com/msking.shoaib" target="_blank">Instagram</a>
       </div>
     </div>
     <div>
@@ -183,14 +329,38 @@
       <h5>Contact</h5>
       <a href="mailto:bssk.khan@gmail.com">bssk.khan@gmail.com</a>
       <a href="https://sites.google.com/view/shoaib-k/" target="_blank">Google Site</a>
-      <a href="https://lums.edu.pk" target="_blank">LUMS</a>
+      <a href="https://lums.edu.pk" target="_blank">LUMS Website</a>
     </div>
   </div>
   <div class="sk-footer-bottom">
     <p>© 2025 Muhammad Shoaib Khan · LUMS · Lahore, Pakistan</p>
-    <p>Built with HTML, CSS &amp; a love of Mathematics</p>
+    <p>Built with HTML, CSS &amp; Mathematics</p>
   </div>
 </footer>
+
 <script src="js/main.js"></script>
+<script>
+// Mobile nav toggle with hamburger animation
+function toggleMobileNav() {
+  const links = document.getElementById('sk-nav-links');
+  const ham = document.querySelector('.sk-hamburger');
+  const isOpen = links.classList.toggle('open');
+  ham.classList.toggle('active', isOpen);
+}
+// Close mobile nav when a link is clicked
+document.querySelectorAll('.sk-nav-links a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('sk-nav-links').classList.remove('open');
+    document.querySelector('.sk-hamburger').classList.remove('active');
+  });
+});
+// Close on outside click
+document.addEventListener('click', e => {
+  if (!e.target.closest('.sk-nav')) {
+    document.getElementById('sk-nav-links').classList.remove('open');
+    document.querySelector('.sk-hamburger').classList.remove('active');
+  }
+});
+</script>
 </body>
 </html>
