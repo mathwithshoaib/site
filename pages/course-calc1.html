@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Calculus I · Shoaib-K · LUMS</title>
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+/* COURSE LAYOUT */
+.course-layout{display:flex;gap:0;min-height:100vh;padding-top:calc(var(--nav-h)+3px)}
+/* LEFT SIDEBAR */
+.course-sidebar{
+  width:270px;flex-shrink:0;
+  position:sticky;top:calc(var(--nav-h)+3px);
+  height:calc(100vh - var(--nav-h) - 3px);
+  overflow-y:auto;
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+}
+.course-sidebar::-webkit-scrollbar{width:3px}
+.course-sidebar::-webkit-scrollbar-thumb{background:var(--amber-bd)}
+.sidebar-hd{
+  padding:20px 18px 14px;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.sidebar-course-tag{font-family:var(--fm);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
+.sidebar-course-title{font-family:var(--fh);font-size:1rem;color:var(--text);line-height:1.3}
+.sidebar-back{display:flex;align-items:center;gap:6px;font-family:var(--fm);font-size:.7rem;color:var(--text3);text-decoration:none;margin-top:10px;transition:color .2s}
+.sidebar-back:hover{color:var(--amber)}
+/* TOC */
+.toc-nav{padding:12px 0 20px;flex:1}
+.toc-section-label{font-family:var(--fm);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text3);padding:10px 18px 4px;display:block}
+.toc-link{
+  display:flex;align-items:center;gap:10px;
+  padding:7px 18px;
+  font-family:var(--fm);font-size:.74rem;
+  color:var(--text2);text-decoration:none;
+  border-left:2px solid transparent;
+  transition:all .2s;line-height:1.4;
+}
+.toc-link:hover{color:var(--amber);background:rgba(232,160,32,.06)}
+.toc-link.active{color:var(--amber);border-left-color:var(--amber);background:rgba(232,160,32,.08)}
+.toc-link .dot{width:5px;height:5px;border-radius:50%;background:var(--border2);flex-shrink:0;transition:background .2s}
+.toc-link.active .dot{background:var(--amber)}
+.toc-link.soon{opacity:.45;cursor:default}
+.toc-link.live::after{content:'✦';font-size:.6rem;color:var(--teal);margin-left:auto}
+/* MAIN CONTENT */
+.course-main{flex:1;min-width:0;background:var(--bg)}
+/* BREADCRUMB for course pages */
+.sk-breadcrumb.course-bc{margin-top:0}
+/* HERO BANNER */
+.course-hero{padding:48px 48px 40px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--bg) 0%,var(--bg2) 100%)}
+.course-content{padding:48px}
+@media(max-width:860px){
+  .course-sidebar{display:none}
+  .course-hero,.course-content{padding:28px 20px}
+}
+</style>
+
+</head>
+<body><div id="sk-progress"><div id="sk-progress-bar"></div></div>
+<nav class="sk-nav">
+  <a href="../index.html" class="sk-nav-logo">Shoaib-K <span class="logo-badge">LUMS</span></a>
+  <div class="sk-nav-links" id="sk-nav-links">
+    <div class="sk-nav-item"><a href="../index.html" class="sk-nav-link ">Home</a></div>
+    <div class="sk-nav-item"><a href="education.html" class="sk-nav-link ">Education</a></div>
+    <div class="sk-nav-item">
+      <span class="sk-nav-link ">Experience <span class="arrow">▾</span></span>
+      <div class="sk-dropdown">
+        <a href="experience-instructor.html"><span class="dd-icon">🎓</span> As an Instructor</a>
+        <a href="experience-ta.html"><span class="dd-icon">📚</span> As a TA</a>
+        <a href="math-circles.html"><span class="dd-icon">🔵</span> Math Circles</a>
+      </div>
+    </div>
+    <div class="sk-nav-item"><a href="courses.html" class="sk-nav-link active">Courses</a></div>
+    <div class="sk-nav-item"><a href="research.html" class="sk-nav-link ">Research</a></div>
+    <div class="sk-nav-item"><a href="hobbies.html" class="sk-nav-link ">Hobbies</a></div>
+    <div class="sk-nav-item"><a href="explore.html" class="sk-nav-link ">Explore</a></div>
+    <div class="sk-nav-item"><a href="contact.html" class="sk-nav-link ">Contact</a></div>
+  </div>
+  <div class="sk-hamburger" onclick="document.getElementById('sk-nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
+</nav>
+<div class="sk-breadcrumb course-bc">
+  <div class="sk-breadcrumb-inner">
+    <a href="../index.html">Home</a><span class="sep">›</span>
+    <a href="courses.html">Courses</a><span class="sep">›</span>
+    <span class="current">Calculus I</span>
+  </div>
+</div>
+
+<div class="course-layout">
+  <aside class="course-sidebar">
+    <div class="sidebar-hd">
+      <div class="sidebar-course-tag">MATH-101 · Calculus I</div>
+      <div class="sidebar-course-title">Course Contents</div>
+      <a href="courses.html" class="sidebar-back">← Back to Courses</a>
+    </div>
+    <nav class="toc-nav">
+      <span class="toc-section-label">Chapter 1 — Limits</span>
+      <a href="#" class="toc-link soon"><span class="dot"></span>L01 · Intuition &amp; Definition</a>
+
+      <a href="#" class="toc-link soon"><span class="dot"></span>L02 · Limit Laws &amp; Continuity</a>
+
+      <a href="#" class="toc-link soon"><span class="dot"></span>L03 · Limits at Infinity</a>
+
+      <span class="toc-section-label">Chapter 2 — Derivatives</span>
+      <a href="#" class="toc-link soon"><span class="dot"></span>L04 · The Derivative Defined</a>
+
+      <a href="#" class="toc-link soon"><span class="dot"></span>L05 · Differentiation Rules</a>
+
+      <a href="#" class="toc-link soon"><span class="dot"></span>L06 · Chain Rule &amp; Implicit Diff.</a>
+
+      <a href="#" class="toc-link soon"><span class="dot"></span>L07 · Related Rates</a>
+
+      <a href="#" class="toc-link soon"><span class="dot"></span>L08 · Optimization &amp; Curve Sketching</a>
+
+      <span class="toc-section-label">Chapter 5 — Integration</span>
+      <a href="../lectures/calc1-integration.html" class="toc-link live"><span class="dot"></span>L09 · §5.1 Indefinite Integration</a>
+
+      <a href="#" class="toc-link soon"><span class="dot"></span>L10 · §5.2 Definite Integrals</a>
+
+      <a href="#" class="toc-link soon"><span class="dot"></span>L11 · §5.3 FTC (Full)</a>
+
+      <a href="#" class="toc-link soon"><span class="dot"></span>L12 · §5.4 Substitution</a>
+
+      <a href="#" class="toc-link soon"><span class="dot"></span>L13 · §5.5 Integration by Parts</a>
+
+    </nav>
+  </aside>
+
+  <main class="course-main">
+    <div class="course-hero">
+      <span class="eyebrow">MATH-101 · Undergraduate I · LUMS</span>
+      <h1 style="font-size:clamp(2rem,4vw,3.2rem);margin-bottom:12px">Calculus I</h1>
+      <p style="max-width:580px;font-size:1.05rem">The language in which physics, economics, and engineering are written. Taught in two parallel tracks — rigorously from first principles, and through the lens of business and economic application.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+        <span class="tag tag-teal">Limits</span><span class="tag tag-teal">Derivatives</span><span class="tag tag-teal">Integration</span><span class="tag">Differential Equations</span>
+      </div>
+      <div style="margin-top:20px;padding:12px 18px;background:rgba(56,201,176,.08);border:1px solid rgba(56,201,176,.2);border-radius:8px;display:inline-flex;align-items:center;gap:10px">
+        <span style="font-size:.9rem;color:var(--teal)">✦</span>
+        <span style="font-size:.9rem;color:var(--text2)"><strong style="color:var(--teal)">§5.1 Integration</strong> is now live — see sidebar</span>
+        <a href="../lectures/calc1-integration.html" style="font-family:var(--fm);font-size:.72rem;color:var(--amber);text-decoration:none;margin-left:8px">Open →</a>
+      </div>
+      <div style="display:flex;gap:28px;margin-top:24px;flex-wrap:wrap">
+        <div><div style="font-family:var(--fm);font-size:.68rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase">Lead Instructor</div><div style="font-size:.95rem;color:var(--text);margin-top:4px">Dr. Imran Anwar</div></div>
+        <div><div style="font-family:var(--fm);font-size:.68rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase">Teaching Fellow</div><div style="font-size:.95rem;color:var(--amber);margin-top:4px">Muhammad Shoaib Khan</div></div>
+        <div><div style="font-family:var(--fm);font-size:.68rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase">Textbooks</div><div style="font-size:.95rem;color:var(--text);margin-top:4px">Stewart · Hoffmann</div></div>
+      </div>
+    </div>
+
+    <div class="course-content">
+      <div class="grid-2" style="gap:20px;margin-bottom:32px">
+        <div class="card card-amber" style="padding:22px 24px">
+          <div style="font-family:var(--fm);font-size:.7rem;color:var(--amber);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Track A</div>
+          <h4>Rigorous Track</h4>
+          <p style="font-size:.88rem">Epsilon-delta definitions, formal proofs, classical analysis. Based on Stewart's Calculus.</p>
+        </div>
+        <div class="card card-teal" style="padding:22px 24px">
+          <div style="font-family:var(--fm);font-size:.7rem;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Track B</div>
+          <h4>Applied Track</h4>
+          <p style="font-size:.88rem">Business, economics &amp; social science applications. Based on Hoffmann's Calculus.</p>
+        </div>
+      </div>
+      <h3 style="margin-bottom:16px">Topics Covered</h3>
+      <div class="grid-2" style="gap:20px;margin-bottom:32px">
+        <div class="card" style="padding:20px 22px"><h4>Limits &amp; Continuity</h4><p style="font-size:.88rem">The foundation. What does it mean for a function to approach a value? Formal definitions, limit laws, continuity.</p></div>
+        <div class="card" style="padding:20px 22px"><h4>Differentiation</h4><p style="font-size:.88rem">Rates of change, tangent lines, all differentiation rules, implicit differentiation, and applications.</p></div>
+        <div class="card" style="padding:20px 22px"><h4>Integration</h4><p style="font-size:.88rem">Antiderivatives, Riemann sums, the Fundamental Theorem, and techniques of integration.</p></div>
+        <div class="card" style="padding:20px 22px"><h4>Differential Equations</h4><p style="font-size:.88rem">Introduction to separable DEs, initial value problems, and continuous compounding.</p></div>
+      </div>
+      <div class="info-box info-teal">
+        <strong style="color:var(--teal)">Prerequisites:</strong> Pre-Calculus or equivalent. Familiarity with functions, algebra, and basic trigonometry.
+      </div>
+    </div>
+  </main>
+</div>
+<footer class="sk-footer">
+  <div class="sk-footer-inner">
+    <div>
+      <div class="sk-footer-logo">Shoaib-K</div>
+      <p style="color:var(--text2);font-size:.875rem;margin-top:10px">Mathematician · Educator · Researcher<br>LUMS, Lahore, Pakistan</p>
+      <div style="display:flex;gap:14px;margin-top:16px">
+        <a href="https://www.facebook.com/shoaiib.k" target="_blank">Facebook</a>
+        <a href="https://twitter.com/msking_shoaib" target="_blank">Twitter</a>
+        <a href="https://instagram.com/msking.shoaib" target="_blank">Instagram</a>
+      </div>
+    </div>
+    <div>
+      <h5>Navigation</h5>
+      <a href="../index.html">Home</a>
+      <a href="education.html">Education</a>
+      <a href="experience-instructor.html">Experience</a>
+      <a href="courses.html">Courses</a>
+      <a href="research.html">Research</a>
+      <a href="explore.html">Explore</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div>
+      <h5>Contact</h5>
+      <a href="mailto:bssk.khan@gmail.com">bssk.khan@gmail.com</a>
+      <a href="https://sites.google.com/view/shoaib-k/" target="_blank">Google Site</a>
+      <a href="https://lums.edu.pk" target="_blank">LUMS Website</a>
+    </div>
+  </div>
+  <div class="sk-footer-bottom">
+    <p>© 2025 Muhammad Shoaib Khan · LUMS · Lahore, Pakistan</p>
+    <p>Built with HTML, CSS &amp; Mathematics</p>
+  </div>
+</footer>
+<script src="../js/main.js"></script></body></html>
