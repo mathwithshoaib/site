@@ -4,70 +4,194 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Calculus I · Shoaib-K · LUMS</title>
 <link rel="stylesheet" href="../css/style.css">
-
+<script>MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre']}}</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
 <style>
-/* COURSE LAYOUT */
-.course-layout{display:flex;gap:0;min-height:100vh;padding-top:calc(var(--nav-h)+3px)}
+/* ── COURSE PAGE LAYOUT ─────────────────────────────── */
+:root { --top-offset: calc(var(--nav-h) + 3px + 38px + 44px); }
+/* Sticky breadcrumb + course switcher sit right below nav */
+
+.sticky-sub {
+  position:sticky; top:calc(var(--nav-h) + 3px); z-index:500;
+  background:var(--bg2); border-bottom:1px solid var(--border);
+}
+.breadcrumb-row {
+  max-width:100%; padding:8px 24px;
+  display:flex; align-items:center; gap:8px;
+  font-family:var(--fm); font-size:.72rem; color:var(--text3);
+  border-bottom:1px solid var(--border);
+}
+.breadcrumb-row a { color:var(--amber); transition:color .15s; }
+.breadcrumb-row a:hover { color:var(--text); }
+.breadcrumb-row .cur { color:var(--text2); font-weight:500; }
+.course-switcher {
+  display:flex; align-items:center; gap:0;
+  padding:0 24px; overflow-x:auto;
+}
+.course-switcher a {
+  font-family:var(--fm); font-size:.72rem; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--text3);
+  padding:9px 18px; border-bottom:2px solid transparent;
+  white-space:nowrap; transition:all .2s; text-decoration:none;
+}
+.course-switcher a:hover { color:var(--amber); }
+.course-switcher a.active {
+  color:var(--amber); border-bottom-color:var(--amber);
+}
+
+/* ── TWO-COLUMN LAYOUT ──────────────────────────────── */
+.course-wrap {
+  display:flex;
+  padding-top:calc(var(--nav-h) + 3px + 38px + 42px);
+  min-height:100vh;
+}
+
 /* LEFT SIDEBAR */
-.course-sidebar{
-  width:270px;flex-shrink:0;
-  position:sticky;top:calc(var(--nav-h)+3px);
-  height:calc(100vh - var(--nav-h) - 3px);
+.course-sidebar {
+  width:258px; flex-shrink:0;
+  position:sticky;
+  top:calc(var(--nav-h) + 3px + 38px + 42px);
+  height:calc(100vh - var(--nav-h) - 3px - 38px - 42px);
   overflow-y:auto;
   background:var(--bg2);
   border-right:1px solid var(--border);
-  display:flex;flex-direction:column;
 }
 .course-sidebar::-webkit-scrollbar{width:3px}
-.course-sidebar::-webkit-scrollbar-thumb{background:var(--amber-bd)}
-.sidebar-hd{
-  padding:20px 18px 14px;
+.course-sidebar::-webkit-scrollbar-thumb{background:var(--amber-bd);border-radius:2px}
+
+.sb-head {
+  padding:18px 16px 12px;
   border-bottom:1px solid var(--border);
-  flex-shrink:0;
 }
-.sidebar-course-tag{font-family:var(--fm);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
-.sidebar-course-title{font-family:var(--fh);font-size:1rem;color:var(--text);line-height:1.3}
-.sidebar-back{display:flex;align-items:center;gap:6px;font-family:var(--fm);font-size:.7rem;color:var(--text3);text-decoration:none;margin-top:10px;transition:color .2s}
-.sidebar-back:hover{color:var(--amber)}
-/* TOC */
-.toc-nav{padding:12px 0 20px;flex:1}
-.toc-section-label{font-family:var(--fm);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text3);padding:10px 18px 4px;display:block}
-.toc-link{
-  display:flex;align-items:center;gap:10px;
-  padding:7px 18px;
-  font-family:var(--fm);font-size:.74rem;
-  color:var(--text2);text-decoration:none;
+.sb-tag { font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);margin-bottom:4px; }
+.sb-title { font-family:var(--fh);font-size:.95rem;color:var(--text);line-height:1.3; }
+.sb-back {
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--fm);font-size:.68rem;color:var(--text3);
+  margin-top:8px;transition:color .2s;text-decoration:none;
+}
+.sb-back:hover{color:var(--amber)}
+
+.toc { padding:8px 0 24px; }
+.toc-ch {
+  font-family:var(--fm);font-size:.58rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--text3);
+  padding:10px 16px 3px; display:block;
+}
+.toc-a {
+  display:flex;align-items:center;gap:8px;
+  padding:6px 16px;
+  font-family:var(--fm);font-size:.72rem;
+  color:var(--text3);text-decoration:none;
   border-left:2px solid transparent;
-  transition:all .2s;line-height:1.4;
+  transition:all .18s;line-height:1.4;
 }
-.toc-link:hover{color:var(--amber);background:rgba(232,160,32,.06)}
-.toc-link.active{color:var(--amber);border-left-color:var(--amber);background:rgba(232,160,32,.08)}
-.toc-link .dot{width:5px;height:5px;border-radius:50%;background:var(--border2);flex-shrink:0;transition:background .2s}
-.toc-link.active .dot{background:var(--amber)}
-.toc-link.soon{opacity:.45;cursor:default}
-.toc-link.live::after{content:'✦';font-size:.6rem;color:var(--teal);margin-left:auto}
-/* MAIN CONTENT */
-.course-main{flex:1;min-width:0;background:var(--bg)}
-/* BREADCRUMB for course pages */
-.sk-breadcrumb.course-bc{margin-top:0}
-/* HERO BANNER */
-.course-hero{padding:48px 48px 40px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--bg) 0%,var(--bg2) 100%)}
-.course-content{padding:48px}
+.toc-a:hover{color:var(--text);background:rgba(255,255,255,.04);}
+.toc-a.active{color:var(--amber);border-left-color:var(--amber);background:rgba(232,160,32,.07);}
+.toc-a .d{width:4px;height:4px;border-radius:50%;background:var(--border2);flex-shrink:0;transition:background .2s;}
+.toc-a.active .d{background:var(--amber);}
+.toc-a.live::after{content:'✦';font-size:.58rem;color:var(--teal);margin-left:auto;}
+.toc-a.soon{opacity:.4;pointer-events:none;}
+
+/* RIGHT MAIN */
+.course-main {
+  flex:1; min-width:0;
+  background:var(--bg);
+}
+
+/* COURSE HERO */
+.course-hero {
+  padding:44px 48px 36px;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,var(--bg) 0%,var(--bg2) 100%);
+}
+
+/* SECTION DIVIDERS inside main */
+.lecture-section {
+  padding:44px 48px;
+  border-bottom:1px solid var(--border);
+}
+.lecture-section:last-child{border-bottom:none}
+
+/* CONTENT CARD */
+.lc {
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:12px;padding:24px 28px;margin-bottom:18px;
+}
+.lc h4{color:var(--text);margin-bottom:8px}
+.lc p{font-size:.9rem;margin-bottom:0}
+
+/* OVERVIEW GRID */
+.ov-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+.ov-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px 22px;transition:border-color .2s}
+.ov-card:hover{border-color:var(--border2)}
+.ov-card h4{margin-bottom:6px;font-size:1rem}
+.ov-card p{font-size:.85rem;margin-bottom:0}
+
+/* Integration lecture CSS embedded */
+.lec-wrap{color:var(--text)}
+.lec-sub-label{font-family:var(--fm);font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--amber);margin-bottom:8px;display:block}
+.lec-h2{font-family:var(--fh);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:400;margin-bottom:16px;color:var(--text)}
+.lec-h3{font-family:var(--fh);font-size:1.25rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+.lec-h4{font-family:var(--fh);font-size:1.05rem;font-weight:600;margin:20px 0 8px;color:var(--amber)}
+.def-box{background:rgba(56,201,176,.07);border:1px solid rgba(56,201,176,.2);border-radius:8px;padding:18px 22px;margin:16px 0}
+.def-box .dlbl{font-family:var(--fm);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+.thm-box{background:rgba(232,160,32,.07);border:1px solid rgba(232,160,32,.2);border-radius:8px;padding:18px 22px;margin:16px 0}
+.thm-box .tlbl{font-family:var(--fm);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
+.callout{background:rgba(232,160,32,.06);border-left:3px solid var(--amber);border-radius:0 8px 8px 0;padding:13px 18px;margin:14px 0;font-size:.93rem}
+.callout strong{color:var(--amber)}
+.callout-teal{background:rgba(56,201,176,.06);border-left:3px solid var(--teal);border-radius:0 8px 8px 0;padding:13px 18px;margin:14px 0;font-size:.93rem}
+.callout-teal strong{color:var(--teal)}
+.bf{text-align:center;padding:22px 16px;background:var(--bg2);border-radius:8px;margin:16px 0;font-size:1.05rem}
+.rule-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-bottom:14px}
+.rule-card h4{color:var(--teal);margin-bottom:8px}
+.rule-card .rf{text-align:center;background:rgba(56,201,176,.06);border-radius:6px;padding:14px;margin:10px 0;font-size:.95rem}
+.steps-list{counter-reset:step;list-style:none;padding:0;margin:12px 0}
+.steps-list li{counter-increment:step;position:relative;padding-left:44px;margin-bottom:14px;font-size:.94rem}
+.steps-list li::before{content:counter(step);position:absolute;left:0;top:1px;width:28px;height:28px;background:var(--navy-deep,#131b2e);border:1px solid var(--border2);color:var(--amber);font-family:var(--fm);font-size:.78rem;font-weight:600;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.toggle-btn{font-family:var(--fm);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(232,160,32,.1);color:var(--amber);border:1px solid rgba(232,160,32,.3);border-radius:6px;padding:7px 16px;cursor:pointer;margin-top:10px;transition:all .2s}
+.toggle-btn:hover{background:var(--amber);color:var(--bg)}
+.ans-box{display:none;background:rgba(56,201,176,.06);border:1px solid rgba(56,201,176,.2);border-radius:8px;padding:16px 20px;margin-top:10px}
+.ans-box.show{display:block}
+.reveal-riemann-btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--fm);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;background:linear-gradient(135deg,var(--teal),#2ab09a);color:var(--bg);border:none;border-radius:8px;padding:12px 26px;cursor:pointer;transition:all .2s;margin:16px 0}
+.reveal-riemann-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,201,176,.3)}
+.widget-dark{background:#0f1724;border-radius:12px;padding:22px 22px 16px;margin:20px 0;color:#e8e2d9}
+.widget-title{font-family:var(--fm);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.widget-title::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1)}
+canvas{display:block;width:100%;border-radius:6px;background:#111827}
+.controls{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;align-items:flex-end}
+.cg{display:flex;flex-direction:column;gap:4px;min-width:160px;flex:1}
+.cg label{font-family:var(--fm);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:#9ca3af}
+.cg .val{color:var(--amber);font-size:.85rem;font-weight:600}
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:#374151;border-radius:3px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--amber);border-radius:50%;cursor:pointer}
+select{font-family:var(--fm);font-size:.78rem;background:#1f2937;color:#e8e2d9;border:1px solid #374151;border-radius:6px;padding:5px 10px;cursor:pointer}
+.srow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.sp{background:#1f2937;border-radius:6px;padding:8px 14px;font-family:var(--fm);font-size:.75rem}
+.sp span{color:var(--amber);font-weight:700}
+.annot-svg{width:100%;max-width:560px;display:block;margin:20px auto}
+.section-break{height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);margin:36px 0}
+
+/* problem card */
+.prob-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:22px 26px;margin-bottom:16px}
+.prob-card h4{color:var(--text);margin-bottom:8px}
+
 @media(max-width:860px){
   .course-sidebar{display:none}
-  .course-hero,.course-content{padding:28px 20px}
+  .course-hero,.lecture-section{padding:24px 20px}
+  .ov-grid{grid-template-columns:1fr}
 }
 </style>
-
 </head>
-<body><div id="sk-progress"><div id="sk-progress-bar"></div></div>
+<body>
+<div id="sk-progress"><div id="sk-progress-bar"></div></div>
 <nav class="sk-nav">
   <a href="../index.html" class="sk-nav-logo">Shoaib-K <span class="logo-badge">LUMS</span></a>
   <div class="sk-nav-links" id="sk-nav-links">
-    <div class="sk-nav-item"><a href="../index.html" class="sk-nav-link ">Home</a></div>
-    <div class="sk-nav-item"><a href="education.html" class="sk-nav-link ">Education</a></div>
+    <div class="sk-nav-item"><a href="../index.html" class="sk-nav-link">Home</a></div>
+    <div class="sk-nav-item"><a href="education.html" class="sk-nav-link">Education</a></div>
     <div class="sk-nav-item">
-      <span class="sk-nav-link ">Experience <span class="arrow">▾</span></span>
+      <span class="sk-nav-link">Experience <span class="arrow">▾</span></span>
       <div class="sk-dropdown">
         <a href="experience-instructor.html"><span class="dd-icon">🎓</span> As an Instructor</a>
         <a href="experience-ta.html"><span class="dd-icon">📚</span> As a TA</a>
@@ -75,132 +199,313 @@
       </div>
     </div>
     <div class="sk-nav-item"><a href="courses.html" class="sk-nav-link active">Courses</a></div>
-    <div class="sk-nav-item"><a href="research.html" class="sk-nav-link ">Research</a></div>
-    <div class="sk-nav-item"><a href="hobbies.html" class="sk-nav-link ">Hobbies</a></div>
-    <div class="sk-nav-item"><a href="explore.html" class="sk-nav-link ">Explore</a></div>
-    <div class="sk-nav-item"><a href="contact.html" class="sk-nav-link ">Contact</a></div>
+    <div class="sk-nav-item"><a href="research.html" class="sk-nav-link">Research</a></div>
+    <div class="sk-nav-item"><a href="hobbies.html" class="sk-nav-link">Hobbies</a></div>
+    <div class="sk-nav-item"><a href="explore.html" class="sk-nav-link">Explore</a></div>
+    <div class="sk-nav-item"><a href="contact.html" class="sk-nav-link">Contact</a></div>
   </div>
   <div class="sk-hamburger" onclick="document.getElementById('sk-nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
 </nav>
-<div class="sk-breadcrumb course-bc">
-  <div class="sk-breadcrumb-inner">
-    <a href="../index.html">Home</a><span class="sep">›</span>
-    <a href="courses.html">Courses</a><span class="sep">›</span>
-    <span class="current">Calculus I</span>
+
+<!-- STICKY BREADCRUMB + COURSE SWITCHER -->
+<div class="sticky-sub">
+  <div class="breadcrumb-row">
+    <a href="../index.html">Home</a>
+    <span>›</span>
+    <a href="courses.html">Courses</a>
+    <span>›</span>
+    <span class="cur">Calculus I</span>
+  </div>
+  <div class="course-switcher">
+    <a href="course-precalc.html">Pre-Calculus</a>
+    <a href="course-calc1.html" class="active">Calculus I</a>
+    <a href="course-linalg.html">Linear Algebra I</a>
   </div>
 </div>
 
-<div class="course-layout">
-  <aside class="course-sidebar">
-    <div class="sidebar-hd">
-      <div class="sidebar-course-tag">MATH-101 · Calculus I</div>
-      <div class="sidebar-course-title">Course Contents</div>
-      <a href="courses.html" class="sidebar-back">← Back to Courses</a>
+<!-- MAIN TWO-COLUMN -->
+<div class="course-wrap">
+
+  <!-- SIDEBAR TOC -->
+  <aside class="course-sidebar" id="courseSidebar">
+    <div class="sb-head">
+      <div class="sb-tag">MATH-101 · Calculus I</div>
+      <div class="sb-title">Course Contents</div>
+      <a href="courses.html" class="sb-back">← All Courses</a>
     </div>
-    <nav class="toc-nav">
-      <span class="toc-section-label">Chapter 1 — Limits</span>
-      <a href="#" class="toc-link soon"><span class="dot"></span>L01 · Intuition &amp; Definition</a>
+    <nav class="toc" id="toc">
+      <span class="toc-ch">Course Overview</span>
+      <a href="#overview" class="toc-a active" data-sec="overview"><span class="d"></span>Course Overview</a>
 
-      <a href="#" class="toc-link soon"><span class="dot"></span>L02 · Limit Laws &amp; Continuity</a>
+      <span class="toc-ch">Ch 1 — Limits</span>
+      <a href="#limits" class="toc-a soon" data-sec="limits"><span class="d"></span>L01 · Intuition &amp; Definition</a>
+      <a href="#limits" class="toc-a soon" data-sec="limits"><span class="d"></span>L02 · Limit Laws &amp; Continuity</a>
+      <a href="#limits" class="toc-a soon" data-sec="limits"><span class="d"></span>L03 · Limits at Infinity</a>
 
-      <a href="#" class="toc-link soon"><span class="dot"></span>L03 · Limits at Infinity</a>
+      <span class="toc-ch">Ch 2 — Derivatives</span>
+      <a href="#derivatives" class="toc-a soon" data-sec="derivatives"><span class="d"></span>L04 · The Derivative</a>
+      <a href="#derivatives" class="toc-a soon" data-sec="derivatives"><span class="d"></span>L05 · Differentiation Rules</a>
+      <a href="#derivatives" class="toc-a soon" data-sec="derivatives"><span class="d"></span>L06 · Chain Rule</a>
+      <a href="#derivatives" class="toc-a soon" data-sec="derivatives"><span class="d"></span>L07 · Related Rates</a>
+      <a href="#derivatives" class="toc-a soon" data-sec="derivatives"><span class="d"></span>L08 · Optimization</a>
 
-      <span class="toc-section-label">Chapter 2 — Derivatives</span>
-      <a href="#" class="toc-link soon"><span class="dot"></span>L04 · The Derivative Defined</a>
-
-      <a href="#" class="toc-link soon"><span class="dot"></span>L05 · Differentiation Rules</a>
-
-      <a href="#" class="toc-link soon"><span class="dot"></span>L06 · Chain Rule &amp; Implicit Diff.</a>
-
-      <a href="#" class="toc-link soon"><span class="dot"></span>L07 · Related Rates</a>
-
-      <a href="#" class="toc-link soon"><span class="dot"></span>L08 · Optimization &amp; Curve Sketching</a>
-
-      <span class="toc-section-label">Chapter 5 — Integration</span>
-      <a href="../lectures/calc1-integration.html" class="toc-link live"><span class="dot"></span>L09 · §5.1 Indefinite Integration</a>
-
-      <a href="#" class="toc-link soon"><span class="dot"></span>L10 · §5.2 Definite Integrals</a>
-
-      <a href="#" class="toc-link soon"><span class="dot"></span>L11 · §5.3 FTC (Full)</a>
-
-      <a href="#" class="toc-link soon"><span class="dot"></span>L12 · §5.4 Substitution</a>
-
-      <a href="#" class="toc-link soon"><span class="dot"></span>L13 · §5.5 Integration by Parts</a>
-
+      <span class="toc-ch">Ch 5 — Integration</span>
+      <a href="#s51" class="toc-a live" data-sec="s51"><span class="d"></span>L09 · §5.1 Indefinite Integration</a>
+      <a href="#s52" class="toc-a soon" data-sec="s52"><span class="d"></span>L10 · §5.2 Definite Integrals</a>
+      <a href="#s52" class="toc-a soon" data-sec="s52"><span class="d"></span>L11 · §5.3 FTC (Full)</a>
+      <a href="#s52" class="toc-a soon" data-sec="s52"><span class="d"></span>L12 · §5.4 Substitution</a>
+      <a href="#s52" class="toc-a soon" data-sec="s52"><span class="d"></span>L13 · §5.5 Integration by Parts</a>
     </nav>
   </aside>
 
-  <main class="course-main">
-    <div class="course-hero">
-      <span class="eyebrow">MATH-101 · Undergraduate I · LUMS</span>
-      <h1 style="font-size:clamp(2rem,4vw,3.2rem);margin-bottom:12px">Calculus I</h1>
-      <p style="max-width:580px;font-size:1.05rem">The language in which physics, economics, and engineering are written. Taught in two parallel tracks — rigorously from first principles, and through the lens of business and economic application.</p>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+  <!-- MAIN CONTENT -->
+  <main class="course-main" id="courseMain">
+
+    <!-- ═══ OVERVIEW ═══════════════════════════════════ -->
+    <div class="course-hero" id="overview" data-section="overview">
+      <span class="lec-sub-label">MATH-101 · Undergraduate I · LUMS</span>
+      <h1 style="font-size:clamp(2rem,4vw,3rem);margin-bottom:12px">Calculus I</h1>
+      <p style="max-width:580px;font-size:1.02rem;color:var(--text2)">The language in which physics, economics, and engineering are written. Taught in two parallel tracks — rigorously from first principles, and through the lens of business and economic application.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin:16px 0">
         <span class="tag tag-teal">Limits</span><span class="tag tag-teal">Derivatives</span><span class="tag tag-teal">Integration</span><span class="tag">Differential Equations</span>
       </div>
-      <div style="margin-top:20px;padding:12px 18px;background:rgba(56,201,176,.08);border:1px solid rgba(56,201,176,.2);border-radius:8px;display:inline-flex;align-items:center;gap:10px">
-        <span style="font-size:.9rem;color:var(--teal)">✦</span>
-        <span style="font-size:.9rem;color:var(--text2)"><strong style="color:var(--teal)">§5.1 Integration</strong> is now live — see sidebar</span>
-        <a href="../lectures/calc1-integration.html" style="font-family:var(--fm);font-size:.72rem;color:var(--amber);text-decoration:none;margin-left:8px">Open →</a>
-      </div>
-      <div style="display:flex;gap:28px;margin-top:24px;flex-wrap:wrap">
-        <div><div style="font-family:var(--fm);font-size:.68rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase">Lead Instructor</div><div style="font-size:.95rem;color:var(--text);margin-top:4px">Dr. Imran Anwar</div></div>
-        <div><div style="font-family:var(--fm);font-size:.68rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase">Teaching Fellow</div><div style="font-size:.95rem;color:var(--amber);margin-top:4px">Muhammad Shoaib Khan</div></div>
-        <div><div style="font-family:var(--fm);font-size:.68rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase">Textbooks</div><div style="font-size:.95rem;color:var(--text);margin-top:4px">Stewart · Hoffmann</div></div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;margin-top:20px">
+        <div><div style="font-family:var(--fm);font-size:.62rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase">Lead Instructor</div><div style="margin-top:4px;color:var(--text)">Dr. Imran Anwar</div></div>
+        <div><div style="font-family:var(--fm);font-size:.62rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase">Teaching Fellow</div><div style="margin-top:4px;color:var(--amber)">Muhammad Shoaib Khan</div></div>
+        <div><div style="font-family:var(--fm);font-size:.62rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase">Textbooks</div><div style="margin-top:4px;color:var(--text)">Stewart · Hoffmann</div></div>
       </div>
     </div>
 
-    <div class="course-content">
-      <div class="grid-2" style="gap:20px;margin-bottom:32px">
-        <div class="card card-amber" style="padding:22px 24px">
-          <div style="font-family:var(--fm);font-size:.7rem;color:var(--amber);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Track A</div>
-          <h4>Rigorous Track</h4>
-          <p style="font-size:.88rem">Epsilon-delta definitions, formal proofs, classical analysis. Based on Stewart's Calculus.</p>
-        </div>
-        <div class="card card-teal" style="padding:22px 24px">
-          <div style="font-family:var(--fm);font-size:.7rem;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Track B</div>
-          <h4>Applied Track</h4>
-          <p style="font-size:.88rem">Business, economics &amp; social science applications. Based on Hoffmann's Calculus.</p>
-        </div>
+    <!-- Overview body -->
+    <div class="lecture-section">
+      <div class="ov-grid">
+        <div class="ov-card card-amber"><div style="font-family:var(--fm);font-size:.66rem;color:var(--amber);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">Track A</div><h4>Rigorous Track</h4><p>Epsilon-delta definitions, formal proofs, classical analysis. Based on Stewart's Calculus.</p></div>
+        <div class="ov-card card-teal"><div style="font-family:var(--fm);font-size:.66rem;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">Track B</div><h4>Applied Track</h4><p>Business, economics &amp; social science applications. Based on Hoffmann's Calculus.</p></div>
+        <div class="ov-card"><h4>Limits &amp; Continuity</h4><p>What it means for a function to approach a value. Formal definitions and limit laws.</p></div>
+        <div class="ov-card"><h4>Differentiation</h4><p>Rates of change, tangent lines, all differentiation rules, and applications.</p></div>
+        <div class="ov-card"><h4>Integration</h4><p>Antiderivatives, Riemann sums, the Fundamental Theorem, and techniques.</p></div>
+        <div class="ov-card"><h4>Differential Equations</h4><p>Separable DEs, initial value problems, and continuous compounding.</p></div>
       </div>
-      <h3 style="margin-bottom:16px">Topics Covered</h3>
-      <div class="grid-2" style="gap:20px;margin-bottom:32px">
-        <div class="card" style="padding:20px 22px"><h4>Limits &amp; Continuity</h4><p style="font-size:.88rem">The foundation. What does it mean for a function to approach a value? Formal definitions, limit laws, continuity.</p></div>
-        <div class="card" style="padding:20px 22px"><h4>Differentiation</h4><p style="font-size:.88rem">Rates of change, tangent lines, all differentiation rules, implicit differentiation, and applications.</p></div>
-        <div class="card" style="padding:20px 22px"><h4>Integration</h4><p style="font-size:.88rem">Antiderivatives, Riemann sums, the Fundamental Theorem, and techniques of integration.</p></div>
-        <div class="card" style="padding:20px 22px"><h4>Differential Equations</h4><p style="font-size:.88rem">Introduction to separable DEs, initial value problems, and continuous compounding.</p></div>
-      </div>
-      <div class="info-box info-teal">
-        <strong style="color:var(--teal)">Prerequisites:</strong> Pre-Calculus or equivalent. Familiarity with functions, algebra, and basic trigonometry.
-      </div>
+      <div class="callout-teal" style="margin-top:8px"><strong>Live now:</strong> §5.1 Indefinite Integration is available — scroll down or click it in the sidebar.</div>
     </div>
+
+    <!-- ═══ LIMITS (coming soon) ══════════════════════ -->
+    <div class="lecture-section" id="limits" data-section="limits">
+      <span class="lec-sub-label">Chapter 1</span>
+      <h2 class="lec-h2">Limits &amp; Continuity</h2>
+      <div class="callout"><strong>Coming Soon</strong> — Lecture notes for Chapter 1 are being prepared.</div>
+    </div>
+
+    <!-- ═══ DERIVATIVES (coming soon) ════════════════ -->
+    <div class="lecture-section" id="derivatives" data-section="derivatives">
+      <span class="lec-sub-label">Chapter 2</span>
+      <h2 class="lec-h2">Differentiation</h2>
+      <div class="callout"><strong>Coming Soon</strong> — Lecture notes for Chapter 2 are being prepared.</div>
+    </div>
+
+    <!-- ═══ §5.1 INTEGRATION — FULL LECTURE ══════════ -->
+    <div class="lecture-section" id="s51" data-section="s51">
+      <span class="lec-sub-label" style="color:var(--teal)">Chapter 5 · Section 5.1 &nbsp;·&nbsp; ✦ Live</span>
+      <h2 class="lec-h2">Indefinite Integration &amp;<br>Differential Equations</h2>
+      <p style="color:var(--text2);max-width:620px">From adding up infinitely many tiny pieces to the most powerful tool in calculus — the full §5.1 lecture is embedded right here, inside the course.</p>
+
+      <!-- §1 MOTIVATION -->
+      <div class="section-break"></div>
+      <span class="lec-sub-label">§ 1 — Motivation</span>
+      <h3 class="lec-h3">You Know Derivatives. Now Work Backwards.</h3>
+      <p>You've spent weeks mastering <strong style="color:var(--amber)">derivatives</strong> — the tool that captures instantaneous rates of change. Now flip the question: <em>if I know only the rate of change, can I recover the original quantity?</em></p>
+
+      <div class="lc" style="border-left:3px solid var(--amber)">
+        <h4>🚗 Road-Trip Problem</h4>
+        <p>Your speedometer works perfectly but the odometer is broken. You record your speed every 30 minutes. To find the exact distance, you need <strong style="color:var(--amber)">integration</strong> — not an approximation, the exact accumulated total.</p>
+        <div class="callout" style="margin-top:12px"><strong>Core Insight:</strong> The exact distance from $t=a$ to $t=b$ equals the area under the speed curve $y = v(t)$.</div>
+      </div>
+
+      <!-- §2 RIEMANN -->
+      <div class="section-break"></div>
+      <span class="lec-sub-label">§ 2 — Riemann Sums</span>
+      <h3 class="lec-h3">Where the Integral Sign Was Born</h3>
+      <div class="lc" style="background:rgba(232,160,32,.05);border:1px solid rgba(232,160,32,.15)">
+        <p style="line-height:2;margin-bottom:0">Imagine slicing the area under a curve into a hundred paper-thin strips. Each strip is almost a perfect rectangle — width $\Delta x$, height $f(x_i^*)$. Sum every rectangle's area. Now imagine a thousand strips. A trillion. As they grow infinitely thin, the sum converges to a single perfect number. <strong style="color:var(--amber)">That number is the definite integral.</strong> The $\int$ symbol is Leibniz's stretched <strong>S</strong> — for <em>Summa</em>, Latin for sum. The $dx$ is the ghost of $\Delta x$ shrinking to zero.</p>
+      </div>
+      <div style="text-align:center;margin:20px 0">
+        <button class="reveal-riemann-btn" onclick="toggleRiemann(this)">⬛ &nbsp;Reveal Riemann Sum Explorer</button>
+      </div>
+      <div id="riemannBox" style="display:none">
+        <ol class="steps-list">
+          <li><strong>Divide</strong> $[a,b]$ into $n$ sub-intervals, $\Delta x = (b-a)/n$.</li>
+          <li><strong>Pick sample points</strong> $x_i^*$ in each sub-interval.</li>
+          <li><strong>Build rectangles</strong> of width $\Delta x$ and height $f(x_i^*)$.</li>
+          <li><strong>Sum the areas:</strong> $S_n = \displaystyle\sum_{i=1}^n f(x_i^*)\,\Delta x$.</li>
+          <li><strong>Take the limit</strong> $n	o\infty$ — the sum becomes exact.</li>
+        </ol>
+        <div class="widget-dark">
+          <div class="widget-title">⬛ Interactive Riemann Sum Explorer</div>
+          <canvas id="riemannCanvas" height="280"></canvas>
+          <div class="controls">
+            <div class="cg"><label>Function</label><select id="fnSelect" onchange="drawRiemann()"><option value="quad">f(x) = x²</option><option value="sin">f(x) = sin(x)+1</option><option value="sqrt">f(x) = √x</option><option value="cubic">f(x) = x³/4+1</option></select></div>
+            <div class="cg"><label>Rectangles &nbsp;<span class="val" id="nVal">4</span></label><input type="range" id="nSlider" min="1" max="150" value="4" oninput="updateN(this.value)"></div>
+            <div class="cg"><label>Sample Point</label><select id="ruleSelect" onchange="drawRiemann()"><option value="left">Left</option><option value="right">Right</option><option value="mid">Midpoint</option></select></div>
+          </div>
+          <div class="srow">
+            <div class="sp">$n$ = <span id="statN">4</span></div>
+            <div class="sp">$\Delta x$ = <span id="statDx">—</span></div>
+            <div class="sp">Approx ≈ <span id="statArea">—</span></div>
+            <div class="sp">Exact = <span id="statExact">—</span></div>
+            <div class="sp">Error: <span id="statErr">—</span></div>
+          </div>
+        </div>
+        <div class="def-box">
+          <div class="dlbl">Riemann Sum</div>
+          $$S_n = \sum_{i=1}^n f(x_i^*)\,\Delta x, \qquad \Delta x = rac{b-a}{n}$$
+        </div>
+      </div>
+
+      <!-- §3 DEFINITE INTEGRAL -->
+      <div class="section-break"></div>
+      <span class="lec-sub-label">§ 3 — Definite Integral</span>
+      <h3 class="lec-h3">The Formal Definition</h3>
+      <div class="bf">$$\int_a^b f(x)\,dx \;=\; \lim_{n	o\infty} \sum_{i=1}^n f(x_i^*)\,\Delta x$$</div>
+      <div class="def-box">
+        <div class="dlbl">Notation — Every Symbol Matters</div>
+        <svg class="annot-svg" viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg">
+          <rect width="560" height="220" fill="#0f1724" rx="12"/>
+          <text x="280" y="135" text-anchor="middle" font-size="42" font-family="Georgia,serif" fill="#e8e2d9">
+            <tspan font-style="italic">∫</tspan><tspan> 3</tspan><tspan font-style="italic">x</tspan><tspan>² </tspan><tspan font-style="italic">dx</tspan><tspan>  =  </tspan><tspan font-style="italic">x</tspan><tspan>³ + </tspan><tspan fill="#e8a020" font-weight="bold" font-style="italic">C</tspan>
+          </text>
+          <line x1="72" y1="185" x2="112" y2="152" stroke="#e8a020" stroke-width="1.2" stroke-dasharray="4,3"/><circle cx="112" cy="150" r="3" fill="#e8a020"/>
+          <text x="72" y="198" text-anchor="middle" font-size="10.5" font-family="DM Mono,monospace" fill="#e8a020" font-weight="600" letter-spacing="0.04em">INTEGRAL SYMBOL</text>
+          <line x1="196" y1="42" x2="210" y2="100" stroke="#38c9b0" stroke-width="1.2" stroke-dasharray="4,3"/><circle cx="210" cy="102" r="3" fill="#38c9b0"/>
+          <text x="196" y="34" text-anchor="middle" font-size="10.5" font-family="DM Mono,monospace" fill="#38c9b0" font-weight="600" letter-spacing="0.04em">INTEGRAND</text>
+          <line x1="300" y1="185" x2="290" y2="152" stroke="#9b80e8" stroke-width="1.2" stroke-dasharray="4,3"/><circle cx="290" cy="150" r="3" fill="#9b80e8"/>
+          <text x="300" y="198" text-anchor="middle" font-size="10.5" font-family="DM Mono,monospace" fill="#9b80e8" font-weight="600" letter-spacing="0.04em">VARIABLE OF INTEGRATION</text>
+          <line x1="500" y1="42" x2="490" y2="100" stroke="#e06b6b" stroke-width="1.2" stroke-dasharray="4,3"/><circle cx="490" cy="102" r="3" fill="#e06b6b"/>
+          <text x="500" y="34" text-anchor="middle" font-size="10.5" font-family="DM Mono,monospace" fill="#e06b6b" font-weight="600" letter-spacing="0.04em">CONSTANT OF INTEGRATION</text>
+        </svg>
+      </div>
+
+      <!-- §4 FTC -->
+      <div class="section-break"></div>
+      <span class="lec-sub-label">§ 4 — Fundamental Theorem</span>
+      <h3 class="lec-h3">The Bridge Between Derivatives &amp; Integrals</h3>
+      <div class="thm-box">
+        <div class="tlbl">FTC — Evaluation Shortcut</div>
+        <p>If $F'(x) = f(x)$, then &nbsp; $\displaystyle\int_a^b f(x)\,dx = F(b) - F(a)$</p>
+        <p style="margin-bottom:0;color:var(--amber);font-style:italic;margin-top:8px">Find an antiderivative, plug in, subtract. No limits. No sums.</p>
+      </div>
+
+      <!-- §5 ANTIDERIVATIVES -->
+      <div class="section-break"></div>
+      <span class="lec-sub-label">§ 5.1a — Antidifferentiation</span>
+      <h3 class="lec-h3">Antiderivatives</h3>
+      <div class="def-box"><div class="dlbl">Definition</div><p>$F(x)$ is an <strong>antiderivative</strong> of $f(x)$ if $F'(x)=f(x)$.</p></div>
+      <div class="thm-box"><div class="tlbl">Fundamental Property</div><p>If $F(x)$ is one antiderivative of $f(x)$, every other has the form $G(x) = F(x) + C$.</p></div>
+      <div class="def-box"><div class="dlbl">Indefinite Integral</div>$$\int f(x)\,dx = F(x) + C$$<p style="margin-bottom:0;margin-top:8px">A <em>family</em> of functions, not a number. The $+C$ captures all antiderivatives simultaneously.</p></div>
+
+      <!-- §6 RULES -->
+      <div class="section-break"></div>
+      <span class="lec-sub-label">§ 5.1c — Integration Rules</span>
+      <h3 class="lec-h3">The Four Core Rules</h3>
+
+      <div class="rule-card"><h4>Rule 1 — Constant Rule</h4><div class="rf">$$\int k\,dx = kx + C$$</div><p style="font-size:.88rem">Example: $\int 7\,dx = 7x + C$</p></div>
+      <div class="rule-card"><h4>Rule 2 — Power Rule</h4><div class="rf">$$\int x^n\,dx = rac{x^{n+1}}{n+1} + C \qquad (n
+eq-1)$$</div><p style="font-size:.88rem"><em>Raise exponent by 1, divide by new exponent.</em><br>Ex 1: $\int x^5\,dx = \dfrac{x^6}{6}+C$ &nbsp;·&nbsp; Ex 2: $\int\sqrt{x}\,dx = \dfrac{2}{3}x^{3/2}+C$</p><button class="toggle-btn" onclick="tog('pr1')">Try: $\int x^{3/4}\,dx$</button><div class="ans-box" id="pr1">$n=3/4$, new exp $=7/4$: &nbsp; $\dfrac{4}{7}x^{7/4}+C$</div></div>
+      <div class="rule-card"><h4>Rule 3 — Logarithmic Rule</h4><div class="rf">$$\int rac{1}{x}\,dx = \ln|x| + C$$</div><p style="font-size:.88rem">The power rule fails for $n=-1$. Since $rac{d}{dx}\ln|x|=rac{1}{x}$, the antiderivative is $\ln|x|$.</p></div>
+      <div class="rule-card"><h4>Rule 4 — Exponential Rule</h4><div class="rf">$$\int e^x\,dx = e^x + C \qquad \int e^{kx}\,dx = rac{e^{kx}}{k}+C$$</div><p style="font-size:.88rem">$e^x$ is its own antiderivative. For $e^{kx}$, divide by $k$.</p></div>
+
+      <div class="thm-box" style="margin-top:8px"><div class="tlbl">Algebraic Rules</div><p><strong>Constant Multiple:</strong> $\int k\cdot f(x)\,dx = k\int f(x)\,dx$</p><p style="margin-bottom:0"><strong>Sum/Difference:</strong> $\int[f\pm g]\,dx = \int f\,dx\pm\int g\,dx$</p></div>
+
+      <div class="lc">
+        <h4>✏️ Example — Combined Rules</h4>
+        <p>Find $\displaystyle\int\!\left(6x^2 - rac{4}{x} + 3e^x
+ight)dx$</p>
+        <button class="toggle-btn" onclick="tog('ex1')">Show Solution</button>
+        <div class="ans-box" id="ex1">$$= 2x^3 - 4\ln|x| + 3e^x + C$$</div>
+      </div>
+
+      <!-- §7 APPLICATIONS -->
+      <div class="section-break"></div>
+      <span class="lec-sub-label">§ 5.1d — Applications</span>
+      <h3 class="lec-h3">Integration in Action</h3>
+
+      <div class="lc">
+        <h4>📈 Finding a Function from Its Slope</h4>
+        <p>$f'(x)=3x^2-2x+1$, &nbsp; $f(1)=4$. &nbsp; Find $f(x)$.</p>
+        <button class="toggle-btn" onclick="tog('app1')">Show Solution</button>
+        <div class="ans-box" id="app1"><p>Integrate: $f(x)=x^3-x^2+x+C$</p><p>Apply IC: $4=1-1+1+C \Rightarrow C=3$</p><p style="margin-bottom:0">$$f(x)=x^3-x^2+x+3$$</p></div>
+      </div>
+      <div class="lc">
+        <h4>💰 Total Cost from Marginal Cost</h4>
+        <p>$C'(x)=3x^2-12x+14$, fixed costs $\$35$. Find $C(x)$.</p>
+        <button class="toggle-btn" onclick="tog('app2')">Show Solution</button>
+        <div class="ans-box" id="app2"><p>$C(x)=x^3-6x^2+14x+K$</p><p style="margin-bottom:0">$C(0)=35\Rightarrow K=35$, so $C(x)=x^3-6x^2+14x+35$</p></div>
+      </div>
+
+      <!-- §8 DIFF EQ -->
+      <div class="section-break"></div>
+      <span class="lec-sub-label">§ 5.1e — Differential Equations</span>
+      <h3 class="lec-h3">Separable Differential Equations</h3>
+      <div class="thm-box"><div class="tlbl">Separation of Variables</div><p>Given $\dfrac{dy}{dx}=f(x)g(y)$: separate → $\dfrac{dy}{g(y)}=f(x)\,dx$, integrate both sides, solve, apply IC.</p></div>
+      <div class="lc"><h4>💼 Revenue IVP</h4><p>$\dfrac{dR}{dq}=50-2q$, $R(0)=0$. Find $R(q)$.</p><button class="toggle-btn" onclick="tog('de1')">Show Solution</button><div class="ans-box" id="de1"><p>$R(q)=50q-q^2+C$. &nbsp; $R(0)=0\Rightarrow C=0$.</p><p style="margin-bottom:0">$$R(q)=50q-q^2 \quad 	ext{(max at } q=25	ext{)}$$</p></div></div>
+
+      <!-- §9 COMPOUNDING -->
+      <div class="section-break"></div>
+      <span class="lec-sub-label">§ 5.1f — Continuous Compounding</span>
+      <h3 class="lec-h3">Deriving $B(t)=Pe^{rt}$</h3>
+      <div class="thm-box"><div class="tlbl">Continuous Compounding Formula</div><p>If $P$ dollars are invested at rate $r$ compounded continuously:</p>$$B(t)=Pe^{rt}$$</div>
+      <div class="lc"><h4>✏️ Full Derivation from the Differential Equation</h4><button class="toggle-btn" onclick="tog('cc1')">Show Derivation</button><div class="ans-box" id="cc1"><p>IVP: $\dfrac{dB}{dt}=rB$, $B(0)=P$.</p><p>Separate: $\dfrac{dB}{B}=r\,dt$ &nbsp;→&nbsp; $\ln|B|=rt+C_1$ &nbsp;→&nbsp; $B=Ce^{rt}$</p><p>Apply IC: $C=P$, therefore $B(t)=Pe^{rt}$ ✓</p></div></div>
+
+      <!-- COMPOUNDING WIDGET -->
+      <div class="widget-dark" style="margin-top:20px">
+        <div class="widget-title">📈 Continuous Compounding Explorer</div>
+        <canvas id="compCanvas" height="240"></canvas>
+        <div class="controls">
+          <div class="cg"><label>$P$ = $<span class="val" id="pVal">5000</span></label><input type="range" id="pSlider" min="1000" max="20000" step="500" value="5000" oninput="updateComp()"></div>
+          <div class="cg"><label>$r$ = <span class="val" id="rVal">6</span>%</label><input type="range" id="rSlider" min="1" max="20" step="0.5" value="6" oninput="updateComp()"></div>
+          <div class="cg"><label>$t$ = <span class="val" id="tVal">10</span> yrs</label><input type="range" id="tSlider" min="1" max="40" step="1" value="10" oninput="updateComp()"></div>
+        </div>
+        <div class="srow"><div class="sp">$B(t)$ = $<span id="compResult">—</span></div><div class="sp">Interest = $<span id="compInterest">—</span></div><div class="sp">Doubles ~ <span id="compDouble">—</span> yrs</div></div>
+      </div>
+
+      <!-- PRACTICE -->
+      <div class="section-break"></div>
+      <span class="lec-sub-label">§ 5.1 — Practice Problems</span>
+      <h3 class="lec-h3">Test Yourself</h3>
+      <div class="prob-card"><h4>Problem 1</h4><p>Find $\displaystyle\int(4x^3-6x+5)\,dx$</p><button class="toggle-btn" onclick="tog('p1')">Reveal</button><div class="ans-box" id="p1">$$x^4-3x^2+5x+C$$</div></div>
+      <div class="prob-card"><h4>Problem 2</h4><p>Find $\displaystyle\int\!\left(3\sqrt{x}-rac{5}{x}+2e^x
+ight)dx$</p><button class="toggle-btn" onclick="tog('p2')">Reveal</button><div class="ans-box" id="p2">$$2x^{3/2}-5\ln|x|+2e^x+C$$</div></div>
+      <div class="prob-card"><h4>Problem 3 — IVP</h4><p>$f'(x)=6x-4$, $f(2)=3$. Find $f(x)$.</p><button class="toggle-btn" onclick="tog('p3')">Reveal</button><div class="ans-box" id="p3"><p>$f(x)=3x^2-4x+C$. &nbsp; $f(2)=4+C=3\Rightarrow C=-1$.</p><p style="margin-bottom:0">$f(x)=3x^2-4x-1$</p></div></div>
+      <div class="prob-card"><h4>Problem 4 — Compounding</h4><p>How long for $\$2000$ to triple at $8\%$ continuous compounding?</p><button class="toggle-btn" onclick="tog('p4')">Reveal</button><div class="ans-box" id="p4">$$t=rac{\ln 3}{0.08}pprox 13.73	ext{ years}$$</div></div>
+      <div class="callout-teal" style="margin-top:8px"><strong>Next:</strong> §5.2 Definite Integrals &amp; Area Between Curves — coming soon.</div>
+    </div>
+
+    <!-- ═══ §5.2+ COMING SOON ══════════════════════ -->
+    <div class="lecture-section" id="s52" data-section="s52">
+      <span class="lec-sub-label" style="color:var(--text3)">Chapter 5 · Sections 5.2 – 5.5</span>
+      <h2 class="lec-h2">§5.2 – §5.5 Coming Soon</h2>
+      <div class="callout"><strong>In Progress</strong> — §5.2 Definite Integrals, §5.3 FTC (Full), §5.4 Substitution, and §5.5 Integration by Parts are being prepared.</div>
+    </div>
+
   </main>
 </div>
+
 <footer class="sk-footer">
   <div class="sk-footer-inner">
     <div>
       <div class="sk-footer-logo">Shoaib-K</div>
       <p style="color:var(--text2);font-size:.875rem;margin-top:10px">Mathematician · Educator · Researcher<br>LUMS, Lahore, Pakistan</p>
-      <div style="display:flex;gap:14px;margin-top:16px">
-        <a href="https://www.facebook.com/shoaiib.k" target="_blank">Facebook</a>
-        <a href="https://twitter.com/msking_shoaib" target="_blank">Twitter</a>
-        <a href="https://instagram.com/msking.shoaib" target="_blank">Instagram</a>
-      </div>
     </div>
     <div>
       <h5>Navigation</h5>
       <a href="../index.html">Home</a>
       <a href="education.html">Education</a>
-      <a href="experience-instructor.html">Experience</a>
       <a href="courses.html">Courses</a>
       <a href="research.html">Research</a>
-      <a href="explore.html">Explore</a>
       <a href="contact.html">Contact</a>
     </div>
     <div>
       <h5>Contact</h5>
       <a href="mailto:bssk.khan@gmail.com">bssk.khan@gmail.com</a>
-      <a href="https://sites.google.com/view/shoaib-k/" target="_blank">Google Site</a>
       <a href="https://lums.edu.pk" target="_blank">LUMS Website</a>
     </div>
   </div>
@@ -209,4 +514,145 @@
     <p>Built with HTML, CSS &amp; Mathematics</p>
   </div>
 </footer>
-<script src="../js/main.js"></script></body></html>
+
+<script src="../js/main.js"></script>
+<script>
+// ── SCROLL SPY — highlights sidebar as you scroll ─────
+const sections = document.querySelectorAll('[data-section]');
+const tocLinks  = document.querySelectorAll('.toc-a[data-sec]');
+const OFFSET = 160;
+
+function setActive(id) {
+  tocLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.dataset.sec === id) a.classList.add('active');
+  });
+}
+
+window.addEventListener('scroll', () => {
+  let current = 'overview';
+  sections.forEach(sec => {
+    if (window.scrollY + OFFSET >= sec.offsetTop) current = sec.dataset.section;
+  });
+  setActive(current);
+}, {passive: true});
+
+// ── TOC CLICK — smooth scroll ─────────────────────────
+tocLinks.forEach(a => {
+  if (a.classList.contains('soon')) return;
+  a.addEventListener('click', e => {
+    const href = a.getAttribute('href');
+    if (!href || !href.startsWith('#')) return;
+    e.preventDefault();
+    const target = document.querySelector(href);
+    if (!target) return;
+    const top = target.getBoundingClientRect().top + window.scrollY - OFFSET;
+    window.scrollTo({top, behavior:'smooth'});
+  });
+});
+
+// ── TOGGLE HELPERS ────────────────────────────────────
+function tog(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('show');
+  if (window.MathJax && el.classList.contains('show')) MathJax.typesetPromise([el]);
+}
+function toggleRiemann(btn) {
+  const box = document.getElementById('riemannBox');
+  const show = box.style.display === 'none' || box.style.display === '';
+  box.style.display = show ? 'block' : 'none';
+  btn.textContent = show ? '▲  Hide Explorer' : '⬛  Reveal Riemann Sum Explorer';
+  if (show) setTimeout(drawRiemann, 80);
+}
+
+// ── RIEMANN CANVAS ────────────────────────────────────
+const FNS = {
+  quad:  {fn:x=>x*x, exact:(a,b)=>b**3/3-a**3/3},
+  sin:   {fn:x=>Math.sin(x)+1, exact:(a,b)=>(b-a)+Math.cos(a)-Math.cos(b)},
+  sqrt:  {fn:x=>Math.sqrt(x), exact:(a,b)=>2/3*(b**1.5-a**1.5)},
+  cubic: {fn:x=>x**3/4+1, exact:(a,b)=>(b**4/16+b)-(a**4/16+a)}
+};
+const rA=0, rB=3; let rN=4;
+function updateN(v){rN=+v;document.getElementById('nVal').textContent=v;drawRiemann();}
+function drawRiemann(){
+  const fnKey=document.getElementById('fnSelect').value;
+  const rule=document.getElementById('ruleSelect').value;
+  const fObj=FNS[fnKey],fn=fObj.fn;
+  const cv=document.getElementById('riemannCanvas');
+  if(!cv.offsetWidth)return;
+  cv.width=cv.offsetWidth*devicePixelRatio;cv.height=280*devicePixelRatio;
+  const ctx=cv.getContext('2d');ctx.scale(devicePixelRatio,devicePixelRatio);
+  const W=cv.offsetWidth,H=280,pad={l:44,r:14,t:14,b:30};
+  const gW=W-pad.l-pad.r,gH=H-pad.t-pad.b;
+  let yMax=0;for(let i=0;i<=200;i++){const y=fn(rA+(rB-rA)*i/200);if(y>yMax)yMax=y;}
+  yMax*=1.28;if(yMax<0.5)yMax=1;
+  const tX=x=>pad.l+(x-rA)/(rB-rA)*gW;
+  const tY=y=>pad.t+gH-y/yMax*gH;
+  ctx.fillStyle='#111827';ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='#1f2937';ctx.lineWidth=1;
+  for(let y=0;y<=yMax;y+=yMax/4){ctx.beginPath();ctx.moveTo(pad.l,tY(y));ctx.lineTo(pad.l+gW,tY(y));ctx.stroke();ctx.fillStyle='#6b7280';ctx.font='10px DM Mono,monospace';ctx.fillText(y.toFixed(1),4,tY(y)+4);}
+  const dx=(rB-rA)/rN;let sumArea=0;
+  for(let i=0;i<rN;i++){
+    let xs;if(rule==='left')xs=rA+i*dx;else if(rule==='right')xs=rA+(i+1)*dx;else xs=rA+(i+.5)*dx;
+    const h=fn(xs);if(h<0)continue;sumArea+=h*dx;
+    const rx=tX(rA+i*dx),rw=tX(rA+(i+1)*dx)-tX(rA+i*dx);
+    ctx.fillStyle='rgba(232,160,32,.25)';ctx.fillRect(rx,tY(h),rw,tY(0)-tY(h));
+    ctx.strokeStyle='#e8a020';ctx.lineWidth=1.2;ctx.strokeRect(rx,tY(h),rw,tY(0)-tY(h));
+  }
+  ctx.beginPath();ctx.moveTo(tX(rA),tY(fn(rA)));
+  for(let i=1;i<=300;i++){const x=rA+(rB-rA)*i/300;ctx.lineTo(tX(x),tY(fn(x)));}
+  ctx.strokeStyle='#38c9b0';ctx.lineWidth=2.5;ctx.stroke();
+  ctx.strokeStyle='#374151';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,pad.t+gH);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t+gH);ctx.lineTo(pad.l+gW,pad.t+gH);ctx.stroke();
+  ctx.fillStyle='#9ca3af';ctx.font='11px DM Mono,monospace';
+  for(let x=rA;x<=rB;x++)ctx.fillText(x,tX(x)-4,H-6);
+  const exact=fObj.exact(rA,rB),err=Math.abs(sumArea-exact);
+  document.getElementById('statN').textContent=rN;
+  document.getElementById('statDx').textContent=((rB-rA)/rN).toFixed(4);
+  document.getElementById('statArea').textContent=sumArea.toFixed(5);
+  document.getElementById('statExact').textContent=exact.toFixed(5);
+  document.getElementById('statErr').textContent=err.toFixed(5);
+}
+
+// ── COMPOUNDING CANVAS ────────────────────────────────
+function updateComp(){
+  const P=+document.getElementById('pSlider').value,r=+document.getElementById('rSlider').value/100,t=+document.getElementById('tSlider').value;
+  document.getElementById('pVal').textContent=document.getElementById('pSlider').value;
+  document.getElementById('rVal').textContent=document.getElementById('rSlider').value;
+  document.getElementById('tVal').textContent=t;
+  const Bt=P*Math.exp(r*t);
+  document.getElementById('compResult').textContent=Bt.toFixed(2);
+  document.getElementById('compInterest').textContent=(Bt-P).toFixed(2);
+  document.getElementById('compDouble').textContent=(Math.log(2)/r).toFixed(1);
+  drawComp(P,r,t);
+}
+function drawComp(P,r,tCur){
+  const cv=document.getElementById('compCanvas');
+  cv.width=cv.offsetWidth*devicePixelRatio;cv.height=240*devicePixelRatio;
+  const ctx=cv.getContext('2d');ctx.scale(devicePixelRatio,devicePixelRatio);
+  const W=cv.offsetWidth,H=240,pad={l:60,r:16,t:14,b:30};
+  const gW=W-pad.l-pad.r,gH=H-pad.t-pad.b;
+  const tMax=40,Bmax=P*Math.exp(r*tMax)*1.06;
+  const tX=t=>pad.l+t/tMax*gW,tY=v=>pad.t+gH-v/Bmax*gH;
+  ctx.fillStyle='#111827';ctx.fillRect(0,0,W,H);
+  for(let i=0;i<=4;i++){const y=Bmax*i/4;ctx.strokeStyle='#1f2937';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.l,tY(y));ctx.lineTo(pad.l+gW,tY(y));ctx.stroke();ctx.fillStyle='#6b7280';ctx.font='9px DM Mono,monospace';ctx.fillText('$'+(y>=1000?(y/1000).toFixed(0)+'k':y.toFixed(0)),2,tY(y)+4);}
+  ctx.setLineDash([4,3]);ctx.strokeStyle='#6b7280';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(tX(0),tY(P));ctx.lineTo(tX(tMax),tY(P));ctx.stroke();ctx.setLineDash([]);
+  ctx.beginPath();ctx.moveTo(tX(0),tY(P));for(let i=1;i<=300;i++){const t=tMax*i/300;ctx.lineTo(tX(t),tY(P*Math.exp(r*t)));}ctx.strokeStyle='#38c9b0';ctx.lineWidth=2.5;ctx.stroke();
+  const Bval=P*Math.exp(r*tCur);
+  ctx.setLineDash([4,3]);ctx.strokeStyle='#e8a020';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(tX(tCur),tY(Bval));ctx.lineTo(tX(tCur),tY(0));ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='#e8a020';ctx.beginPath();ctx.arc(tX(tCur),tY(Bval),6,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#e8a020';ctx.font='bold 11px DM Mono,monospace';ctx.fillText('$'+Bval.toFixed(0),tX(tCur)+9,tY(Bval)-6);
+  ctx.strokeStyle='#374151';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,pad.t+gH);ctx.stroke();ctx.beginPath();ctx.moveTo(pad.l,pad.t+gH);ctx.lineTo(pad.l+gW,pad.t+gH);ctx.stroke();
+  ctx.fillStyle='#9ca3af';ctx.font='10px DM Mono,monospace';[0,10,20,30,40].forEach(t=>ctx.fillText(t+'yr',tX(t)-12,H-6));
+}
+
+// ── INIT ──────────────────────────────────────────────
+window.addEventListener('resize',()=>{
+  if(document.getElementById('riemannBox').style.display==='block') drawRiemann();
+  updateComp();
+});
+document.fonts.ready.then(updateComp);
+</script>
+</body>
+</html>
