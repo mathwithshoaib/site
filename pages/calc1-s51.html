@@ -82,14 +82,14 @@ MathJax = {
 .toc-a.soon { opacity: .38; pointer-events: none; }
 
 /* ===== MAIN CONTENT WRAPPER ===== */
-.cmain { flex: 1; min-width: 0; background: var(--bg); overflow: hidden; }
+.cmain { flex: 1; min-width: 0; background: #fdf8f0; overflow: hidden; }
 
 /* ===== LECTURE CONTENT — centred, max-width ===== */
 /* Override original lecture styles to work inside the shell */
 .lec-inner {
-  max-width: 780px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 40px 60px;
+  padding: 0 52px 60px;
 }
 
 /* ===== ORIGINAL LECTURE CSS ===== */
@@ -111,7 +111,7 @@ MathJax = {
   --fm-lec: 'IBM Plex Mono', monospace;
 }
 
-.cmain { font-family: var(--fb-lec); font-size: 1.05rem; line-height: 1.8; color: var(--ink); }
+.cmain { font-family: var(--fb-lec); font-size: 1.05rem; line-height: 1.8; color: #1a1a2e; background: #fdf8f0; }
 
 /* hero strip at top of lecture */
 .lec-hero {
