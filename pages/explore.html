@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Explore · Shoaib-K</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="sk-progress"><div id="sk-progress-bar"></div></div>
+<nav class="sk-nav">
+  <a href="../index.html" class="sk-nav-logo">Shoaib-K <span class="logo-badge">LUMS</span></a>
+  <div class="sk-nav-links" id="sk-nav-links">
+    <div class="sk-nav-item"><a href="../index.html" class="sk-nav-link ">Home</a></div>
+    <div class="sk-nav-item"><a href="../pages/education.html" class="sk-nav-link ">Education</a></div>
+    <div class="sk-nav-item">
+      <span class="sk-nav-link ">Experience <span class="arrow">▾</span></span>
+      <div class="sk-dropdown">
+        <a href="../pages/experience-instructor.html"><span class="dd-icon">🎓</span> As an Instructor</a>
+        <a href="../pages/experience-ta.html"><span class="dd-icon">📚</span> As a TA</a>
+        <a href="../pages/math-circles.html"><span class="dd-icon">🔵</span> Math Circles</a>
+      </div>
+    </div>
+    <div class="sk-nav-item"><a href="../pages/courses.html" class="sk-nav-link ">Courses</a></div>
+    <div class="sk-nav-item"><a href="../pages/research.html" class="sk-nav-link ">Research</a></div>
+    <div class="sk-nav-item"><a href="../pages/hobbies.html" class="sk-nav-link ">Hobbies</a></div>
+    <div class="sk-nav-item"><a href="../pages/explore.html" class="sk-nav-link active">Explore</a></div>
+    <div class="sk-nav-item"><a href="../pages/contact.html" class="sk-nav-link ">Contact</a></div>
+  </div>
+  <div class="sk-hamburger" onclick="document.getElementById('sk-nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
+</nav>
+<div class="sk-breadcrumb"><div class="sk-breadcrumb-inner"><a href="../index.html">Home</a> <span class="sep">›</span> <span class="current">Explore</span></div></div>
+
+<div style="background:linear-gradient(135deg,var(--bg) 0%,var(--bg2) 100%);padding:60px 0 48px">
+<div class="container">
+  <span class="eyebrow">Interactive Mathematics</span>
+  <h1 style="font-size:clamp(2.4rem,5vw,4rem)">Explore</h1>
+  <p style="max-width:560px;font-size:1.05rem">Surprising, delightful, and mind-bending mathematical experiences. Interact, discover, and wonder.</p>
+</div>
+</div>
+<section class="sk-section">
+<div class="container">
+
+  <!-- TO THE MOON -->
+  <div class="card card-navy reveal" style="margin-bottom:28px">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;flex-wrap:wrap">
+      <div>
+        <div style="font-family:var(--fm);font-size:.7rem;color:var(--amber);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px">Interactive Activity</div>
+        <h3>🌙 To the Moon — Paper Folding</h3>
+        <p>How many times do you need to fold a piece of paper to reach the Moon? The answer will shock you — and it perfectly illustrates the explosive power of <strong>exponential growth</strong>. Drag the slider and watch the thickness skyrocket past buildings, mountains, and into space.</p>
+      </div>
+      <div style="font-size:3rem">🚀</div>
+    </div>
+    <div style="border-top:1px solid var(--border);margin-top:20px;padding-top:20px">
+      <div style="margin-bottom:14px;display:flex;align-items:center;gap:16px">
+        <label style="font-family:var(--fm);font-size:.78rem;color:var(--text2);min-width:120px">Folds: <span id="fold-n" style="color:var(--amber);font-weight:600">1</span></label>
+        <input type="range" id="fold-slider" min="1" max="42" value="1" style="flex:1;accent-color:var(--amber)" oninput="updateFold(this.value)">
+      </div>
+      <div id="fold-result" style="background:var(--navy);color:#e8e2d9;border-radius:10px;padding:20px 24px;font-family:var(--fm);font-size:.88rem;line-height:2"></div>
+    </div>
+  </div>
+
+  <!-- SIERPINSKI -->
+  <div class="card card-teal reveal" style="margin-bottom:28px">
+    <h3>🔺 Sierpiński Triangle — Chaos Game</h3>
+    <p>Click "Generate" to watch a fractal emerge from pure randomness. Start with three points, pick one at random, move halfway towards it, plot a dot — repeat 10,000 times. Order from chaos.</p>
+    <div style="text-align:center;margin-top:16px">
+      <canvas id="sierp" width="400" height="360" style="border-radius:10px;background:var(--navy);max-width:100%"></canvas>
+      <div style="margin-top:12px">
+        <button onclick="drawSierp()" class="btn btn-sm" style="margin-right:10px">Generate</button>
+        <button onclick="clearSierp()" class="btn btn-sm btn-outline">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRIME SPIRAL -->
+  <div class="card card-amber reveal" style="margin-bottom:28px">
+    <h3>🌀 Ulam Spiral — Primes Hide in Patterns</h3>
+    <p>In 1963, Stanisław Ulam discovered that primes, when arranged in a spiral, form striking diagonal patterns. Nobody fully understands why. Click to generate the spiral and see the mystery for yourself.</p>
+    <div style="text-align:center;margin-top:16px">
+      <canvas id="ulam" width="400" height="400" style="border-radius:10px;background:#faf9f6;max-width:100%"></canvas>
+      <div style="margin-top:12px">
+        <button onclick="drawUlam()" class="btn btn-sm btn-amber" style="margin-right:10px">Draw Spiral</button>
+        <button onclick="clearUlam()" class="btn btn-sm btn-outline">Clear</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+<script>
+// TO THE MOON
+function updateFold(n){
+  n=+n;
+  document.getElementById('fold-n').textContent=n;
+  const t=0.1*Math.pow(2,n); // mm
+  const km=t/1e6;
+  const refs=[
+    {d:0.1,l:"Sheet of paper (0.1 mm)"},
+    {d:8848000,l:"Mount Everest (8,848 km)"},
+    {d:384400,l:"Distance to the Moon (384,400 km)"},
+    {d:149600000,l:"Distance to the Sun (149,600,000 km)"},
+    {d:9461000000000,l:"One Light Year (9.46 trillion km)"}
+  ];
+  let desc="", ref="";
+  if(km<1) desc=`${t.toFixed(2)} mm`;
+  else if(km<1000) desc=`${km.toFixed(2)} km`;
+  else desc=`${(km/1000).toFixed(2)} thousand km`;
+  refs.forEach(r=>{if(km>=r.d*0.8&&km<=r.d*1.5)ref=`≈ ${r.l}`;});
+  if(km>384400&&!ref) ref="🌙 Past the Moon!";
+  if(km>149600000&&!ref) ref="☀️ Past the Sun!";
+  document.getElementById('fold-result').innerHTML=
+    `Thickness after <span style="color:#e9a82e">${n}</span> fold${n>1?'s':''}: <span style="color:#5eead4;font-size:1.1rem">${desc}</span><br>${ref?`<span style="color:#a78bfa">${ref}</span>`:'<span style="color:rgba(255,255,255,.4)">Keep folding...</span>'}`;
+}
+updateFold(1);
+
+// SIERPINSKI
+function drawSierp(){
+  const c=document.getElementById('sierp'),ctx=c.getContext('2d');
+  ctx.fillStyle='#1b2a4a';ctx.fillRect(0,0,400,360);
+  const pts=[[200,10],[10,350],[390,350]];
+  let x=200,y=180;
+  ctx.fillStyle='#e9a82e';
+  for(let i=0;i<12000;i++){
+    const p=pts[Math.floor(Math.random()*3)];
+    x=(x+p[0])/2;y=(y+p[1])/2;
+    if(i>10){ctx.fillRect(x,y,1,1);}
+  }
+}
+function clearSierp(){
+  const c=document.getElementById('sierp'),ctx=c.getContext('2d');
+  ctx.fillStyle='#1b2a4a';ctx.fillRect(0,0,400,360);
+}
+
+// ULAM SPIRAL
+function isPrime(n){if(n<2)return false;if(n<4)return true;if(n%2===0||n%3===0)return false;for(let i=5;i*i<=n;i+=6)if(n%i===0||n%(i+2)===0)return false;return true;}
+function drawUlam(){
+  const c=document.getElementById('ulam'),ctx=c.getContext('2d');
+  const sz=400,cell=4,n=Math.floor(sz/cell);
+  ctx.fillStyle='#faf9f6';ctx.fillRect(0,0,sz,sz);
+  let x=n/2,y=n/2,dx=1,dy=0,steps=1,stepCount=0,turns=0,num=1;
+  while(x>=0&&x<n&&y>=0&&y<n){
+    if(isPrime(num)){ctx.fillStyle='#1b2a4a';ctx.fillRect(x*cell,y*cell,cell-1,cell-1);}
+    x+=dx;y+=dy;stepCount++;num++;
+    if(stepCount===steps){stepCount=0;[dx,dy]=[-dy,dx];turns++;if(turns%2===0)steps++;}
+  }
+}
+function clearUlam(){const c=document.getElementById('ulam'),ctx=c.getContext('2d');ctx.fillStyle='#faf9f6';ctx.fillRect(0,0,400,400);}
+</script>
+
+<footer class="sk-footer">
+  <div class="sk-footer-inner">
+    <div>
+      <div class="sk-footer-logo">Shoaib-K</div>
+      <p style="color:rgba(255,255,255,.5);font-size:.875rem;margin-top:10px">Mathematician · Educator · Researcher<br>LUMS, Lahore, Pakistan</p>
+      <div style="display:flex;gap:14px;margin-top:16px">
+        <a href="https://www.facebook.com/shoaiib.k" target="_blank">Facebook</a>
+        <a href="https://twitter.com/msking_shoaib" target="_blank">Twitter</a>
+        <a href="https://instagram.com/msking.shoaib" target="_blank">Instagram</a>
+      </div>
+    </div>
+    <div>
+      <h5>Navigation</h5>
+      <a href="../index.html">Home</a>
+      <a href="../pages/education.html">Education</a>
+      <a href="../pages/experience-instructor.html">Experience</a>
+      <a href="../pages/courses.html">Courses</a>
+      <a href="../pages/research.html">Research</a>
+      <a href="../pages/explore.html">Explore</a>
+      <a href="../pages/contact.html">Contact</a>
+    </div>
+    <div>
+      <h5>Contact</h5>
+      <a href="mailto:bssk.khan@gmail.com">bssk.khan@gmail.com</a>
+      <a href="https://sites.google.com/view/shoaib-k/" target="_blank">Google Site</a>
+      <a href="https://lums.edu.pk" target="_blank">LUMS Website</a>
+    </div>
+  </div>
+  <div class="sk-footer-bottom">
+    <p>© 2025 Muhammad Shoaib Khan · LUMS · Lahore, Pakistan</p>
+    <p>Built with HTML, CSS &amp; Mathematics</p>
+  </div>
+</footer>
+<script src="../js/main.js"></script></body></html>

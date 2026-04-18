@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Research · Shoaib-K</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="sk-progress"><div id="sk-progress-bar"></div></div>
+<nav class="sk-nav">
+  <a href="../index.html" class="sk-nav-logo">Shoaib-K <span class="logo-badge">LUMS</span></a>
+  <div class="sk-nav-links" id="sk-nav-links">
+    <div class="sk-nav-item"><a href="../index.html" class="sk-nav-link ">Home</a></div>
+    <div class="sk-nav-item"><a href="../pages/education.html" class="sk-nav-link ">Education</a></div>
+    <div class="sk-nav-item">
+      <span class="sk-nav-link ">Experience <span class="arrow">▾</span></span>
+      <div class="sk-dropdown">
+        <a href="../pages/experience-instructor.html"><span class="dd-icon">🎓</span> As an Instructor</a>
+        <a href="../pages/experience-ta.html"><span class="dd-icon">📚</span> As a TA</a>
+        <a href="../pages/math-circles.html"><span class="dd-icon">🔵</span> Math Circles</a>
+      </div>
+    </div>
+    <div class="sk-nav-item"><a href="../pages/courses.html" class="sk-nav-link ">Courses</a></div>
+    <div class="sk-nav-item"><a href="../pages/research.html" class="sk-nav-link active">Research</a></div>
+    <div class="sk-nav-item"><a href="../pages/hobbies.html" class="sk-nav-link ">Hobbies</a></div>
+    <div class="sk-nav-item"><a href="../pages/explore.html" class="sk-nav-link ">Explore</a></div>
+    <div class="sk-nav-item"><a href="../pages/contact.html" class="sk-nav-link ">Contact</a></div>
+  </div>
+  <div class="sk-hamburger" onclick="document.getElementById('sk-nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
+</nav>
+<div class="sk-breadcrumb"><div class="sk-breadcrumb-inner"><a href="../index.html">Home</a> <span class="sep">›</span> <span class="current">Research</span></div></div>
+
+<div style="background:linear-gradient(135deg,var(--bg) 0%,var(--bg2) 100%);padding:60px 0 48px">
+<div class="container">
+  <span class="eyebrow">Applied Mathematics · PhD Research</span>
+  <h1 style="font-size:clamp(2.4rem,5vw,4rem)">Research</h1>
+  <p style="max-width:580px;font-size:1.05rem">Disease co-infection modelling, mathematical epidemiology, and dynamical systems — using differential equations to understand how diseases spread and interact.</p>
+</div>
+</div>
+<section class="sk-section">
+<div class="container">
+  <div class="card card-teal reveal" style="margin-bottom:28px">
+    <span class="eyebrow">Doctoral Research</span>
+    <h2>Pneumonia–Influenza Co-Infection Model</h2>
+    <p>My doctoral research (under Dr. Adnan Khan at LUMS) develops and analyses a multi-compartment ODE system for co-infection dynamics — studying how two infectious diseases interact simultaneously within a host population. The model has 11 compartments tracking individuals through susceptible, exposed, singly infected, co-infected, and recovered states.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:24px 0">
+      <div>
+        <h4>Key Questions</h4>
+        <ul style="color:var(--text2);font-size:.9rem;display:flex;flex-direction:column;gap:8px">
+          <li>→ Computing ℛ₀ via Next Generation Matrix</li>
+          <li>→ Stability of the disease-free equilibrium</li>
+          <li>→ Existence of endemic equilibria</li>
+          <li>→ Backward bifurcation analysis</li>
+          <li>→ Sensitivity analysis of ℛ₀</li>
+        </ul>
+      </div>
+      <div style="background:var(--navy);border-radius:10px;padding:20px;font-family:var(--fm);font-size:.82rem;line-height:2.1;color:rgba(255,255,255,.75)">
+        <span style="color:#e9a82e">dS</span>/dt = Λ − β₁<span style="color:#5eead4">I₁</span>S/N − β₂<span style="color:#a78bfa">I₂</span>S/N − μS<br>
+        <span style="color:#5eead4">dI₁</span>/dt = β₁<span style="color:#5eead4">I₁</span>S/N − (γ₁+μ)<span style="color:#5eead4">I₁</span><br>
+        <span style="color:#a78bfa">dI₂</span>/dt = β₂<span style="color:#a78bfa">I₂</span>S/N − (γ₂+μ)<span style="color:#a78bfa">I₂</span><br>
+        <span style="color:rgba(255,255,255,.35)">─────────────────</span><br>
+        <span style="color:#e9a82e">ℛ₀</span> = ρ(FV⁻¹)
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <span class="tag tag-teal">11-Compartment ODE</span><span class="tag tag-teal">Next Generation Matrix</span><span class="tag">PhD · LUMS</span><span class="tag">Dr. Adnan Khan</span><span class="tag">MATLAB</span>
+    </div>
+  </div>
+
+  <h3 class="reveal" style="margin-bottom:20px">Earlier Projects</h3>
+  <div class="grid-2 reveal-stagger">
+    <div class="card card-amber">
+      <div style="font-family:var(--fm);font-size:.7rem;color:var(--amber);margin-bottom:8px">2023 · Course Project</div>
+      <h4>SIR Model with Vaccination</h4>
+      <p style="font-size:.88rem">Extended the classical SIR model with vaccination, deriving the herd immunity threshold p* = 1 − 1/ℛ₀ and analysing waning immunity effects.</p>
+      <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag">SIR Model</span><span class="tag">MATLAB</span></div>
+    </div>
+    <div class="card card-navy">
+      <div style="font-family:var(--fm);font-size:.7rem;color:var(--navy);margin-bottom:8px">2023 · Course Project</div>
+      <h4>Lotka-Volterra Predator-Prey</h4>
+      <p style="font-size:.88rem">Phase portraits and stability analysis of the classical two-species predator-prey system, revealing periodic orbit structure.</p>
+      <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag">Dynamical Systems</span><span class="tag">Mathematica</span></div>
+    </div>
+    <div class="card card-teal">
+      <div style="font-family:var(--fm);font-size:.7rem;color:var(--teal);margin-bottom:8px">2022 · Course Project</div>
+      <h4>Numerical Methods for Stiff ODEs</h4>
+      <p style="font-size:.88rem">RK4 vs. Backward Euler comparison for stiff chemical kinetics systems. Stability regions and step-size analysis.</p>
+      <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag">Numerical Methods</span><span class="tag">Python</span></div>
+    </div>
+    <div class="card">
+      <div style="font-family:var(--fm);font-size:.7rem;color:var(--text3);margin-bottom:8px">2022 · Course Project</div>
+      <h4>Linear Programming &amp; Simplex Method</h4>
+      <p style="font-size:.88rem">Multi-variable LP problems solved via simplex algorithm, applied to manufacturing resource allocation with duality analysis.</p>
+      <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag">Optimization</span><span class="tag">MATLAB</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<footer class="sk-footer">
+  <div class="sk-footer-inner">
+    <div>
+      <div class="sk-footer-logo">Shoaib-K</div>
+      <p style="color:rgba(255,255,255,.5);font-size:.875rem;margin-top:10px">Mathematician · Educator · Researcher<br>LUMS, Lahore, Pakistan</p>
+      <div style="display:flex;gap:14px;margin-top:16px">
+        <a href="https://www.facebook.com/shoaiib.k" target="_blank">Facebook</a>
+        <a href="https://twitter.com/msking_shoaib" target="_blank">Twitter</a>
+        <a href="https://instagram.com/msking.shoaib" target="_blank">Instagram</a>
+      </div>
+    </div>
+    <div>
+      <h5>Navigation</h5>
+      <a href="../index.html">Home</a>
+      <a href="../pages/education.html">Education</a>
+      <a href="../pages/experience-instructor.html">Experience</a>
+      <a href="../pages/courses.html">Courses</a>
+      <a href="../pages/research.html">Research</a>
+      <a href="../pages/explore.html">Explore</a>
+      <a href="../pages/contact.html">Contact</a>
+    </div>
+    <div>
+      <h5>Contact</h5>
+      <a href="mailto:bssk.khan@gmail.com">bssk.khan@gmail.com</a>
+      <a href="https://sites.google.com/view/shoaib-k/" target="_blank">Google Site</a>
+      <a href="https://lums.edu.pk" target="_blank">LUMS Website</a>
+    </div>
+  </div>
+  <div class="sk-footer-bottom">
+    <p>© 2025 Muhammad Shoaib Khan · LUMS · Lahore, Pakistan</p>
+    <p>Built with HTML, CSS &amp; Mathematics</p>
+  </div>
+</footer>
+<script src="../js/main.js"></script></body></html>
