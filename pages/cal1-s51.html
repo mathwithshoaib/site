@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>§5.1 Indefinite Integration · Calculus I · Shoaib-K</title>
+<link rel="stylesheet" href="../css/style.css">
+<script>MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre']}};</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+
+<style>
+/* ── STICKY SUB-HEADER ─────────────────────────────────── */
+.sticky-sub {
+  position: sticky;
+  top: calc(var(--nav-h) + 3px);
+  z-index: 500;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.bc-row {
+  padding: 8px 24px;
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--fm); font-size: .72rem; color: var(--text3);
+  border-bottom: 1px solid var(--border);
+}
+.bc-row a { color: var(--amber); transition: color .15s; }
+.bc-row a:hover { color: var(--text); }
+.bc-row .cur { color: var(--text2); font-weight: 500; }
+.course-switcher {
+  display: flex; align-items: center;
+  padding: 0 24px; overflow-x: auto; gap: 0;
+}
+.course-switcher a {
+  font-family: var(--fm); font-size: .72rem;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--text3); padding: 9px 18px;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap; transition: all .2s; text-decoration: none;
+}
+.course-switcher a:hover { color: var(--amber); }
+.course-switcher a.active { color: var(--amber); border-bottom-color: var(--amber); }
+
+/* ── TWO-COLUMN FRAME ──────────────────────────────────── */
+.course-frame {
+  display: flex;
+  padding-top: calc(var(--nav-h) + 3px + 37px + 40px);
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ───────────────────────────────────────────── */
+.csb {
+  width: 256px; flex-shrink: 0;
+  position: sticky;
+  top: calc(var(--nav-h) + 3px + 37px + 40px);
+  height: calc(100vh - var(--nav-h) - 80px);
+  overflow-y: auto;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+}
+.csb::-webkit-scrollbar { width: 3px; }
+.csb::-webkit-scrollbar-thumb { background: var(--amber-bd); border-radius: 2px; }
+
+.csb-head {
+  padding: 18px 16px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.csb-tag {
+  font-family: var(--fm); font-size: .6rem;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 4px;
+}
+.csb-title {
+  font-family: var(--fh); font-size: .95rem;
+  color: var(--text); line-height: 1.3;
+}
+.csb-back {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--fm); font-size: .68rem;
+  color: var(--text3); margin-top: 8px;
+  transition: color .2s; text-decoration: none;
+}
+.csb-back:hover { color: var(--amber); }
+
+/* TOC ITEMS */
+.toc-nav { padding: 8px 0 24px; }
+.toc-ch {
+  font-family: var(--fm); font-size: .58rem;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--text3); padding: 10px 16px 3px; display: block;
+}
+.toc-a {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 16px;
+  font-family: var(--fm); font-size: .72rem;
+  color: var(--text3); text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: all .18s; line-height: 1.35;
+}
+.toc-a:hover { color: var(--text); background: rgba(255,255,255,.04); }
+.toc-a.active {
+  color: var(--amber);
+  border-left-color: var(--amber);
+  background: rgba(232,160,32,.08);
+}
+.toc-a .dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--border2); flex-shrink: 0;
+  transition: background .2s;
+}
+.toc-a.active .dot { background: var(--amber); }
+.toc-a.live::after {
+  content: '✦'; font-size: .58rem;
+  color: var(--teal); margin-left: auto;
+}
+.toc-a.soon {
+  opacity: .38; pointer-events: none; cursor: default;
+}
+
+/* ── MAIN CONTENT AREA ─────────────────────────────────── */
+.cmain {
+  flex: 1; min-width: 0;
+  background: var(--bg);
+}
+.cmain-hero {
+  padding: 44px 52px 36px;
+  background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 100%);
+  border-bottom: 1px solid var(--border);
+}
+.cmain-body {
+  padding: 44px 52px;
+  max-width: 820px;
+}
+.eyebrow-sm {
+  font-family: var(--fm); font-size: .66rem;
+  letter-spacing: .24em; text-transform: uppercase;
+  color: var(--amber); display: block; margin-bottom: 8px;
+}
+.eyebrow-teal {
+  font-family: var(--fm); font-size: .66rem;
+  letter-spacing: .24em; text-transform: uppercase;
+  color: var(--teal); display: block; margin-bottom: 8px;
+}
+
+/* LECTURE CONTENT ELEMENTS */
+.lh2 { font-family: var(--fh); font-size: clamp(1.7rem,3vw,2.4rem); font-weight: 400; margin-bottom: 14px; color: var(--text); }
+.lh3 { font-family: var(--fh); font-size: 1.3rem; font-weight: 600; margin: 28px 0 10px; color: var(--text); }
+.lh4 { font-family: var(--fh); font-size: 1.08rem; font-weight: 600; margin: 18px 0 6px; color: var(--amber); }
+.sec-br { height: 1px; background: linear-gradient(90deg, transparent, var(--border2), transparent); margin: 32px 0; }
+
+/* info boxes */
+.def-box { background: rgba(56,201,176,.07); border: 1px solid rgba(56,201,176,.2); border-radius: 8px; padding: 18px 22px; margin: 16px 0; }
+.def-box .dlbl { font-family: var(--fm); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; }
+.thm-box { background: rgba(232,160,32,.07); border: 1px solid rgba(232,160,32,.2); border-radius: 8px; padding: 18px 22px; margin: 16px 0; }
+.thm-box .tlbl { font-family: var(--fm); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--amber); margin-bottom: 6px; }
+.callout { background: rgba(232,160,32,.06); border-left: 3px solid var(--amber); border-radius: 0 8px 8px 0; padding: 12px 18px; margin: 14px 0; font-size: .93rem; }
+.callout strong { color: var(--amber); }
+.callout-teal { background: rgba(56,201,176,.06); border-left: 3px solid var(--teal); border-radius: 0 8px 8px 0; padding: 12px 18px; margin: 14px 0; font-size: .93rem; }
+.callout-teal strong { color: var(--teal); }
+.bf { text-align: center; padding: 22px; background: var(--bg2); border-radius: 8px; margin: 16px 0; font-size: 1.05rem; }
+
+/* cards */
+.lc { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin-bottom: 14px; }
+.lc h4 { color: var(--text); margin-bottom: 6px; }
+.lc p { font-size: .9rem; margin-bottom: 0; }
+.rule-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin-bottom: 12px; }
+.rule-card h4 { color: var(--teal); margin-bottom: 6px; }
+.rule-card .rf { text-align: center; background: rgba(56,201,176,.06); border-radius: 6px; padding: 14px; margin: 10px 0; }
+.prob-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin-bottom: 12px; }
+.prob-card h4 { color: var(--text); margin-bottom: 6px; }
+
+/* steps */
+.steps-list { counter-reset: step; list-style: none; padding: 0; margin: 12px 0; }
+.steps-list li { counter-increment: step; position: relative; padding-left: 42px; margin-bottom: 12px; font-size: .93rem; }
+.steps-list li::before { content: counter(step); position: absolute; left: 0; top: 1px; width: 27px; height: 27px; background: rgba(232,160,32,.1); border: 1px solid rgba(232,160,32,.3); color: var(--amber); font-family: var(--fm); font-size: .75rem; font-weight: 600; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+/* toggle */
+.toggle-btn { font-family: var(--fm); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; background: rgba(232,160,32,.1); color: var(--amber); border: 1px solid rgba(232,160,32,.3); border-radius: 6px; padding: 7px 16px; cursor: pointer; margin-top: 10px; transition: all .2s; }
+.toggle-btn:hover { background: var(--amber); color: var(--bg); }
+.ans-box { display: none; background: rgba(56,201,176,.06); border: 1px solid rgba(56,201,176,.2); border-radius: 8px; padding: 14px 18px; margin-top: 10px; }
+.ans-box.show { display: block; }
+
+/* widget */
+.widget-dark { background: #0f1724; border-radius: 12px; padding: 20px 20px 14px; margin: 18px 0; color: #e8e2d9; }
+.wt { font-family: var(--fm); font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: var(--amber); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.wt::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.1); }
+canvas { display: block; width: 100%; border-radius: 6px; background: #111827; }
+.controls { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; align-items: flex-end; }
+.cg { display: flex; flex-direction: column; gap: 4px; min-width: 150px; flex: 1; }
+.cg label { font-family: var(--fm); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; color: #9ca3af; }
+.cg .val { color: var(--amber); font-size: .82rem; font-weight: 600; }
+input[type=range] { -webkit-appearance: none; width: 100%; height: 4px; background: #374151; border-radius: 3px; outline: none; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; background: var(--amber); border-radius: 50%; cursor: pointer; }
+select { font-family: var(--fm); font-size: .76rem; background: #1f2937; color: #e8e2d9; border: 1px solid #374151; border-radius: 6px; padding: 5px 10px; cursor: pointer; }
+.srow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.sp { background: #1f2937; border-radius: 6px; padding: 7px 12px; font-family: var(--fm); font-size: .72rem; }
+.sp span { color: var(--amber); font-weight: 700; }
+
+/* reveal btn */
+.reveal-btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--fm); font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; background: linear-gradient(135deg, var(--teal), #2ab09a); color: var(--bg); border: none; border-radius: 8px; padding: 11px 24px; cursor: pointer; transition: all .2s; margin: 14px 0; }
+.reveal-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(56,201,176,.3); }
+
+/* lecture nav footer */
+.lec-nav-footer { display: flex; justify-content: space-between; align-items: center; padding: 28px 52px; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 12px; }
+.lnf-btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--fm); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--text3); padding: 8px 18px; border: 1px solid var(--border); border-radius: 8px; transition: all .2s; text-decoration: none; }
+.lnf-btn:hover { color: var(--amber); border-color: var(--amber); background: rgba(232,160,32,.06); }
+.lnf-btn.next { color: var(--amber); border-color: rgba(232,160,32,.4); background: rgba(232,160,32,.07); }
+.lnf-btn.next:hover { background: var(--amber); color: var(--bg); }
+
+/* annot svg */
+.annot-svg { width: 100%; max-width: 540px; display: block; margin: 18px auto; }
+
+/* 2-col grid inside lecture */
+.lec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+
+@media (max-width: 860px) {
+  .csb { display: none; }
+  .cmain-hero, .cmain-body { padding: 24px 18px; }
+  .lec-nav-footer { padding: 20px 18px; }
+  .lec-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div id="sk-progress"><div id="sk-progress-bar"></div></div>
+<nav class="sk-nav">
+  <a href="../index.html" class="sk-nav-logo">Shoaib-K <span class="logo-badge">LUMS</span></a>
+  <div class="sk-nav-links" id="sk-nav-links">
+    <div class="sk-nav-item"><a href="../index.html" class="sk-nav-link">Home</a></div>
+    <div class="sk-nav-item"><a href="education.html" class="sk-nav-link">Education</a></div>
+    <div class="sk-nav-item">
+      <span class="sk-nav-link">Experience <span class="arrow">▾</span></span>
+      <div class="sk-dropdown">
+        <a href="experience-instructor.html"><span class="dd-icon">🎓</span> As an Instructor</a>
+        <a href="experience-ta.html"><span class="dd-icon">📚</span> As a TA</a>
+        <a href="math-circles.html"><span class="dd-icon">🔵</span> Math Circles</a>
+      </div>
+    </div>
+    <div class="sk-nav-item"><a href="courses.html" class="sk-nav-link active">Courses</a></div>
+    <div class="sk-nav-item"><a href="research.html" class="sk-nav-link">Research</a></div>
+    <div class="sk-nav-item"><a href="hobbies.html" class="sk-nav-link">Hobbies</a></div>
+    <div class="sk-nav-item"><a href="explore.html" class="sk-nav-link">Explore</a></div>
+    <div class="sk-nav-item"><a href="contact.html" class="sk-nav-link">Contact</a></div>
+  </div>
+  <div class="sk-hamburger" onclick="document.getElementById('sk-nav-links').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="sticky-sub">
+  <div class="bc-row">
+    <a href="../index.html">Home</a><span>›</span>
+    <a href="courses.html">Courses</a><span>›</span>
+    <a href="course-calc1.html">Calculus I</a>
+    <span>›</span><span class='cur'>§5.1 Indefinite Integration</span>
+  </div>
+  <div class="course-switcher">
+    <a href="course-precalc.html">Pre-Calculus</a>
+    <a href="course-calc1.html" class="active">Calculus I</a>
+    <a href="course-linalg.html">Linear Algebra I</a>
+  </div>
+</div>
+<div class="course-frame">
+
+  <aside class="csb">
+    <div class="csb-head">
+      <div class="csb-tag">MATH-101 · Calculus I</div>
+      <div class="csb-title">Course Contents</div>
+      <a href="courses.html" class="csb-back">← All Courses</a>
+    </div>
+    <nav class="toc-nav">
+      <span class="toc-ch">Course Overview</span>
+      <a href="course-calc1.html" class="toc-a live"><span class="dot"></span>Course Overview</a>
+
+      <span class="toc-ch">Ch 1 — Limits</span>
+      <a href="#" class="toc-a soon"><span class="dot"></span>L01 · Intuition &amp; Definition</a>
+
+      <a href="#" class="toc-a soon"><span class="dot"></span>L02 · Limit Laws &amp; Continuity</a>
+
+      <a href="#" class="toc-a soon"><span class="dot"></span>L03 · Limits at Infinity</a>
+
+      <span class="toc-ch">Ch 2 — Derivatives</span>
+      <a href="#" class="toc-a soon"><span class="dot"></span>L04 · The Derivative</a>
+
+      <a href="#" class="toc-a soon"><span class="dot"></span>L05 · Differentiation Rules</a>
+
+      <a href="#" class="toc-a soon"><span class="dot"></span>L06 · Chain Rule</a>
+
+      <a href="#" class="toc-a soon"><span class="dot"></span>L07 · Related Rates</a>
+
+      <a href="#" class="toc-a soon"><span class="dot"></span>L08 · Optimization</a>
+
+      <span class="toc-ch">Ch 5 — Integration</span>
+      <a href="calc1-s51.html" class="toc-a live active"><span class="dot"></span>L09 · §5.1 Indefinite Integration</a>
+
+      <a href="#" class="toc-a soon"><span class="dot"></span>L10 · §5.2 Definite Integrals</a>
+
+      <a href="#" class="toc-a soon"><span class="dot"></span>L11 · §5.3 FTC (Full)</a>
+
+      <a href="#" class="toc-a soon"><span class="dot"></span>L12 · §5.4 Substitution</a>
+
+      <a href="#" class="toc-a soon"><span class="dot"></span>L13 · §5.5 Integration by Parts</a>
+
+    </nav>
+  </aside>
+  <main class="cmain">
+    <div class="cmain-hero">
+      <span class="eyebrow-teal">Chapter 5 · Section 5.1 &nbsp;·&nbsp; ✦ Live Lecture</span>
+      <h1 style="font-size:clamp(1.8rem,3.5vw,2.8rem);margin-bottom:10px">Indefinite Integration &amp;<br>Differential Equations</h1>
+      <p style="max-width:560px;color:var(--text2)">From accumulating infinitely many infinitely small pieces — to the most powerful tool in calculus. Your journey into integration starts here.</p>
+    </div>
+
+    <div class="cmain-body">
+
+      <!-- §1 MOTIVATION -->
+      <span class="eyebrow-sm">§ 1 — Motivation</span>
+      <h2 class="lh2">You Know Derivatives.<br>Now Work Backwards.</h2>
+      <p>You've spent weeks mastering <strong style="color:var(--amber)">derivatives</strong> — the tool that captures instantaneous rates of change. Now flip the question: <em>if I know only the rate of change, can I recover the original quantity?</em></p>
+      <div class="lc" style="border-left:3px solid var(--amber)">
+        <h4>🚗 Road-Trip Problem</h4>
+        <p>Your speedometer works perfectly — but the odometer is broken. You know your speed $v(t)$ at every instant. How far did you travel from $t=a$ to $t=b$?<br><br>The answer is the <strong style="color:var(--amber)">area under the speed curve</strong>. Integration computes that area exactly.</p>
+      </div>
+      <div class="callout"><strong>Core Insight:</strong> If $v(t)$ is speed at time $t$, total distance $= \int_a^b v(t)\,dt$ = area under $y=v(t)$.</div>
+
+      <div class="sec-br"></div>
+      <!-- §2 RIEMANN -->
+      <span class="eyebrow-sm">§ 2 — Where the Integral Sign Was Born</span>
+      <h2 class="lh2">Riemann Sums</h2>
+      <div class="lc" style="background:rgba(232,160,32,.05);border:1px solid rgba(232,160,32,.15)">
+        <p style="line-height:2;margin-bottom:0">Imagine slicing the area under a curve into a hundred paper-thin strips. Each strip is almost a perfect rectangle — width $\Delta x$, height $f(x_i^*)$. Sum them all. Now imagine a million strips. As they shrink to zero width, the sum converges to a single perfect number. <strong style="color:var(--amber)">That number is the definite integral.</strong> The $\int$ symbol is Leibniz's stretched <strong>S</strong> — for <em>Summa</em>, Latin for sum.</p>
+      </div>
+      <div style="text-align:center">
+        <button class="reveal-btn" onclick="toggleRiemann(this)">⬛ &nbsp;Reveal Riemann Sum Explorer</button>
+      </div>
+      <div id="riemannBox" style="display:none">
+        <ol class="steps-list">
+          <li><strong>Divide</strong> $[a,b]$ into $n$ sub-intervals, $\Delta x = (b-a)/n$.</li>
+          <li><strong>Pick sample points</strong> $x_i^*$ in each sub-interval.</li>
+          <li><strong>Build rectangles:</strong> width $\Delta x$, height $f(x_i^*)$.</li>
+          <li><strong>Sum:</strong> $S_n = \displaystyle\sum_{i=1}^n f(x_i^*)\,\Delta x$.</li>
+          <li><strong>Limit</strong> $n	o\infty$ — sum becomes exact.</li>
+        </ol>
+        <div class="widget-dark">
+          <div class="wt">⬛ Riemann Sum Explorer</div>
+          <canvas id="riemannCanvas" height="260"></canvas>
+          <div class="controls">
+            <div class="cg"><label>Function</label><select id="fnSelect" onchange="drawRiemann()"><option value="quad">f(x)=x²</option><option value="sin">f(x)=sin(x)+1</option><option value="sqrt">f(x)=√x</option><option value="cubic">f(x)=x³/4+1</option></select></div>
+            <div class="cg"><label>Rectangles <span class="val" id="nVal">4</span></label><input type="range" id="nSlider" min="1" max="150" value="4" oninput="updateN(this.value)"></div>
+            <div class="cg"><label>Sample Point</label><select id="ruleSelect" onchange="drawRiemann()"><option value="left">Left</option><option value="right">Right</option><option value="mid">Midpoint</option></select></div>
+          </div>
+          <div class="srow">
+            <div class="sp">$n$=<span id="statN">4</span></div>
+            <div class="sp">$\Delta x$=<span id="statDx">—</span></div>
+            <div class="sp">Approx≈<span id="statArea">—</span></div>
+            <div class="sp">Exact=<span id="statExact">—</span></div>
+            <div class="sp">Error:<span id="statErr">—</span></div>
+          </div>
+        </div>
+        <div class="def-box"><div class="dlbl">Riemann Sum</div>$$S_n = \sum_{i=1}^n f(x_i^*)\,\Delta x,\qquad \Delta x=rac{b-a}{n}$$</div>
+      </div>
+
+      <div class="sec-br"></div>
+      <!-- §3 FTC -->
+      <span class="eyebrow-sm">§ 3 — The Bridge</span>
+      <h2 class="lh2">Fundamental Theorem of Calculus</h2>
+      <div class="bf">$$\int_a^b f(x)\,dx = \lim_{n	o\infty}\sum_{i=1}^n f(x_i^*)\,\Delta x$$</div>
+      <div class="thm-box">
+        <div class="tlbl">FTC — Evaluation Shortcut</div>
+        <p>If $F'(x)=f(x)$, then $\displaystyle\int_a^b f(x)\,dx = F(b)-F(a)$</p>
+        <p style="margin-bottom:0;color:var(--amber);font-style:italic;margin-top:8px">Find an antiderivative, plug in, subtract. No limits. No infinite sums.</p>
+      </div>
+
+      <div class="sec-br"></div>
+      <!-- §4 NOTATION -->
+      <span class="eyebrow-sm">§ 4 — The Notation</span>
+      <h2 class="lh2">The Indefinite Integral</h2>
+      <div class="def-box">
+        <div class="dlbl">Antiderivative</div>
+        <p>$F(x)$ is an antiderivative of $f(x)$ if $F'(x)=f(x)$. Every other antiderivative has the form $G(x)=F(x)+C$.</p>
+      </div>
+      <div class="def-box">
+        <div class="dlbl">Indefinite Integral</div>
+        $$\int f(x)\,dx = F(x) + C$$
+        <p style="margin-top:8px;margin-bottom:0">A <em>family</em> of functions, not a number. The $+C$ captures all antiderivatives simultaneously.</p>
+      </div>
+      <svg class="annot-svg" viewBox="0 0 540 210" xmlns="http://www.w3.org/2000/svg">
+        <rect width="540" height="210" fill="#0f1724" rx="12"/>
+        <text x="270" y="128" text-anchor="middle" font-size="40" font-family="Georgia,serif" fill="#e8e2d9">
+          <tspan font-style="italic">∫</tspan><tspan> 3</tspan><tspan font-style="italic">x</tspan><tspan>² </tspan><tspan font-style="italic">dx</tspan><tspan>  =  </tspan><tspan font-style="italic">x</tspan><tspan>³ + </tspan><tspan fill="#e8a020" font-weight="bold" font-style="italic">C</tspan>
+        </text>
+        <line x1="68" y1="175" x2="106" y2="145" stroke="#e8a020" stroke-width="1.2" stroke-dasharray="4,3"/><circle cx="107" cy="143" r="3" fill="#e8a020"/>
+        <text x="68" y="188" text-anchor="middle" font-size="10" font-family="DM Mono,monospace" fill="#e8a020" font-weight="600" letter-spacing="0.04em">INTEGRAL SYMBOL</text>
+        <line x1="188" y1="38" x2="200" y2="94" stroke="#38c9b0" stroke-width="1.2" stroke-dasharray="4,3"/><circle cx="200" cy="96" r="3" fill="#38c9b0"/>
+        <text x="188" y="30" text-anchor="middle" font-size="10" font-family="DM Mono,monospace" fill="#38c9b0" font-weight="600" letter-spacing="0.04em">INTEGRAND</text>
+        <line x1="284" y1="175" x2="276" y2="145" stroke="#9b80e8" stroke-width="1.2" stroke-dasharray="4,3"/><circle cx="276" cy="143" r="3" fill="#9b80e8"/>
+        <text x="284" y="188" text-anchor="middle" font-size="10" font-family="DM Mono,monospace" fill="#9b80e8" font-weight="600" letter-spacing="0.04em">VARIABLE OF INTEGRATION</text>
+        <line x1="478" y1="38" x2="466" y2="94" stroke="#e06b6b" stroke-width="1.2" stroke-dasharray="4,3"/><circle cx="466" cy="96" r="3" fill="#e06b6b"/>
+        <text x="478" y="30" text-anchor="middle" font-size="10" font-family="DM Mono,monospace" fill="#e06b6b" font-weight="600" letter-spacing="0.04em">CONSTANT OF INTEGRATION</text>
+      </svg>
+
+      <div class="sec-br"></div>
+      <!-- §5 RULES -->
+      <span class="eyebrow-sm">§ 5 — Integration Rules</span>
+      <h2 class="lh2">The Four Core Rules</h2>
+      <div class="rule-card"><h4>Rule 1 — Constant Rule</h4><div class="rf">$$\int k\,dx = kx + C$$</div><p style="font-size:.88rem">Example: $\int 7\,dx = 7x+C$</p></div>
+      <div class="rule-card"><h4>Rule 2 — Power Rule</h4><div class="rf">$$\int x^n\,dx = rac{x^{n+1}}{n+1}+C \qquad (n
+eq-1)$$</div><p style="font-size:.88rem">Raise exponent by 1, divide by new exponent.<br>Ex: $\int x^5\,dx=rac{x^6}{6}+C$ &nbsp;·&nbsp; $\int\sqrt{x}\,dx=rac{2}{3}x^{3/2}+C$</p><button class="toggle-btn" onclick="tog('pr1')">Try: $\int x^{3/4}\,dx$</button><div class="ans-box" id="pr1">$n=rac{3}{4}$, new exp $=rac{7}{4}$: &nbsp; $rac{4}{7}x^{7/4}+C$</div></div>
+      <div class="rule-card"><h4>Rule 3 — Logarithmic Rule</h4><div class="rf">$$\int rac{1}{x}\,dx = \ln|x|+C$$</div><p style="font-size:.88rem">The power rule fails for $n=-1$. Since $rac{d}{dx}\ln|x|=rac{1}{x}$, the antiderivative is $\ln|x|$.</p></div>
+      <div class="rule-card"><h4>Rule 4 — Exponential Rule</h4><div class="rf">$$\int e^x\,dx = e^x+C \qquad \int e^{kx}\,dx=rac{e^{kx}}{k}+C$$</div><p style="font-size:.88rem">$e^x$ is its own antiderivative. For $e^{kx}$, divide by $k$.</p></div>
+      <div class="thm-box"><div class="tlbl">Algebraic Rules</div><p><strong>Constant Multiple:</strong> $\int kf(x)\,dx=k\int f(x)\,dx$</p><p style="margin-bottom:0"><strong>Sum/Difference:</strong> $\int[f\pm g]\,dx=\int f\,dx\pm\int g\,dx$</p></div>
+      <div class="lc"><h4>✏️ Combined Example</h4><p>Find $\displaystyle\int\!\left(6x^2-	frac{4}{x}+3e^x
+ight)dx$</p><button class="toggle-btn" onclick="tog('ex1')">Show Solution</button><div class="ans-box" id="ex1">$$= 2x^3 - 4\ln|x| + 3e^x + C$$</div></div>
+
+      <div class="sec-br"></div>
+      <!-- §6 APPLICATIONS -->
+      <span class="eyebrow-sm">§ 6 — Applications</span>
+      <h2 class="lh2">Integration in Action</h2>
+      <div class="lc"><h4>📈 Finding a Function from Its Slope</h4><p>$f'(x)=3x^2-2x+1$, $f(1)=4$. Find $f(x)$.</p><button class="toggle-btn" onclick="tog('app1')">Show Solution</button><div class="ans-box" id="app1"><p>$f(x)=x^3-x^2+x+C$. Apply $f(1)=4$: $C=3$.</p><p style="margin-bottom:0">$$f(x)=x^3-x^2+x+3$$</p></div></div>
+      <div class="lc"><h4>💰 Total Cost from Marginal Cost</h4><p>$C'(x)=3x^2-12x+14$, fixed costs $35. Find $C(x)$.</p><button class="toggle-btn" onclick="tog('app2')">Show Solution</button><div class="ans-box" id="app2"><p>$C(x)=x^3-6x^2+14x+K$. $C(0)=35\Rightarrow K=35$.</p><p style="margin-bottom:0">$$C(x)=x^3-6x^2+14x+35$$</p></div></div>
+
+      <div class="sec-br"></div>
+      <!-- §7 DIFF EQ -->
+      <span class="eyebrow-sm">§ 7 — Differential Equations</span>
+      <h2 class="lh2">Separable Equations</h2>
+      <div class="thm-box"><div class="tlbl">Separation of Variables</div><p>Given $rac{dy}{dx}=f(x)g(y)$: separate → $rac{dy}{g(y)}=f(x)\,dx$, integrate both sides, solve, apply IC.</p></div>
+      <div class="lc"><h4>💼 Revenue IVP</h4><p>$rac{dR}{dq}=50-2q$, $R(0)=0$. Find $R(q)$.</p><button class="toggle-btn" onclick="tog('de1')">Show Solution</button><div class="ans-box" id="de1"><p>$R(q)=50q-q^2+C$. $R(0)=0\Rightarrow C=0$.</p><p style="margin-bottom:0">$$R(q)=50q-q^2 \quad (	ext{max at }q=25)$$</p></div></div>
+
+      <div class="sec-br"></div>
+      <!-- §8 COMPOUNDING -->
+      <span class="eyebrow-sm">§ 8 — Continuous Compounding</span>
+      <h2 class="lh2">Deriving $B(t)=Pe^{rt}$</h2>
+      <div class="thm-box"><div class="tlbl">Continuous Compounding</div><p>Solve $rac{dB}{dt}=rB$, $B(0)=P$ to get $B(t)=Pe^{rt}$.</p></div>
+      <div class="lc"><h4>✏️ Full Derivation</h4><button class="toggle-btn" onclick="tog('cc1')">Show</button><div class="ans-box" id="cc1"><p>Separate: $rac{dB}{B}=r\,dt$ → $\ln|B|=rt+C_1$ → $B=Ce^{rt}$. Apply IC: $C=P$. &nbsp;∴ $B(t)=Pe^{rt}$ ✓</p></div></div>
+      <div class="widget-dark">
+        <div class="wt">📈 Compounding Explorer — $B(t)=Pe^{rt}$</div>
+        <canvas id="compCanvas" height="220"></canvas>
+        <div class="controls">
+          <div class="cg"><label>$P$=$<span class="val" id="pVal">5000</span></label><input type="range" id="pSlider" min="1000" max="20000" step="500" value="5000" oninput="updateComp()"></div>
+          <div class="cg"><label>$r$=<span class="val" id="rVal">6</span>%</label><input type="range" id="rSlider" min="1" max="20" step="0.5" value="6" oninput="updateComp()"></div>
+          <div class="cg"><label>$t$=<span class="val" id="tVal">10</span>yr</label><input type="range" id="tSlider" min="1" max="40" step="1" value="10" oninput="updateComp()"></div>
+        </div>
+        <div class="srow"><div class="sp">$B(t)$=$<span id="compResult">—</span></div><div class="sp">Interest=$<span id="compInterest">—</span></div><div class="sp">Doubles~<span id="compDouble">—</span>yr</div></div>
+      </div>
+
+      <div class="sec-br"></div>
+      <!-- PRACTICE -->
+      <span class="eyebrow-sm">Practice Problems</span>
+      <h2 class="lh2">Test Yourself</h2>
+      <div class="prob-card"><h4>Problem 1</h4><p>$\displaystyle\int(4x^3-6x+5)\,dx$</p><button class="toggle-btn" onclick="tog('p1')">Reveal</button><div class="ans-box" id="p1">$$x^4-3x^2+5x+C$$</div></div>
+      <div class="prob-card"><h4>Problem 2</h4><p>$\displaystyle\int\!\left(3\sqrt{x}-	frac{5}{x}+2e^x
+ight)dx$</p><button class="toggle-btn" onclick="tog('p2')">Reveal</button><div class="ans-box" id="p2">$$2x^{3/2}-5\ln|x|+2e^x+C$$</div></div>
+      <div class="prob-card"><h4>Problem 3 — IVP</h4><p>$f'(x)=6x-4$, $f(2)=3$. Find $f(x)$.</p><button class="toggle-btn" onclick="tog('p3')">Reveal</button><div class="ans-box" id="p3"><p>$f(x)=3x^2-4x+C$. $f(2)=4+C=3\Rightarrow C=-1$.</p><p style="margin-bottom:0">$f(x)=3x^2-4x-1$</p></div></div>
+      <div class="prob-card"><h4>Problem 4 — Compounding</h4><p>How long for $2000 to triple at 8% continuous compounding?</p><button class="toggle-btn" onclick="tog('p4')">Reveal</button><div class="ans-box" id="p4">$$t=rac{\ln 3}{0.08}pprox 13.73	ext{ years}$$</div></div>
+
+    </div><!-- cmain-body -->
+
+    <!-- LECTURE NAV FOOTER -->
+    <div class="lec-nav-footer">
+      <a href="course-calc1.html" class="lnf-btn">← Course Overview</a>
+      <div style="font-family:var(--fm);font-size:.7rem;color:var(--text3);text-align:center">§5.1 of 5 · Chapter 5</div>
+      <span class="lnf-btn next" style="opacity:.4;cursor:default">§5.2 Definite Integrals →</span>
+    </div>
+
+  </main>
+</div>
+<footer class="sk-footer">
+  <div class="sk-footer-inner">
+    <div>
+      <div class="sk-footer-logo">Shoaib-K</div>
+      <p style="color:var(--text2);font-size:.875rem;margin-top:10px">Mathematician · Educator · Researcher<br>LUMS, Lahore, Pakistan</p>
+      <div style="display:flex;gap:14px;margin-top:14px">
+        <a href="https://www.facebook.com/shoaiib.k" target="_blank">Facebook</a>
+        <a href="https://twitter.com/msking_shoaib" target="_blank">Twitter</a>
+        <a href="https://instagram.com/msking.shoaib" target="_blank">Instagram</a>
+      </div>
+    </div>
+    <div>
+      <h5>Navigation</h5>
+      <a href="../index.html">Home</a>
+      <a href="education.html">Education</a>
+      <a href="courses.html">Courses</a>
+      <a href="research.html">Research</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div>
+      <h5>Contact</h5>
+      <a href="mailto:bssk.khan@gmail.com">bssk.khan@gmail.com</a>
+      <a href="https://lums.edu.pk" target="_blank">LUMS Website</a>
+    </div>
+  </div>
+  <div class="sk-footer-bottom">
+    <p>© 2025 Muhammad Shoaib Khan · LUMS · Lahore, Pakistan</p>
+    <p>Built with HTML, CSS & Mathematics</p>
+  </div>
+</footer>
+<script src="../js/main.js"></script>
+<script>
+function tog(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('show');
+  if (window.MathJax && el.classList.contains('show')) MathJax.typesetPromise([el]);
+}
+window.addEventListener('scroll', () => {
+  const el = document.documentElement;
+  document.getElementById('sk-progress-bar').style.width =
+    (el.scrollTop / (el.scrollHeight - el.clientHeight) * 100) + '%';
+}, {passive: true});
+</script>
+<script>
+
+const FNS = {
+  quad:  {fn:x=>x*x, exact:(a,b)=>b**3/3-a**3/3},
+  sin:   {fn:x=>Math.sin(x)+1, exact:(a,b)=>(b-a)+Math.cos(a)-Math.cos(b)},
+  sqrt:  {fn:x=>Math.sqrt(x), exact:(a,b)=>2/3*(b**1.5-a**1.5)},
+  cubic: {fn:x=>x**3/4+1, exact:(a,b)=>(b**4/16+b)-(a**4/16+a)}
+};
+const rA=0,rB=3; let rN=4;
+function updateN(v){rN=+v;document.getElementById('nVal').textContent=v;drawRiemann();}
+function drawRiemann(){
+  const fnKey=document.getElementById('fnSelect').value;
+  const rule=document.getElementById('ruleSelect').value;
+  const fObj=FNS[fnKey],fn=fObj.fn;
+  const cv=document.getElementById('riemannCanvas');
+  if(!cv||!cv.offsetWidth)return;
+  cv.width=cv.offsetWidth*devicePixelRatio; cv.height=260*devicePixelRatio;
+  const ctx=cv.getContext('2d'); ctx.scale(devicePixelRatio,devicePixelRatio);
+  const W=cv.offsetWidth,H=260,pad={l:42,r:12,t:12,b:28};
+  const gW=W-pad.l-pad.r,gH=H-pad.t-pad.b;
+  let yMax=0;
+  for(let i=0;i<=200;i++){const y=fn(rA+(rB-rA)*i/200);if(y>yMax)yMax=y;}
+  yMax*=1.28; if(yMax<0.5)yMax=1;
+  const tX=x=>pad.l+(x-rA)/(rB-rA)*gW;
+  const tY=y=>pad.t+gH-y/yMax*gH;
+  ctx.fillStyle='#111827'; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='#1f2937'; ctx.lineWidth=1;
+  for(let y=0;y<=yMax;y+=yMax/4){
+    ctx.beginPath();ctx.moveTo(pad.l,tY(y));ctx.lineTo(pad.l+gW,tY(y));ctx.stroke();
+    ctx.fillStyle='#6b7280';ctx.font='10px DM Mono,monospace';ctx.fillText(y.toFixed(1),4,tY(y)+4);
+  }
+  const dx=(rB-rA)/rN; let sumArea=0;
+  for(let i=0;i<rN;i++){
+    let xs;
+    if(rule==='left')xs=rA+i*dx;
+    else if(rule==='right')xs=rA+(i+1)*dx;
+    else xs=rA+(i+.5)*dx;
+    const h=fn(xs); if(h<0)continue; sumArea+=h*dx;
+    const rx=tX(rA+i*dx),rw=tX(rA+(i+1)*dx)-tX(rA+i*dx);
+    ctx.fillStyle='rgba(232,160,32,.22)';ctx.fillRect(rx,tY(h),rw,tY(0)-tY(h));
+    ctx.strokeStyle='#e8a020';ctx.lineWidth=1.2;ctx.strokeRect(rx,tY(h),rw,tY(0)-tY(h));
+  }
+  ctx.beginPath();ctx.moveTo(tX(rA),tY(fn(rA)));
+  for(let i=1;i<=300;i++){const x=rA+(rB-rA)*i/300;ctx.lineTo(tX(x),tY(fn(x)));}
+  ctx.strokeStyle='#38c9b0';ctx.lineWidth=2.5;ctx.stroke();
+  ctx.strokeStyle='#374151';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,pad.t+gH);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t+gH);ctx.lineTo(pad.l+gW,pad.t+gH);ctx.stroke();
+  ctx.fillStyle='#9ca3af';ctx.font='10px DM Mono,monospace';
+  for(let x=rA;x<=rB;x++)ctx.fillText(x,tX(x)-4,H-6);
+  const exact=fObj.exact(rA,rB),err=Math.abs(sumArea-exact);
+  document.getElementById('statN').textContent=rN;
+  document.getElementById('statDx').textContent=((rB-rA)/rN).toFixed(4);
+  document.getElementById('statArea').textContent=sumArea.toFixed(5);
+  document.getElementById('statExact').textContent=exact.toFixed(5);
+  document.getElementById('statErr').textContent=err.toFixed(5);
+}
+function toggleRiemann(btn){
+  const box=document.getElementById('riemannBox');
+  const show=box.style.display==='none'||!box.style.display;
+  box.style.display=show?'block':'none';
+  btn.innerHTML=show?'▲ &nbsp;Hide Explorer':'⬛ &nbsp;Reveal Riemann Sum Explorer';
+  if(show)setTimeout(drawRiemann,80);
+}
+
+
+function updateComp(){
+  const P=+document.getElementById('pSlider').value;
+  const r=+document.getElementById('rSlider').value/100;
+  const t=+document.getElementById('tSlider').value;
+  document.getElementById('pVal').textContent=document.getElementById('pSlider').value;
+  document.getElementById('rVal').textContent=document.getElementById('rSlider').value;
+  document.getElementById('tVal').textContent=t;
+  const Bt=P*Math.exp(r*t);
+  document.getElementById('compResult').textContent=Bt.toFixed(2);
+  document.getElementById('compInterest').textContent=(Bt-P).toFixed(2);
+  document.getElementById('compDouble').textContent=(Math.log(2)/r).toFixed(1);
+  drawComp(P,r,t);
+}
+function drawComp(P,r,tCur){
+  const cv=document.getElementById('compCanvas');
+  if(!cv||!cv.offsetWidth)return;
+  cv.width=cv.offsetWidth*devicePixelRatio; cv.height=220*devicePixelRatio;
+  const ctx=cv.getContext('2d'); ctx.scale(devicePixelRatio,devicePixelRatio);
+  const W=cv.offsetWidth,H=220,pad={l:56,r:14,t:12,b:28};
+  const gW=W-pad.l-pad.r,gH=H-pad.t-pad.b;
+  const tMax=40,Bmax=P*Math.exp(r*tMax)*1.06;
+  const tX=t=>pad.l+t/tMax*gW,tY=v=>pad.t+gH-v/Bmax*gH;
+  ctx.fillStyle='#111827';ctx.fillRect(0,0,W,H);
+  for(let i=0;i<=4;i++){
+    const y=Bmax*i/4;
+    ctx.strokeStyle='#1f2937';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(pad.l,tY(y));ctx.lineTo(pad.l+gW,tY(y));ctx.stroke();
+    ctx.fillStyle='#6b7280';ctx.font='9px DM Mono,monospace';
+    ctx.fillText('$'+(y>=1000?(y/1000).toFixed(0)+'k':y.toFixed(0)),2,tY(y)+4);
+  }
+  ctx.setLineDash([4,3]);ctx.strokeStyle='#6b7280';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(tX(0),tY(P));ctx.lineTo(tX(tMax),tY(P));ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.beginPath();ctx.moveTo(tX(0),tY(P));
+  for(let i=1;i<=300;i++){const t=tMax*i/300;ctx.lineTo(tX(t),tY(P*Math.exp(r*t)));}
+  ctx.strokeStyle='#38c9b0';ctx.lineWidth=2.5;ctx.stroke();
+  const Bval=P*Math.exp(r*tCur);
+  ctx.setLineDash([4,3]);ctx.strokeStyle='#e8a020';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(tX(tCur),tY(Bval));ctx.lineTo(tX(tCur),tY(0));ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='#e8a020';ctx.beginPath();ctx.arc(tX(tCur),tY(Bval),5,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#e8a020';ctx.font='bold 10px DM Mono,monospace';
+  ctx.fillText('$'+Bval.toFixed(0),tX(tCur)+8,tY(Bval)-5);
+  ctx.strokeStyle='#374151';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,pad.t+gH);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t+gH);ctx.lineTo(pad.l+gW,pad.t+gH);ctx.stroke();
+  ctx.fillStyle='#9ca3af';ctx.font='9px DM Mono,monospace';
+  [0,10,20,30,40].forEach(t=>ctx.fillText(t+'yr',tX(t)-10,H-6));
+}
+window.addEventListener('resize',()=>{
+  if(document.getElementById('riemannBox')&&document.getElementById('riemannBox').style.display==='block')drawRiemann();
+  if(document.getElementById('compCanvas'))updateComp();
+},{passive:true});
+document.fonts.ready.then(()=>{if(document.getElementById('compCanvas'))updateComp();});
+
+</script>
+</body></html>
