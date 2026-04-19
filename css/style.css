@@ -329,3 +329,8 @@ h4{font-family:var(--fh);font-size:1.15rem;font-weight:600;margin-bottom:8px;col
     padding:0 16px;
   }
 }
+
+/* ── COURSE PAGE LAYOUT FIX ── */
+.sticky-sub { display: block !important; }
+.course-frame { padding-top: 144px !important; }
+.csb { top: 144px !important; height: calc(100vh - 144px) !important; }
