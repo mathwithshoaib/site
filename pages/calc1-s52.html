@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>§5.2 Integration by Substitution · Calculus I · Shoaib-K</title>
+
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+.sticky-sub {
+  position: sticky;
+  top: calc(var(--nav-h) + 3px);
+  z-index: 500;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.bc-row {
+  padding: 8px 24px;
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--fm); font-size: .72rem; color: var(--text3);
+  border-bottom: 1px solid var(--border);
+}
+.bc-row a { color: var(--amber); transition: color .15s; text-decoration: none; }
+.bc-row a:hover { color: var(--text); }
+.bc-row .cur { color: var(--text2); font-weight: 500; }
+.course-switcher {
+  display: flex; align-items: center; padding: 0 24px; overflow-x: auto;
+}
+.course-switcher a {
+  font-family: var(--fm); font-size: .72rem; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--text3); padding: 9px 18px;
+  border-bottom: 2px solid transparent; white-space: nowrap;
+  transition: all .2s; text-decoration: none;
+}
+.course-switcher a:hover { color: var(--amber); }
+.course-switcher a.active { color: var(--amber); border-bottom-color: var(--amber); }
+
+.course-frame {
+  display: flex;
+  padding-top: calc(var(--nav-h) + 3px + 37px + 40px);
+  min-height: 100vh;
+}
+
+.csb {
+  width: 252px; flex-shrink: 0;
+  position: sticky;
+  top: calc(var(--nav-h) + 3px + 37px + 40px);
+  height: calc(100vh - var(--nav-h) - 80px);
+  overflow-y: auto;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+}
+.csb::-webkit-scrollbar { width: 3px; }
+.csb::-webkit-scrollbar-thumb { background: var(--amber-bd); border-radius: 2px; }
+.csb-head { padding: 18px 16px 12px; border-bottom: 1px solid var(--border); }
+.csb-tag { font-family: var(--fm); font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--amber); margin-bottom: 4px; }
+.csb-title { font-family: var(--fh); font-size: .95rem; color: var(--text); line-height: 1.3; }
+.csb-back { display: inline-flex; align-items: center; gap: 5px; font-family: var(--fm); font-size: .68rem; color: var(--text3); margin-top: 8px; transition: color .2s; text-decoration: none; }
+.csb-back:hover { color: var(--amber); }
+.toc-nav { padding: 8px 0 24px; }
+.toc-ch { font-family: var(--fm); font-size: .58rem; letter-spacing: .22em; text-transform: uppercase; color: var(--text3); padding: 10px 16px 3px; display: block; }
+.toc-a { display: flex; align-items: center; gap: 8px; padding: 6px 16px; font-family: var(--fm); font-size: .72rem; color: var(--text3); text-decoration: none; border-left: 2px solid transparent; transition: all .18s; line-height: 1.35; }
+.toc-a:hover { color: var(--text); background: rgba(255,255,255,.04); }
+.toc-a.active { color: var(--amber); border-left-color: var(--amber); background: rgba(232,160,32,.08); }
+.toc-a .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--border2); flex-shrink: 0; transition: background .2s; }
+.toc-a.active .dot { background: var(--amber); }
+.toc-a.live::after { content: '\2736'; font-size: .58rem; color: var(--teal); margin-left: auto; }
+.toc-a.soon { opacity: .38; pointer-events: none; }
+
+.cmain { flex: 1; min-width: 0; background: #fdf8f0; overflow: hidden; }
+
+.lec-inner {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 52px 60px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&family=Source+Sans+3:wght@300;400;600&display=swap');
+
+:root {
+  --ink:    #1a1a2e;
+  --paper:  #fdf8f0;
+  --cream:  #f5ede0;
+  --accent: #c0392b;
+  --gold-lec: #d4a017;
+  --teal-lec: #1a6b6b;
+  --sky:    #2980b9;
+  --muted:  #7f8c8d;
+  --border-lec: #e0d6c8;
+  --shadow-lec: 0 4px 24px rgba(26,26,46,.10);
+  --fh-lec: 'Playfair Display', Georgia, serif;
+  --fb-lec: 'Source Sans 3', sans-serif;
+  --fm-lec: 'IBM Plex Mono', monospace;
+}
+
+.cmain { font-family: var(--fb-lec); font-size: 1.05rem; line-height: 1.8; color: #1a1a2e; background: #fdf8f0; }
+
+.lec-hero {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 52px 40px 44px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.lec-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.03) 40px,rgba(255,255,255,.03) 41px);
+}
+.lec-hero-tag { font-family: var(--fm-lec); font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-lec); margin-bottom: 14px; position: relative; }
+.lec-hero h1 { font-family: var(--fh-lec); font-size: clamp(2rem,4vw,3.4rem); font-weight: 700; line-height: 1.12; margin-bottom: 14px; position: relative; }
+.lec-hero h1 em { color: var(--gold-lec); font-style: italic; }
+.lec-hero p { font-size: 1rem; color: #c9c2b8; max-width: 560px; margin: 0 auto 24px; position: relative; }
+.lec-hero-line { width: 56px; height: 3px; background: var(--gold-lec); margin: 0 auto; position: relative; }
+
+.lec-nav { background: rgba(253,248,240,.97); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border-lec); padding: 8px 20px; display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.lec-nav a { font-family: var(--fm-lec); font-size: .64rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 4px 11px; border-radius: 20px; border: 1px solid var(--border-lec); transition: all .2s; }
+.lec-nav a:hover { color: var(--accent); border-color: var(--accent); }
+
+.lec-inner p { margin-bottom: 16px; color: var(--ink); }
+.sec-label { font-family: var(--fm-lec); font-size: .68rem; letter-spacing: .26em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+h2 { font-family: var(--fh-lec); font-size: clamp(1.7rem,4vw,2.55rem); font-weight: 700; margin-bottom: 20px; line-height: 1.2; color: var(--ink); }
+h3 { font-family: var(--fh-lec); font-size: 1.32rem; font-weight: 700; margin: 30px 0 12px; color: var(--teal-lec); }
+h4 { font-family: var(--fh-lec); font-size: 1.1rem; font-weight: 700; margin: 22px 0 8px; color: var(--sky); }
+.subsec { font-family: var(--fm-lec); font-size: .74rem; letter-spacing: .18em; text-transform: uppercase; color: var(--sky); margin: 44px 0 6px; padding-bottom: 6px; border-bottom: 1px solid var(--border-lec); }
+.card { background: #fff; border: 1px solid var(--border-lec); border-radius: 12px; padding: 30px 34px; box-shadow: var(--shadow-lec); margin-bottom: 26px; }
+.card.al { border-left: 4px solid var(--accent); }
+.card.gl { border-left: 4px solid var(--gold-lec); }
+.card.tl { border-left: 4px solid var(--teal-lec); }
+.card.sl { border-left: 4px solid var(--sky); }
+.card.pl { border-left: 4px solid #27ae60; }
+.def-box { background: #eef7f7; border: 1.5px solid var(--teal-lec); border-radius: 8px; padding: 22px 26px; margin: 22px 0; }
+.def-box .lbl { font-family: var(--fm-lec); font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; color: var(--teal-lec); font-weight: 600; margin-bottom: 8px; }
+.thm-box { background: #fff8ec; border: 1.5px solid var(--gold-lec); border-radius: 8px; padding: 22px 26px; margin: 22px 0; }
+.thm-box .lbl { font-family: var(--fm-lec); font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gold-lec); font-weight: 600; margin-bottom: 8px; }
+.note-box { background: #f0f4ff; border: 1.5px solid var(--sky); border-radius: 8px; padding: 20px 24px; margin: 20px 0; }
+.note-box .lbl { font-family: var(--fm-lec); font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 8px; }
+.warn-box { background: #fff5f5; border: 1.5px solid var(--accent); border-radius: 8px; padding: 20px 24px; margin: 20px 0; }
+.warn-box .lbl { font-family: var(--fm-lec); font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 8px; }
+.pak-box { background: #f0faf4; border: 1.5px solid #27ae60; border-radius: 8px; padding: 22px 26px; margin: 22px 0; }
+.pak-box .lbl { font-family: var(--fm-lec); font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; color: #27ae60; font-weight: 600; margin-bottom: 8px; }
+.callout { background: #fdf0ef; border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; padding: 15px 20px; margin: 18px 0; font-size: .97rem; }
+.callout strong { color: var(--accent); }
+.callout-teal { background: #eef7f7; border-left: 4px solid var(--teal-lec); border-radius: 0 8px 8px 0; padding: 15px 20px; margin: 18px 0; font-size: .97rem; }
+.callout-teal strong { color: var(--teal-lec); }
+.callout-gold { background: #fff8ec; border-left: 4px solid var(--gold-lec); border-radius: 0 8px 8px 0; padding: 15px 20px; margin: 18px 0; font-size: .97rem; }
+.callout-gold strong { color: var(--gold-lec); }
+.callout-green { background: #f0faf4; border-left: 4px solid #27ae60; border-radius: 0 8px 8px 0; padding: 15px 20px; margin: 18px 0; font-size: .97rem; }
+.callout-green strong { color: #27ae60; }
+
+/* Step boxes */
+.step-box { display: flex; gap: 18px; margin: 14px 0; align-items: flex-start; }
+.step-num { width: 36px; height: 36px; border-radius: 50%; background: var(--ink); color: var(--gold-lec); font-family: var(--fm-lec); font-size: .85rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 3px; }
+.step-content { flex: 1; }
+.step-content strong { color: var(--ink); display: block; margin-bottom: 4px; }
+
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: .94rem; }
+th { background: var(--ink); color: var(--gold-lec); font-family: var(--fm-lec); font-size: .72rem; letter-spacing: .1em; padding: 9px 13px; text-align: left; }
+td { padding: 8px 13px; border-bottom: 1px solid var(--border-lec); }
+tr:nth-child(even) td { background: var(--cream); }
+
+.bf { text-align: center; font-size: 1.12rem; padding: 26px 18px; background: var(--cream); border-radius: 10px; margin: 22px 0; }
+.divider { width: 100%; height: 1px; background: var(--border-lec); margin: 52px 0; }
+.sub-divider { width: 100%; height: 1px; background: var(--border-lec); margin: 36px 0; }
+.rule-highlight { background: var(--cream); border-radius: 8px; padding: 18px 20px; text-align: center; margin: 14px 0; font-size: 1.05rem; }
+
+.toggle-btn { font-family: var(--fm-lec); font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; background: var(--ink); color: var(--gold-lec); border: none; border-radius: 6px; padding: 9px 20px; cursor: pointer; margin-top: 10px; transition: opacity .2s; }
+.toggle-btn:hover { opacity: .8; }
+.answer-box { display: none; background: #f0f9f0; border: 1.5px solid #27ae60; border-radius: 8px; padding: 18px 22px; margin-top: 12px; }
+.answer-box.show { display: block; }
+
+.lec-footer-nav { display: flex; justify-content: space-between; align-items: center; padding: 28px 40px; border-top: 1px solid var(--border-lec); flex-wrap: wrap; gap: 12px; background: #fdf8f0; }
+.lnf-btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--fm-lec); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 8px 18px; border: 1px solid var(--border-lec); border-radius: 8px; transition: all .2s; text-decoration: none; }
+.lnf-btn:hover { color: var(--accent); border-color: var(--accent); }
+.lnf-btn.next { color: var(--teal-lec); border-color: var(--teal-lec); background: #eef7f7; }
+.lnf-btn.next:hover { background: var(--teal-lec); color: #fff; }
+.lnf-btn.prev { color: var(--sky); border-color: var(--sky); background: #f0f4ff; }
+.lnf-btn.prev:hover { background: var(--sky); color: #fff; }
+
+.lec-inner section { padding: 52px 0 0; }
+.lec-inner section:first-child { padding-top: 44px; }
+
+/* MCQ Widget */
+.mcq-widget { background: var(--ink); border-radius: 16px; padding: 28px 28px 22px; margin: 30px 0; color: #e8e2d9; }
+.mcq-title { font-family: var(--fm-lec); font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-lec); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+.mcq-title::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.12); }
+.mcq-select { font-family: var(--fm-lec); font-size: .82rem; background: #1f2937; color: #e8e2d9; border: 1px solid #374151; border-radius: 8px; padding: 8px 14px; cursor: pointer; width: 100%; margin-bottom: 18px; }
+.mcq-function-display { background: #0d1117; border-radius: 10px; padding: 18px 22px; margin-bottom: 18px; text-align: center; font-size: 1.1rem; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+.mcq-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.mcq-opt { background: #1f2937; border: 1.5px solid #374151; border-radius: 8px; padding: 12px 16px; cursor: pointer; font-family: var(--fm-lec); font-size: .82rem; transition: all .2s; text-align: center; }
+.mcq-opt:hover { border-color: var(--gold-lec); background: rgba(212,160,23,.1); }
+.mcq-opt.correct { border-color: #27ae60; background: rgba(39,174,96,.15); color: #27ae60; }
+.mcq-opt.wrong { border-color: var(--accent); background: rgba(192,57,43,.15); color: var(--accent); }
+.mcq-feedback { padding: 12px 16px; border-radius: 8px; font-family: var(--fm-lec); font-size: .78rem; margin-top: 8px; display: none; }
+.mcq-feedback.show { display: block; }
+.mcq-feedback.correct-fb { background: rgba(39,174,96,.12); border: 1px solid #27ae60; color: #27ae60; }
+.mcq-feedback.wrong-fb { background: rgba(192,57,43,.12); border: 1px solid var(--accent); color: #e06b6b; }
+.mcq-score { font-family: var(--fm-lec); font-size: .82rem; color: #9ca3af; margin-top: 14px; display: flex; gap: 20px; }
+.mcq-score span { color: var(--gold-lec); font-weight: 700; }
+.mcq-next-btn { font-family: var(--fm-lec); font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; background: rgba(212,160,23,.15); color: var(--gold-lec); border: 1px solid rgba(212,160,23,.4); border-radius: 6px; padding: 8px 18px; cursor: pointer; margin-top: 12px; transition: all .2s; }
+.mcq-next-btn:hover { background: var(--gold-lec); color: var(--ink); }
+
+/* Pakistan word problem styling */
+.pak-flag { display: inline-block; margin-right: 8px; }
+.location-tag { font-family: var(--fm-lec); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: #27ae60; background: rgba(39,174,96,.1); border: 1px solid rgba(39,174,96,.3); border-radius: 20px; padding: 2px 10px; margin-left: 8px; }
+
+@media (max-width: 860px) {
+  .csb { display: none; }
+  .lec-inner { padding: 0 18px 40px; }
+  .lec-hero { padding: 36px 20px 32px; }
+  .lec-footer-nav { padding: 20px 18px; }
+  .mcq-options { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="sk-progress"><div id="sk-progress-bar"></div></div>
+<nav class="sk-nav">
+  <a href="../index.html" class="sk-nav-logo">Shoaib-K <span class="logo-badge">LUMS</span></a>
+  <div class="sk-nav-links" id="sk-nav-links">
+    <div class="sk-nav-item"><a href="../index.html" class="sk-nav-link">Home</a></div>
+    <div class="sk-nav-item"><a href="education.html" class="sk-nav-link">Education</a></div>
+    <div class="sk-nav-item">
+      <span class="sk-nav-link">Experience <span class="arrow">&#9662;</span></span>
+      <div class="sk-dropdown">
+        <a href="experience-instructor.html"><span class="dd-icon">&#127979;</span> As an Instructor</a>
+        <a href="experience-ta.html"><span class="dd-icon">&#128218;</span> As a TA</a>
+        <a href="math-circles.html"><span class="dd-icon">&#128309;</span> Math Circles</a>
+      </div>
+    </div>
+    <div class="sk-nav-item"><a href="courses.html" class="sk-nav-link active">Courses</a></div>
+    <div class="sk-nav-item"><a href="research.html" class="sk-nav-link">Research</a></div>
+    <div class="sk-nav-item"><a href="hobbies.html" class="sk-nav-link">Hobbies</a></div>
+    <div class="sk-nav-item"><a href="explore.html" class="sk-nav-link">Explore</a></div>
+    <div class="sk-nav-item"><a href="contact.html" class="sk-nav-link">Contact</a></div>
+  </div>
+  <div class="sk-hamburger" onclick="document.getElementById('sk-nav-links').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="sticky-sub">
+  <div class="bc-row">
+    <a href="../index.html">Home</a><span>&#8250;</span>
+    <a href="courses.html">Courses</a><span>&#8250;</span>
+    <a href="course-calc1.html">Calculus I</a><span>&#8250;</span>
+    <span class="cur">&#167;5.2 Integration by Substitution</span>
+  </div>
+  <div class="course-switcher">
+    <a href="course-precalc.html">Pre-Calculus</a>
+    <a href="course-calc1.html" class="active">Calculus I</a>
+    <a href="course-linalg.html">Linear Algebra I</a>
+  </div>
+</div>
+
+<div class="course-frame">
+
+  <aside class="csb">
+    <div class="csb-head">
+      <div class="csb-tag">MATH-101 &middot; Calculus I</div>
+      <div class="csb-title">Course Contents</div>
+      <a href="course-calc1.html" class="csb-back">&#8592; All Courses</a>
+    </div>
+    <nav class="toc-nav">
+      <span class="toc-ch">Course Overview</span>
+      <a href="course-calc1.html" class="toc-a"><span class="dot"></span>Course Overview</a>
+      <span class="toc-ch">Ch 1 &mdash; Limits</span>
+      <a href="#" class="toc-a soon"><span class="dot"></span>L01 &middot; Intuition &amp; Definition</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>L02 &middot; Limit Laws &amp; Continuity</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>L03 &middot; Limits at Infinity</a>
+      <span class="toc-ch">Ch 2 &mdash; Derivatives</span>
+      <a href="#" class="toc-a soon"><span class="dot"></span>L04 &middot; The Derivative</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>L05 &middot; Differentiation Rules</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>L06 &middot; Chain Rule</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>L07 &middot; Related Rates</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>L08 &middot; Optimization</a>
+      <span class="toc-ch">Ch 5 &mdash; Integration</span>
+      <a href="calc1-s51.html" class="toc-a live"><span class="dot"></span>L09 &middot; &#167;5.1 Indefinite Integration</a>
+      <a href="calc1-s52.html" class="toc-a active live"><span class="dot"></span>L10 &middot; &#167;5.2 Substitution</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>L11 &middot; &#167;5.3 FTC (Full)</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>L12 &middot; &#167;5.4 Definite Integrals</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>L13 &middot; &#167;5.5 Integration by Parts</a>
+    </nav>
+  </aside>
+
+  <main class="cmain">
+
+    <div class="lec-hero">
+      <div class="lec-hero-tag">Calculus I &nbsp;&middot;&nbsp; Chapter 5 &nbsp;&middot;&nbsp; Section 5.2</div>
+      <h1>Integration by<br><em>Substitution</em></h1>
+      <p>The chain rule in reverse &mdash; a powerful technique that transforms complicated integrals into simple ones by a clever change of variable.</p>
+      <div class="lec-hero-line"></div>
+    </div>
+
+    <nav class="lec-nav">
+      <a href="#motivation">Motivation</a>
+      <a href="#method">The Method</a>
+      <a href="#detailed">Detailed Example</a>
+      <a href="#types">Types</a>
+      <a href="#algebra">Algebra First</a>
+      <a href="#pakistan">Pakistan Problems</a>
+      <a href="#mcq">U-Choice Quiz</a>
+      <a href="#fails">When It Fails</a>
+      <a href="#diffeq">Diff. Equations</a>
+      <a href="#ivp">Initial Value</a>
+    </nav>
+
+    <div class="lec-inner">
+
+<!-- LEARNING OBJECTIVES -->
+<section id="motivation">
+  <div class="sec-label">Learning Objectives</div>
+  <h2>What You Will Master<br>in This Section</h2>
+
+  <div class="card gl" style="margin-bottom:20px">
+    <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:12px">
+      <div style="width:32px;height:32px;background:var(--gold-lec);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink);font-family:var(--fm-lec);font-weight:700;font-size:.85rem;flex-shrink:0">1</div>
+      <p style="margin:0;padding-top:4px">Use the method of substitution to find indefinite integrals of composite functions.</p>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:12px">
+      <div style="width:32px;height:32px;background:var(--gold-lec);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink);font-family:var(--fm-lec);font-weight:700;font-size:.85rem;flex-shrink:0">2</div>
+      <p style="margin:0;padding-top:4px">Solve initial value problems using substitution to find particular solutions.</p>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start">
+      <div style="width:32px;height:32px;background:var(--gold-lec);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink);font-family:var(--fm-lec);font-weight:700;font-size:.85rem;flex-shrink:0">3</div>
+      <p style="margin:0;padding-top:4px">Explore a price-adjustment model in economics using substitution techniques.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:32px">The Big Picture: Why Substitution?</h3>
+  <p>In §5.1, you learned the basic integration rules. But what about integrals like:</p>
+  <div class="bf">$$\int 2x(x^2+1)^5\,dx \qquad \int \frac{e^{\sqrt{x}}}{\sqrt{x}}\,dx \qquad \int x^2\sqrt{x^3+7}\,dx$$</div>
+  <p>None of the rules from §5.1 directly apply. These integrals involve <strong>composite functions</strong> — a function inside another function. Substitution is the systematic method for handling exactly these cases.</p>
+
+  <div class="thm-box">
+    <div class="lbl">The Core Idea — Chain Rule in Reverse</div>
+    <p>Recall the Chain Rule for derivatives: if $F(u)$ is an antiderivative of $f(u)$, then</p>
+    $$\frac{d}{dx}[F(g(x))] = f(g(x)) \cdot g'(x)$$
+    <p style="margin-bottom:0">Running this backwards: if we see $f(g(x)) \cdot g'(x)$ inside an integral, we can undo the chain rule:</p>
+    $$\int f(g(x))\cdot g'(x)\,dx = F(g(x)) + C$$
+  </div>
+
+  <div class="callout"><strong>Key Observation:</strong> The integrand must contain a function $g(x)$ AND its derivative $g'(x)$ (possibly up to a constant multiple). When you spot this pattern, substitution will work.</div>
+</section>
+
+<!-- THE METHOD -->
+<section id="method">
+  <div class="sec-label">&sect; 1 &mdash; The Systematic Method</div>
+  <h2>The Four Steps of<br>Integration by Substitution</h2>
+
+  <div class="def-box">
+    <div class="lbl">Substitution Rule</div>
+    <p>If $u = g(x)$ is a differentiable function, then:</p>
+    $$\int f(g(x))\cdot g'(x)\,dx = \int f(u)\,du = F(u) + C = F(g(x)) + C$$
+  </div>
+
+  <div style="margin: 28px 0;">
+    <div class="step-box">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>Choose $u = g(x)$ — the inner function</strong>
+        Look for a composite function. The best $u$ is usually the expression inside brackets, under a root, or in an exponent. Ask: "What part, if differentiated, gives something present in the integrand?"
+      </div>
+    </div>
+    <div class="step-box">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>Differentiate to find $du$</strong>
+        Compute $\dfrac{du}{dx} = g'(x)$, then write $du = g'(x)\,dx$. Solve for $dx$ if needed: $dx = \dfrac{du}{g'(x)}$.
+      </div>
+    </div>
+    <div class="step-box">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>Substitute completely — no $x$ should remain</strong>
+        Replace $g(x)$ with $u$ and $g'(x)\,dx$ with $du$. The entire integral must be in terms of $u$ only. If $x$ terms remain, the substitution may need adjustment or is the wrong choice.
+      </div>
+    </div>
+    <div class="step-box">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>Integrate in $u$, then back-substitute</strong>
+        Evaluate $\int f(u)\,du$ using basic rules. Then replace every $u$ with $g(x)$ to express the answer in terms of the original variable $x$.
+      </div>
+    </div>
+  </div>
+
+  <div class="callout-gold"><strong>Always verify:</strong> Differentiate your answer. You should recover the original integrand. This is the only way to be certain your substitution was correct.</div>
+</section>
+
+<!-- DETAILED EXAMPLE -->
+<section id="detailed">
+  <div class="sec-label">&sect; 2 &mdash; A Complex Worked Example</div>
+  <h2>Step-by-Step Through a<br>Challenging Integral</h2>
+
+  <p>Let us work through the following integral completely, showing every thought and every step:</p>
+  <div class="bf">$$\int \frac{3x^2}{\sqrt{x^3 + 5}}\,dx$$</div>
+
+  <div class="card al">
+    <h4 style="margin-top:0;color:var(--accent)">Step 1 — Identify the Structure</h4>
+    <p>The integrand is $\dfrac{3x^2}{\sqrt{x^3+5}} = 3x^2 \cdot (x^3+5)^{-1/2}$.</p>
+    <p>We have a composite function: $(x^3+5)^{-1/2}$ — the inner function is $x^3 + 5$.</p>
+    <p style="margin-bottom:0">Notice that $3x^2$ is exactly the derivative of $x^3 + 5$. This is the signal that substitution will work perfectly.</p>
+  </div>
+
+  <div class="card gl">
+    <h4 style="margin-top:0;color:var(--gold-lec)">Step 2 — Choose $u$ and Find $du$</h4>
+    <p>Let $u = x^3 + 5$</p>
+    <p>Then $\dfrac{du}{dx} = 3x^2$</p>
+    <p style="margin-bottom:0">Therefore $du = 3x^2\,dx$</p>
+  </div>
+
+  <div class="card tl">
+    <h4 style="margin-top:0;color:var(--teal-lec)">Step 3 — Substitute</h4>
+    <p>Replace $x^3 + 5$ with $u$ and $3x^2\,dx$ with $du$:</p>
+    $$\int \frac{3x^2}{\sqrt{x^3+5}}\,dx = \int \frac{1}{\sqrt{u}}\,du = \int u^{-1/2}\,du$$
+    <p style="margin-bottom:0">The integral is now entirely in $u$ — clean and simple.</p>
+  </div>
+
+  <div class="card sl">
+    <h4 style="margin-top:0;color:var(--sky)">Step 4 — Integrate in $u$</h4>
+    <p>Apply the power rule (raise exponent by 1, divide):</p>
+    $$\int u^{-1/2}\,du = \frac{u^{1/2}}{1/2} + C = 2\sqrt{u} + C$$
+  </div>
+
+  <div class="card pl">
+    <h4 style="margin-top:0;color:#27ae60">Step 5 — Back-Substitute</h4>
+    <p>Replace $u$ with $x^3 + 5$:</p>
+    $$2\sqrt{u} + C = 2\sqrt{x^3+5} + C$$
+    <div style="border-top:1px solid #c3e6cb;padding-top:14px;margin-top:14px">
+      <strong>&#10003; Verification:</strong> $\dfrac{d}{dx}\left[2\sqrt{x^3+5}\right] = 2 \cdot \dfrac{1}{2\sqrt{x^3+5}} \cdot 3x^2 = \dfrac{3x^2}{\sqrt{x^3+5}}$ &#10003;
+    </div>
+  </div>
+
+  <div class="callout-green"><strong>Final Answer:</strong> $\displaystyle\int \frac{3x^2}{\sqrt{x^3+5}}\,dx = 2\sqrt{x^3+5} + C$</div>
+</section>
+
+<!-- TYPES OF SUBSTITUTION -->
+<section id="types">
+  <div class="sec-label">&sect; 3 &mdash; Types of Substitution</div>
+  <h2>Six Categories of<br>Substitution Problems</h2>
+
+  <!-- LINEAR -->
+  <div class="subsec">3a &mdash; Linear Substitution</div>
+  <p>When the inner function is linear: $u = ax + b$. These are the simplest substitutions.</p>
+
+  <div class="card al">
+    <h4 style="margin-top:0;color:var(--accent)">Example — Linear</h4>
+    <p>Find $\displaystyle\int (3x-2)^7\,dx$</p>
+    <p><strong>Let</strong> $u = 3x-2$, so $du = 3\,dx$, thus $dx = \dfrac{du}{3}$.</p>
+    $$\int u^7 \cdot \frac{du}{3} = \frac{1}{3}\int u^7\,du = \frac{1}{3}\cdot\frac{u^8}{8} + C = \frac{(3x-2)^8}{24} + C$$
+    <button class="toggle-btn" onclick="toggleAnswer('lin2')">Another Example</button>
+    <div class="answer-box" id="lin2">
+      <p>Find $\displaystyle\int e^{5x+1}\,dx$</p>
+      <p>Let $u = 5x+1$, $du = 5\,dx$, so $dx = \dfrac{du}{5}$:</p>
+      $$\int e^u \cdot \frac{du}{5} = \frac{1}{5}e^u + C = \frac{1}{5}e^{5x+1} + C$$
+    </div>
+  </div>
+
+  <!-- QUADRATIC -->
+  <div class="subsec">3b &mdash; Quadratic Substitution</div>
+  <p>When the inner function is quadratic. Look for $x$ (or a multiple of it) multiplying the whole expression — that extra $x$ is often $\frac{du}{2}$.</p>
+
+  <div class="card gl">
+    <h4 style="margin-top:0;color:var(--gold-lec)">Example — Quadratic</h4>
+    <p>Find $\displaystyle\int x(x^2+1)^4\,dx$</p>
+    <p><strong>Let</strong> $u = x^2+1$, so $du = 2x\,dx$, thus $x\,dx = \dfrac{du}{2}$.</p>
+    $$\int u^4 \cdot \frac{du}{2} = \frac{1}{2}\cdot\frac{u^5}{5} + C = \frac{(x^2+1)^5}{10} + C$$
+    <button class="toggle-btn" onclick="toggleAnswer('quad2')">Another Example</button>
+    <div class="answer-box" id="quad2">
+      <p>Find $\displaystyle\int \frac{x}{x^2+3}\,dx$</p>
+      <p>Let $u = x^2+3$, $du = 2x\,dx$, so $x\,dx = \dfrac{du}{2}$:</p>
+      $$\int \frac{1}{u}\cdot\frac{du}{2} = \frac{1}{2}\ln|u| + C = \frac{1}{2}\ln(x^2+3) + C$$
+    </div>
+  </div>
+
+  <!-- EXPONENTIAL -->
+  <div class="subsec">3c &mdash; Exponential Substitution</div>
+  <p>When the exponent is a function of $x$, set $u$ equal to that exponent.</p>
+
+  <div class="card tl">
+    <h4 style="margin-top:0;color:var(--teal-lec)">Example — Exponential</h4>
+    <p>Find $\displaystyle\int x^2 e^{x^3}\,dx$</p>
+    <p><strong>Let</strong> $u = x^3$, so $du = 3x^2\,dx$, thus $x^2\,dx = \dfrac{du}{3}$.</p>
+    $$\int e^u \cdot \frac{du}{3} = \frac{1}{3}e^u + C = \frac{1}{3}e^{x^3} + C$$
+    <button class="toggle-btn" onclick="toggleAnswer('exp2')">Another Example</button>
+    <div class="answer-box" id="exp2">
+      <p>Find $\displaystyle\int \frac{e^{\sqrt{x}}}{\sqrt{x}}\,dx$</p>
+      <p>Let $u = \sqrt{x} = x^{1/2}$, so $du = \dfrac{1}{2\sqrt{x}}dx$, thus $\dfrac{dx}{\sqrt{x}} = 2\,du$:</p>
+      $$\int e^u \cdot 2\,du = 2e^u + C = 2e^{\sqrt{x}} + C$$
+    </div>
+  </div>
+
+  <!-- RATIONAL -->
+  <div class="subsec">3d &mdash; Rational Substitution</div>
+  <p>When you have a rational function where the numerator is (a multiple of) the derivative of the denominator — this gives a logarithm.</p>
+
+  <div class="card sl">
+    <h4 style="margin-top:0;color:var(--sky)">Example — Rational</h4>
+    <p>Find $\displaystyle\int \frac{4x^3}{x^4-7}\,dx$</p>
+    <p><strong>Let</strong> $u = x^4 - 7$, so $du = 4x^3\,dx$.</p>
+    $$\int \frac{du}{u} = \ln|u| + C = \ln|x^4 - 7| + C$$
+    <button class="toggle-btn" onclick="toggleAnswer('rat2')">Another Example</button>
+    <div class="answer-box" id="rat2">
+      <p>Find $\displaystyle\int \frac{2x+3}{x^2+3x-1}\,dx$</p>
+      <p>Let $u = x^2+3x-1$, $du = (2x+3)\,dx$:</p>
+      $$\int \frac{du}{u} = \ln|u| + C = \ln|x^2+3x-1| + C$$
+    </div>
+  </div>
+
+  <!-- RADICAL -->
+  <div class="subsec">3e &mdash; Radical Substitution</div>
+  <p>When the integrand contains a radical (square root, cube root, etc.), set $u$ equal to the expression under the radical.</p>
+
+  <div class="card al">
+    <h4 style="margin-top:0;color:var(--accent)">Example — Radical</h4>
+    <p>Find $\displaystyle\int x^2\sqrt{x^3+7}\,dx$</p>
+    <p><strong>Let</strong> $u = x^3 + 7$, so $du = 3x^2\,dx$, thus $x^2\,dx = \dfrac{du}{3}$.</p>
+    $$\int \sqrt{u}\cdot\frac{du}{3} = \frac{1}{3}\cdot\frac{2}{3}u^{3/2} + C = \frac{2}{9}(x^3+7)^{3/2} + C$$
+    <button class="toggle-btn" onclick="toggleAnswer('rad2')">Another Example</button>
+    <div class="answer-box" id="rad2">
+      <p>Find $\displaystyle\int \frac{1}{\sqrt{2x+3}}\,dx$</p>
+      <p>Let $u = 2x+3$, $du = 2\,dx$, so $dx = \dfrac{du}{2}$:</p>
+      $$\int u^{-1/2}\cdot\frac{du}{2} = \frac{1}{2}\cdot 2u^{1/2} + C = \sqrt{2x+3} + C$$
+    </div>
+  </div>
+
+  <!-- LOGARITHMIC -->
+  <div class="subsec">3f &mdash; Logarithmic Substitution</div>
+  <p>When $\ln(x)$ appears in the integrand, try $u = \ln(x)$. Then $du = \dfrac{1}{x}dx$.</p>
+
+  <div class="card gl">
+    <h4 style="margin-top:0;color:var(--gold-lec)">Example — Logarithmic</h4>
+    <p>Find $\displaystyle\int \frac{(\ln x)^3}{x}\,dx$</p>
+    <p><strong>Let</strong> $u = \ln x$, so $du = \dfrac{1}{x}\,dx$.</p>
+    $$\int u^3\,du = \frac{u^4}{4} + C = \frac{(\ln x)^4}{4} + C$$
+    <button class="toggle-btn" onclick="toggleAnswer('log2')">Another Example</button>
+    <div class="answer-box" id="log2">
+      <p>Find $\displaystyle\int \frac{\ln(x^2)}{x}\,dx$</p>
+      <p>Note $\ln(x^2) = 2\ln x$. Let $u = \ln x$, $du = \dfrac{dx}{x}$:</p>
+      $$\int 2u\,du = u^2 + C = (\ln x)^2 + C$$
+    </div>
+  </div>
+
+  <!-- QUICK REFERENCE TABLE -->
+  <div class="sub-divider"></div>
+  <h3>Quick Reference: Substitution Patterns</h3>
+  <table>
+    <tr><th>Integrand Pattern</th><th>Best Choice for $u$</th><th>Result Form</th></tr>
+    <tr><td>$(ax+b)^n$</td><td>$u = ax+b$</td><td>Power of $u$</td></tr>
+    <tr><td>$x\cdot f(x^2)$</td><td>$u = x^2$</td><td>Simpler $f(u)$</td></tr>
+    <tr><td>$f'(x)\cdot e^{f(x)}$</td><td>$u = f(x)$</td><td>$e^u$</td></tr>
+    <tr><td>$\dfrac{f'(x)}{f(x)}$</td><td>$u = f(x)$</td><td>$\ln|u|$</td></tr>
+    <tr><td>$f'(x)\cdot\sqrt{f(x)}$</td><td>$u = f(x)$</td><td>$\dfrac{2}{3}u^{3/2}$</td></tr>
+    <tr><td>$\dfrac{(\ln x)^n}{x}$</td><td>$u = \ln x$</td><td>$\dfrac{u^{n+1}}{n+1}$</td></tr>
+  </table>
+</section>
+
+<!-- ALGEBRA BEFORE INTEGRATION -->
+<section id="algebra">
+  <div class="sec-label">&sect; 4 &mdash; Algebra Before Integration</div>
+  <h2>Simplify First,<br>Then Integrate</h2>
+  <p>Sometimes the integrand looks complicated but simplifies with algebra — long division, expanding, or factoring — before substitution can be applied.</p>
+
+  <div class="card al">
+    <h4 style="margin-top:0;color:var(--accent)">Example 1 — Polynomial Division</h4>
+    <p>Find $\displaystyle\int \frac{x^2}{x-1}\,dx$</p>
+    <p>The degree of the numerator equals the degree of the denominator, so we divide first:</p>
+    $$\frac{x^2}{x-1} = x + 1 + \frac{1}{x-1}$$
+    <p>Now integrate term by term (with $u = x-1$ for the last term):</p>
+    $$\int\!\left(x + 1 + \frac{1}{x-1}\right)dx = \frac{x^2}{2} + x + \ln|x-1| + C$$
+    <button class="toggle-btn" onclick="toggleAnswer('div2')">Show Division Work</button>
+    <div class="answer-box" id="div2">
+      <p><strong>Long Division:</strong> Divide $x^2$ by $(x-1)$:</p>
+      <p>$x^2 \div (x-1)$: first term $x \cdot (x-1) = x^2 - x$. Remainder: $x$.</p>
+      <p>$x \div (x-1)$: second term $1 \cdot (x-1) = x-1$. Remainder: $1$.</p>
+      <p>So $\dfrac{x^2}{x-1} = x + 1 + \dfrac{1}{x-1}$ &#10003;</p>
+    </div>
+  </div>
+
+  <div class="card gl">
+    <h4 style="margin-top:0;color:var(--gold-lec)">Example 2 — Expand Before Integrating</h4>
+    <p>Find $\displaystyle\int (x+1)^2 e^x\,dx$ &nbsp; <em>Wait — this needs integration by parts (§5.5). But consider instead:</em></p>
+    <p>Find $\displaystyle\int (1+e^x)^2\,dx$</p>
+    <p>Expand: $(1+e^x)^2 = 1 + 2e^x + e^{2x}$</p>
+    $$\int\!(1 + 2e^x + e^{2x})\,dx = x + 2e^x + \frac{e^{2x}}{2} + C$$
+  </div>
+
+  <div class="card tl">
+    <h4 style="margin-top:0;color:var(--teal-lec)">Example 3 — Separate a Fraction</h4>
+    <p>Find $\displaystyle\int \frac{x^3 + 2x - 5}{x^2}\,dx$</p>
+    <p>Split into separate fractions:</p>
+    $$\frac{x^3+2x-5}{x^2} = x + \frac{2}{x} - \frac{5}{x^2} = x + \frac{2}{x} - 5x^{-2}$$
+    $$\int\!\left(x + \frac{2}{x} - 5x^{-2}\right)dx = \frac{x^2}{2} + 2\ln|x| + \frac{5}{x} + C$$
+  </div>
+
+  <div class="card sl">
+    <h4 style="margin-top:0;color:var(--sky)">Example 4 — Completing the Square (Preview)</h4>
+    <p>Find $\displaystyle\int \frac{1}{x^2+4x+5}\,dx$</p>
+    <p>Complete the square: $x^2+4x+5 = (x+2)^2 + 1$. Let $u = x+2$, $du = dx$:</p>
+    $$\int \frac{du}{u^2+1} = \arctan(u) + C = \arctan(x+2) + C$$
+  </div>
+</section>
+
+<!-- PAKISTAN WORD PROBLEMS -->
+<section id="pakistan">
+  <div class="sec-label">&sect; 5 &mdash; Applied Problems</div>
+  <h2>Word Problems from<br>Pakistan &amp; LUMS</h2>
+
+  <div class="pak-box">
+    <div class="lbl">Problem 1 &mdash; LUMS Cafeteria Revenue <span class="location-tag">LUMS, Lahore</span></div>
+    <p>The LUMS cafeteria finds that its marginal revenue (in PKR thousands) from selling $q$ meal plans per week follows the model:</p>
+    $$R'(q) = \frac{4q}{(q^2+9)^2}$$
+    <p>If $R(0) = 0$, find the total revenue function $R(q)$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('pak1')">Show Solution</button>
+    <div class="answer-box" id="pak1">
+      <p><strong>Let</strong> $u = q^2+9$, so $du = 2q\,dq$, thus $q\,dq = \dfrac{du}{2}$.</p>
+      $$R(q) = \int \frac{4q}{(q^2+9)^2}\,dq = \int \frac{4}{u^2}\cdot\frac{du}{2} = 2\int u^{-2}\,du = 2\cdot\frac{u^{-1}}{-1} + C = \frac{-2}{u} + C$$
+      <p>Back-substitute: $R(q) = \dfrac{-2}{q^2+9} + C$</p>
+      <p>Apply $R(0) = 0$: $0 = \dfrac{-2}{9} + C \Rightarrow C = \dfrac{2}{9}$</p>
+      $$\boxed{R(q) = \frac{2}{9} - \frac{2}{q^2+9} = \frac{2q^2}{9(q^2+9)}}$$
+    </div>
+  </div>
+
+  <div class="pak-box">
+    <div class="lbl">Problem 2 &mdash; Lahore Population Growth <span class="location-tag">Lahore</span></div>
+    <p>Lahore's population (in millions) is growing at the rate:</p>
+    $$\frac{dP}{dt} = 0.3\sqrt{1 + 0.5t}$$
+    <p>where $t$ is years since 2020. If $P(0) = 14$ million, find $P(t)$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('pak2')">Show Solution</button>
+    <div class="answer-box" id="pak2">
+      <p><strong>Let</strong> $u = 1+0.5t$, so $du = 0.5\,dt$, thus $dt = 2\,du$.</p>
+      $$P = \int 0.3\sqrt{u}\cdot 2\,du = 0.6\int u^{1/2}\,du = 0.6\cdot\frac{2}{3}u^{3/2} + C = 0.4(1+0.5t)^{3/2} + C$$
+      <p>Apply $P(0) = 14$: $14 = 0.4(1)^{3/2} + C \Rightarrow C = 13.6$</p>
+      $$\boxed{P(t) = 0.4(1+0.5t)^{3/2} + 13.6 \text{ million}}$$
+      <p>In 2030 ($t=10$): $P(10) = 0.4(6)^{3/2} + 13.6 \approx 0.4(14.70) + 13.6 \approx 19.5$ million.</p>
+    </div>
+  </div>
+
+  <div class="pak-box">
+    <div class="lbl">Problem 3 &mdash; Price-Adjustment Model in Pakistan's Textile Market <span class="location-tag">Faisalabad</span></div>
+    <p>The price-adjustment model in Faisalabad's textile sector states that the rate of price change follows:</p>
+    $$\frac{dP}{dt} = k(D - S) = \frac{5}{(P+2)^2}$$
+    <p>where $P$ is price (in PKR hundreds) and $t$ is time (months). Find $P(t)$ given $P(0) = 3$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('pak3')">Show Solution</button>
+    <div class="answer-box" id="pak3">
+      <p>Separate variables: $(P+2)^2\,dP = 5\,dt$</p>
+      <p>Integrate both sides. Left side: let $u = P+2$, $du = dP$:</p>
+      $$\int u^2\,du = \int 5\,dt \implies \frac{(P+2)^3}{3} = 5t + C$$
+      <p>Apply $P(0)=3$: $\dfrac{(5)^3}{3} = C \Rightarrow C = \dfrac{125}{3}$</p>
+      $$\frac{(P+2)^3}{3} = 5t + \frac{125}{3} \implies (P+2)^3 = 15t + 125$$
+      $$\boxed{P(t) = (15t + 125)^{1/3} - 2}$$
+    </div>
+  </div>
+
+  <div class="pak-box">
+    <div class="lbl">Problem 4 &mdash; LUMS Library Book Circulation <span class="location-tag">LUMS, Lahore</span></div>
+    <p>The LUMS library finds that book circulation (books borrowed per day) changes at the rate:</p>
+    $$C'(t) = \frac{200t}{(t^2+1)^{3/2}}$$
+    <p>At the start of semester ($t=0$), $C = 50$ books/day. Find $C(t)$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('pak4')">Show Solution</button>
+    <div class="answer-box" id="pak4">
+      <p><strong>Let</strong> $u = t^2+1$, $du = 2t\,dt$, so $t\,dt = \dfrac{du}{2}$.</p>
+      $$C = \int \frac{200t}{(t^2+1)^{3/2}}\,dt = \int \frac{200}{u^{3/2}}\cdot\frac{du}{2} = 100\int u^{-3/2}\,du = 100\cdot\frac{u^{-1/2}}{-1/2} + K$$
+      $$C = \frac{-200}{\sqrt{t^2+1}} + K$$
+      <p>Apply $C(0) = 50$: $50 = \dfrac{-200}{1} + K \Rightarrow K = 250$</p>
+      $$\boxed{C(t) = 250 - \frac{200}{\sqrt{t^2+1}}}$$
+      <p>As $t \to \infty$, $C \to 250$ books/day — a natural upper limit.</p>
+    </div>
+  </div>
+
+  <div class="pak-box">
+    <div class="lbl">Problem 5 &mdash; Karachi Port Import Growth <span class="location-tag">Karachi</span></div>
+    <p>The volume of imports through Karachi Port (in billions PKR) grows at:</p>
+    $$V'(t) = \frac{3(\ln t)^2}{t}$$
+    <p>for $t \geq 1$ years after 2015, with $V(1) = 0$. Find $V(t)$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('pak5')">Show Solution</button>
+    <div class="answer-box" id="pak5">
+      <p><strong>Let</strong> $u = \ln t$, $du = \dfrac{dt}{t}$.</p>
+      $$V = \int \frac{3(\ln t)^2}{t}\,dt = 3\int u^2\,du = u^3 + C = (\ln t)^3 + C$$
+      <p>Apply $V(1) = 0$: $0 = (\ln 1)^3 + C = 0 + C \Rightarrow C = 0$</p>
+      $$\boxed{V(t) = (\ln t)^3}$$
+      <p>In 2025 ($t=10$): $V(10) = (\ln 10)^3 \approx (2.303)^3 \approx 12.2$ billion PKR.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MCQ WIDGET -->
+<section id="mcq">
+  <div class="sec-label">&sect; 6 &mdash; Interactive Practice</div>
+  <h2>U-Choice Quiz:<br>Pick the Right Substitution</h2>
+  <p>For each function below, select the best choice for $u$ to perform the substitution. Choose carefully — you only get one attempt per question!</p>
+
+  <div class="mcq-widget">
+    <div class="mcq-title">&#9889; Substitution U-Choice Quiz</div>
+
+    <select class="mcq-select" id="mcqSelect" onchange="loadQuestion()">
+      <option value="">— Select a function to practise —</option>
+      <option value="0">f(x) = (x² + 3)⁵ · 2x</option>
+      <option value="1">f(x) = sin(x³) · x²</option>
+      <option value="2">f(x) = e^(4x²) · x</option>
+      <option value="3">f(x) = (ln x)² / x</option>
+      <option value="4">f(x) = √(5x − 1)</option>
+      <option value="5">f(x) = x / (x² + 7)³</option>
+      <option value="6">f(x) = e^x · (e^x + 1)⁴</option>
+      <option value="7">f(x) = cos(x) · e^sin(x)</option>
+      <option value="8">f(x) = x³ · (x⁴ − 2)⁶</option>
+      <option value="9">f(x) = (ln x)⁵ / x</option>
+      <option value="10">f(x) = x / √(x² + 9)</option>
+      <option value="11">f(x) = sec²(x) · tan³(x)</option>
+    </select>
+
+    <div class="mcq-function-display" id="mcqDisplay" style="color:#6b7280;font-family:var(--fm-lec);font-size:.85rem">
+      Select a function from the dropdown above
+    </div>
+
+    <div class="mcq-options" id="mcqOptions"></div>
+    <div class="mcq-feedback" id="mcqFeedback"></div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:14px">
+      <div class="mcq-score">Score: <span id="mcqScore">0</span> / <span id="mcqTotal">0</span> &nbsp;&nbsp; Streak: <span id="mcqStreak">0</span> &#128293;</div>
+      <button class="mcq-next-btn" onclick="resetQuestion()" id="mcqNextBtn" style="display:none">Next Question &#8594;</button>
+    </div>
+  </div>
+</section>
+
+<!-- WHEN SUBSTITUTION FAILS -->
+<section id="fails">
+  <div class="sec-label">&sect; 7 &mdash; Important Limitation</div>
+  <h2>An Integral Where<br>Substitution Fails</h2>
+
+  <p>Substitution is powerful, but it is not universal. Consider:</p>
+  <div class="bf">$$\int e^{x^2}\,dx$$</div>
+
+  <div class="warn-box">
+    <div class="lbl">&#9888; Why Substitution Fails Here</div>
+    <p><strong>Attempt:</strong> Let $u = x^2$, so $du = 2x\,dx$, thus $dx = \dfrac{du}{2x}$.</p>
+    <p>Substituting: $\displaystyle\int e^u \cdot \frac{du}{2x}$</p>
+    <p>Problem: we cannot eliminate $x$ — substituting $x = \sqrt{u}$ gives $\displaystyle\int \frac{e^u}{2\sqrt{u}}\,du$, which is no simpler.</p>
+    <p style="margin-bottom:0"><strong>Conclusion:</strong> $\displaystyle\int e^{x^2}\,dx$ has no closed-form antiderivative expressible in terms of elementary functions. This is a famous result — the integral is related to the <em>error function</em> $\text{erf}(x)$ used in statistics and physics. Substitution cannot conjure what does not exist.</p>
+  </div>
+
+  <h3>Other Integrals With No Elementary Antiderivative</h3>
+  <table>
+    <tr><th>Integral</th><th>Why It Fails</th><th>Related to</th></tr>
+    <tr><td>$\int e^{x^2}\,dx$</td><td>No cancellation possible after sub.</td><td>Error function erf$(x)$</td></tr>
+    <tr><td>$\int \dfrac{\sin x}{x}\,dx$</td><td>$\sin(u)/\sqrt{u}$ still intractable</td><td>Sine integral Si$(x)$</td></tr>
+    <tr><td>$\int \dfrac{1}{\ln x}\,dx$</td><td>No obvious inner function</td><td>Logarithmic integral Li$(x)$</td></tr>
+    <tr><td>$\int \sqrt{1-k^2\sin^2 x}\,dx$</td><td>Elliptic integral</td><td>Arc length of ellipses</td></tr>
+  </table>
+
+  <div class="callout-teal"><strong>Lesson:</strong> Always try to verify that substitution is working by checking whether you can eliminate all $x$ terms. If you cannot, try a different $u$, or consider other techniques (parts, partial fractions) or accept that the integral is non-elementary.</div>
+
+  <div class="card al">
+    <h4 style="margin-top:0;color:var(--accent)">Example Where a Different Technique Is Needed</h4>
+    <p>Find $\displaystyle\int xe^x\,dx$</p>
+    <p><strong>Try substitution:</strong> Let $u = x$, $du = dx$ — useless (no simplification). Let $u = e^x$, $du = e^x dx$, so $x = \ln u$ — gives $\displaystyle\int \ln(u)\,du$ — actually harder.</p>
+    <p style="margin-bottom:0"><strong>Correct technique:</strong> Integration by Parts (§5.5), which gives $xe^x - e^x + C$. Substitution is the wrong tool here.</p>
+  </div>
+</section>
+
+<!-- DIFFERENTIAL EQUATIONS -->
+<section id="diffeq">
+  <div class="sec-label">&sect; 8 &mdash; Differential Equations</div>
+  <h2>Differential Equations<br>Involving Substitution</h2>
+
+  <p>Many separable differential equations, once separated, yield integrals that require substitution to solve.</p>
+
+  <div class="thm-box">
+    <div class="lbl">General Strategy</div>
+    <p>Given $\dfrac{dy}{dx} = f(x)\cdot g(y)$:</p>
+    <p>1. Separate: $\dfrac{dy}{g(y)} = f(x)\,dx$</p>
+    <p>2. Integrate both sides — the left side often requires substitution in $y$, the right in $x$.</p>
+    <p style="margin-bottom:0">3. Solve for $y$, apply initial condition.</p>
+  </div>
+
+  <div class="card al">
+    <h4 style="margin-top:0;color:var(--accent)">Example 1 — Substitution on the Right Side</h4>
+    <p>Solve $\dfrac{dy}{dx} = x(x^2+1)^3$, $y(0) = 2$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('de1')">Show Solution</button>
+    <div class="answer-box" id="de1">
+      <p>Integrate: $y = \displaystyle\int x(x^2+1)^3\,dx$</p>
+      <p>Let $u = x^2+1$, $du = 2x\,dx$, so $x\,dx = \dfrac{du}{2}$:</p>
+      $$y = \int u^3 \cdot \frac{du}{2} = \frac{u^4}{8} + C = \frac{(x^2+1)^4}{8} + C$$
+      <p>Apply $y(0) = 2$: $2 = \dfrac{1}{8} + C \Rightarrow C = \dfrac{15}{8}$</p>
+      $$\boxed{y = \frac{(x^2+1)^4}{8} + \frac{15}{8}}$$
+    </div>
+  </div>
+
+  <div class="card gl">
+    <h4 style="margin-top:0;color:var(--gold-lec)">Example 2 — Substitution on Both Sides</h4>
+    <p>Solve $\dfrac{dy}{dx} = \dfrac{x}{(y+1)^2}$, $y(0) = 0$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('de2')">Show Solution</button>
+    <div class="answer-box" id="de2">
+      <p>Separate: $(y+1)^2\,dy = x\,dx$</p>
+      <p>Left side: let $v = y+1$, $dv = dy$: $\displaystyle\int v^2\,dv = \dfrac{v^3}{3} = \dfrac{(y+1)^3}{3}$</p>
+      <p>Right side: $\displaystyle\int x\,dx = \dfrac{x^2}{2}$</p>
+      $$\frac{(y+1)^3}{3} = \frac{x^2}{2} + C$$
+      <p>Apply $y(0)=0$: $\dfrac{1}{3} = C$</p>
+      $$(y+1)^3 = \frac{3x^2}{2} + 1 \implies \boxed{y = \left(\frac{3x^2}{2}+1\right)^{1/3} - 1}$$
+    </div>
+  </div>
+
+  <div class="card tl">
+    <h4 style="margin-top:0;color:var(--teal-lec)">Example 3 — Logistic-Type Equation</h4>
+    <p>Solve $\dfrac{dP}{dt} = P(1-P)$, $P(0) = 0.1$ (the logistic equation).</p>
+    <button class="toggle-btn" onclick="toggleAnswer('de3')">Show Solution</button>
+    <div class="answer-box" id="de3">
+      <p>Separate: $\dfrac{dP}{P(1-P)} = dt$</p>
+      <p>Left side requires partial fractions: $\dfrac{1}{P(1-P)} = \dfrac{1}{P} + \dfrac{1}{1-P}$</p>
+      $$\int\!\left(\frac{1}{P}+\frac{1}{1-P}\right)dP = \int dt$$
+      <p>For $\int\dfrac{dP}{1-P}$: let $u = 1-P$, $du = -dP$: gives $-\ln|1-P|$.</p>
+      $$\ln P - \ln(1-P) = t + C \implies \ln\frac{P}{1-P} = t + C$$
+      $$\frac{P}{1-P} = Ae^t \implies P = \frac{Ae^t}{1+Ae^t}$$
+      <p>Apply $P(0)=0.1$: $A = \dfrac{0.1}{0.9} = \dfrac{1}{9}$</p>
+      $$\boxed{P(t) = \frac{e^t}{9+e^t}}$$
+    </div>
+  </div>
+</section>
+
+<!-- INITIAL VALUE PROBLEMS -->
+<section id="ivp">
+  <div class="sec-label">&sect; 9 &mdash; Initial Value Problems</div>
+  <h2>Solving IVPs<br>with Substitution</h2>
+
+  <p>An <strong>initial value problem (IVP)</strong> adds a specific condition $y(x_0) = y_0$ to pin down the constant of integration $C$.</p>
+
+  <div class="card al">
+    <h4 style="margin-top:0;color:var(--accent)">IVP Example 1</h4>
+    <p>Find $f(x)$ given $f'(x) = \dfrac{6x^2}{(x^3+1)^4}$ and $f(0) = 5$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('ivp1')">Show Solution</button>
+    <div class="answer-box" id="ivp1">
+      <p>Let $u = x^3+1$, $du = 3x^2\,dx$, so $6x^2\,dx = 2\,du$:</p>
+      $$f = \int \frac{2\,du}{u^4} = 2\int u^{-4}\,du = 2\cdot\frac{u^{-3}}{-3} + C = \frac{-2}{3(x^3+1)^3} + C$$
+      <p>Apply $f(0) = 5$: $5 = \dfrac{-2}{3} + C \Rightarrow C = \dfrac{17}{3}$</p>
+      $$\boxed{f(x) = \frac{-2}{3(x^3+1)^3} + \frac{17}{3}}$$
+    </div>
+  </div>
+
+  <div class="card gl">
+    <h4 style="margin-top:0;color:var(--gold-lec)">IVP Example 2</h4>
+    <p>A LUMS student's study intensity (hours per day) follows $I'(t) = \sqrt{2t+1}$ with $I(0) = 0$. Find $I(t)$ and $I(4)$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('ivp2')">Show Solution</button>
+    <div class="answer-box" id="ivp2">
+      <p>Let $u = 2t+1$, $du = 2\,dt$, so $dt = \dfrac{du}{2}$:</p>
+      $$I = \int \sqrt{u}\cdot\frac{du}{2} = \frac{1}{2}\cdot\frac{2}{3}u^{3/2} + C = \frac{(2t+1)^{3/2}}{3} + C$$
+      <p>Apply $I(0)=0$: $0 = \dfrac{1}{3} + C \Rightarrow C = -\dfrac{1}{3}$</p>
+      $$\boxed{I(t) = \frac{(2t+1)^{3/2} - 1}{3}}$$
+      <p>At $t=4$: $I(4) = \dfrac{(9)^{3/2}-1}{3} = \dfrac{27-1}{3} = \dfrac{26}{3} \approx 8.67$ hours/day.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="callout-teal"><strong style="color:var(--teal-lec)">Coming up next &mdash;</strong> &sect;5.3 The Fundamental Theorem of Calculus (Full Treatment) &mdash; connecting differentiation and integration into one of mathematics&rsquo; most beautiful theorems.</div>
+</section>
+
+    </div><!-- end lec-inner -->
+
+    <div class="lec-footer-nav">
+      <a href="calc1-s51.html" class="lnf-btn prev">&#8592; §5.1 Indefinite Integration</a>
+      <div style="font-family:var(--fm-lec);font-size:.7rem;color:var(--muted);text-align:center">§5.2 of 5 &middot; Chapter 5 &middot; Calculus I</div>
+      <a href="course-calc1.html" class="lnf-btn next">§5.3 FTC &#8594;</a>
+    </div>
+
+  </main>
+</div>
+
+<footer class="sk-footer">
+  <div class="sk-footer-inner">
+    <div>
+      <div class="sk-footer-logo">Shoaib-K</div>
+      <p style="color:var(--text2);font-size:.875rem;margin-top:10px">Mathematician &middot; Educator &middot; Researcher<br>LUMS, Lahore, Pakistan</p>
+      <div style="display:flex;gap:14px;margin-top:14px">
+        <a href="https://www.facebook.com/shoaiib.k" target="_blank">Facebook</a>
+        <a href="https://twitter.com/msking_shoaib" target="_blank">Twitter</a>
+        <a href="https://instagram.com/msking.shoaib" target="_blank">Instagram</a>
+      </div>
+    </div>
+    <div>
+      <h5>Navigation</h5>
+      <a href="../index.html">Home</a>
+      <a href="education.html">Education</a>
+      <a href="courses.html">Courses</a>
+      <a href="research.html">Research</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div>
+      <h5>Contact</h5>
+      <a href="mailto:bssk.khan@gmail.com">bssk.khan@gmail.com</a>
+      <a href="https://lums.edu.pk" target="_blank">LUMS Website</a>
+    </div>
+  </div>
+  <div class="sk-footer-bottom">
+    <p>&copy; 2025 Muhammad Shoaib Khan &middot; LUMS &middot; Lahore, Pakistan</p>
+    <p>Built with HTML, CSS &amp; Mathematics</p>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+window.addEventListener('scroll',()=>{
+  const el=document.documentElement;
+  const bar=document.getElementById('sk-progress-bar');
+  if(bar) bar.style.width=(el.scrollTop/(el.scrollHeight-el.clientHeight)*100)+'%';
+},{passive:true});
+
+function toggleAnswer(id){
+  const el=document.getElementById(id);
+  el.classList.toggle('show');
+  if(window.MathJax&&el.classList.contains('show')) MathJax.typesetPromise([el]);
+}
+
+/* ======= MCQ QUIZ DATA ======= */
+const QUESTIONS = [
+  {
+    fn: '\\int (x^2+3)^5 \\cdot 2x\\,dx',
+    opts: ['$u = x^2+3$','$u = 2x$','$u = (x^2+3)^5$','$u = x^2$'],
+    correct: 0,
+    explain: 'u = x²+3 works because its derivative 2x is exactly the factor present. This is a classic quadratic substitution.'
+  },
+  {
+    fn: '\\int \\sin(x^3)\\cdot x^2\\,dx',
+    opts: ['$u = \\sin(x^3)$','$u = x^3$','$u = x^2$','$u = \\cos(x^3)$'],
+    correct: 1,
+    explain: 'u = x³ because its derivative 3x² differs from x² only by the constant 3, which we can factor out.'
+  },
+  {
+    fn: '\\int e^{4x^2}\\cdot x\\,dx',
+    opts: ['$u = e^{4x^2}$','$u = 4x$','$u = 4x^2$','$u = x$'],
+    correct: 2,
+    explain: 'u = 4x² because its derivative 8x contains x, which matches the x factor in the integrand (up to the constant 8).'
+  },
+  {
+    fn: '\\int \\frac{(\\ln x)^2}{x}\\,dx',
+    opts: ['$u = x$','$u = 1/x$','$u = x^2$','$u = \\ln x$'],
+    correct: 3,
+    explain: 'u = ln x because its derivative is 1/x, which is exactly the factor in the denominator. Classic logarithmic substitution.'
+  },
+  {
+    fn: '\\int \\sqrt{5x-1}\\,dx',
+    opts: ['$u = \\sqrt{x}$','$u = 5x-1$','$u = 5x$','$u = x-1$'],
+    correct: 1,
+    explain: 'u = 5x−1 is the expression under the radical. Its derivative is 5 (just a constant), making the substitution clean.'
+  },
+  {
+    fn: '\\int \\frac{x}{(x^2+7)^3}\\,dx',
+    opts: ['$u = x^2+7$','$u = x$','$u = (x^2+7)^3$','$u = x^2$'],
+    correct: 0,
+    explain: 'u = x²+7 because its derivative 2x contains x, matching the numerator (up to the constant 2).'
+  },
+  {
+    fn: '\\int e^x(e^x+1)^4\\,dx',
+    opts: ['$u = e^x+1$','$u = e^x$','$u = x$','$u = (e^x+1)^4$'],
+    correct: 0,
+    explain: 'u = eˣ+1 because its derivative is eˣ, which is exactly the factor multiplying the parenthetical expression.'
+  },
+  {
+    fn: '\\int \\cos(x)\\cdot e^{\\sin(x)}\\,dx',
+    opts: ['$u = \\cos x$','$u = e^{\\sin x}$','$u = \\sin x$','$u = x$'],
+    correct: 2,
+    explain: 'u = sin(x) because its derivative is cos(x), which is exactly the other factor. Perfect substitution!'
+  },
+  {
+    fn: '\\int x^3(x^4-2)^6\\,dx',
+    opts: ['$u = x^3$','$u = x^4-2$','$u = (x^4-2)^6$','$u = x^4$'],
+    correct: 1,
+    explain: 'u = x⁴−2 because its derivative is 4x³, and x³ is the factor present (just divide by 4).'
+  },
+  {
+    fn: '\\int \\frac{(\\ln x)^5}{x}\\,dx',
+    opts: ['$u = 1/x$','$u = x^5$','$u = \\ln(x^5)$','$u = \\ln x$'],
+    correct: 3,
+    explain: 'u = ln x — its derivative 1/x matches the denominator exactly. This gives ∫u⁵ du = u⁶/6 + C.'
+  },
+  {
+    fn: '\\int \\frac{x}{\\sqrt{x^2+9}}\\,dx',
+    opts: ['$u = \\sqrt{x^2+9}$','$u = x^2$','$u = x^2+9$','$u = x$'],
+    correct: 2,
+    explain: 'u = x²+9 because du = 2x dx, so x dx = du/2. The integral becomes ∫(1/2)u^{-1/2} du = √u + C.'
+  },
+  {
+    fn: '\\int \\sec^2(x)\\cdot\\tan^3(x)\\,dx',
+    opts: ['$u = \\sec^2 x$','$u = \\tan x$','$u = \\tan^3 x$','$u = \\cos x$'],
+    correct: 1,
+    explain: 'u = tan x because its derivative is sec²x, which is exactly the other factor. Gives ∫u³ du = u⁴/4 + C.'
+  }
+];
+
+let currentQ = -1;
+let answered = false;
+let score = 0;
+let total = 0;
+let streak = 0;
+
+function loadQuestion(){
+  const sel = document.getElementById('mcqSelect');
+  const idx = parseInt(sel.value);
+  if(isNaN(idx)) return;
+  currentQ = idx;
+  answered = false;
+
+  const q = QUESTIONS[idx];
+  const display = document.getElementById('mcqDisplay');
+  display.innerHTML = `$\\displaystyle ${q.fn}$`;
+  if(window.MathJax) MathJax.typesetPromise([display]);
+
+  const optContainer = document.getElementById('mcqOptions');
+  optContainer.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('div');
+    btn.className = 'mcq-opt';
+    btn.innerHTML = opt;
+    btn.onclick = () => checkAnswer(i, btn);
+    optContainer.appendChild(btn);
+  });
+  if(window.MathJax) MathJax.typesetPromise([optContainer]);
+
+  document.getElementById('mcqFeedback').className = 'mcq-feedback';
+  document.getElementById('mcqFeedback').innerHTML = '';
+  document.getElementById('mcqNextBtn').style.display = 'none';
+}
+
+function checkAnswer(chosen, btn){
+  if(answered) return;
+  answered = true;
+  total++;
+
+  const q = QUESTIONS[currentQ];
+  const opts = document.querySelectorAll('.mcq-opt');
+  const fb = document.getElementById('mcqFeedback');
+
+  opts[q.correct].classList.add('correct');
+  document.getElementById('mcqNextBtn').style.display = 'inline-block';
+
+  if(chosen === q.correct){
+    score++;
+    streak++;
+    btn.classList.add('correct');
+    fb.className = 'mcq-feedback correct-fb show';
+    fb.innerHTML = '&#10003; Correct! ' + q.explain;
+  } else {
+    streak = 0;
+    btn.classList.add('wrong');
+    fb.className = 'mcq-feedback wrong-fb show';
+    fb.innerHTML = '&#10007; Not quite. The correct answer is highlighted. ' + q.explain;
+  }
+  if(window.MathJax) MathJax.typesetPromise([fb]);
+
+  document.getElementById('mcqScore').textContent = score;
+  document.getElementById('mcqTotal').textContent = total;
+  document.getElementById('mcqStreak').textContent = streak;
+}
+
+function resetQuestion(){
+  document.getElementById('mcqSelect').value = '';
+  document.getElementById('mcqDisplay').innerHTML = '<span style="color:#6b7280;font-family:var(--fm-lec);font-size:.85rem">Select a function from the dropdown above</span>';
+  document.getElementById('mcqOptions').innerHTML = '';
+  document.getElementById('mcqFeedback').className = 'mcq-feedback';
+  document.getElementById('mcqNextBtn').style.display = 'none';
+  answered = false;
+  currentQ = -1;
+}
+</script>
+</body>
+</html>
