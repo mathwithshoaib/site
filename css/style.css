@@ -330,6 +330,6 @@ h4{font-family:var(--fh);font-size:1.15rem;font-weight:600;margin-bottom:8px;col
   }
 }
 
-.sticky-sub { display: block !important; }
-.course-frame { padding-top: calc(var(--nav-h) + 3px + 37px + 40px) !important; }
-.csb { top: calc(var(--nav-h) + 3px + 37px + 40px) !important; height: calc(100vh - var(--nav-h) - 80px) !important; }
+.sticky-sub { display: block !important; position: sticky !important; top: calc(var(--nav-h) + 3px) !important; z-index: 500 !important; }
+.course-frame { padding-top: calc(var(--nav-h) + 3px + 78px) !important; }
+.csb { top: calc(var(--nav-h) + 3px + 78px) !important; height: calc(100vh - var(--nav-h) - 81px) !important; }
