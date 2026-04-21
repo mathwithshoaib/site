@@ -84,15 +84,13 @@ MathJax = {
 /* ===== MAIN CONTENT WRAPPER ===== */
 .cmain { flex: 1; min-width: 0; background: #fdf8f0; overflow: hidden; }
 
-/* ===== LECTURE CONTENT — centred, max-width ===== */
-/* Override original lecture styles to work inside the shell */
+/* ===== LECTURE CONTENT ===== */
 .lec-inner {
   max-width: 100%;
   margin: 0 auto;
   padding: 0 52px 60px;
 }
 
-/* ===== ORIGINAL LECTURE CSS ===== */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&family=Source+Sans+3:wght@300;400;600&display=swap');
 
 :root {
@@ -113,7 +111,6 @@ MathJax = {
 
 .cmain { font-family: var(--fb-lec); font-size: 1.05rem; line-height: 1.8; color: #1a1a2e; background: #fdf8f0; }
 
-/* hero strip at top of lecture */
 .lec-hero {
   background: var(--ink);
   color: var(--paper);
@@ -133,7 +130,6 @@ MathJax = {
 .lec-hero p { font-size: 1rem; color: #c9c2b8; max-width: 520px; margin: 0 auto 24px; position: relative; }
 .lec-hero-line { width: 56px; height: 3px; background: var(--gold-lec); margin: 0 auto; position: relative; }
 
-/* lecture inner nav (section jump pills) */
 .lec-nav { background: rgba(253,248,240,.97); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border-lec); padding: 8px 20px; display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
 .lec-nav a { font-family: var(--fm-lec); font-size: .64rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 4px 11px; border-radius: 20px; border: 1px solid var(--border-lec); transition: all .2s; }
 .lec-nav a:hover { color: var(--accent); border-color: var(--accent); }
@@ -197,14 +193,12 @@ tr:nth-child(even) td { background: var(--cream); }
 .rule-highlight { background: var(--cream); border-radius: 8px; padding: 18px 20px; text-align: center; margin: 14px 0; font-size: 1.05rem; }
 .annot-svg { width: 100%; max-width: 580px; display: block; margin: 28px auto; }
 
-/* lecture nav footer */
 .lec-footer-nav { display: flex; justify-content: space-between; align-items: center; padding: 28px 40px; border-top: 1px solid var(--border-lec); flex-wrap: wrap; gap: 12px; background: #fdf8f0; }
 .lnf-btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--fm-lec); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 8px 18px; border: 1px solid var(--border-lec); border-radius: 8px; transition: all .2s; text-decoration: none; }
 .lnf-btn:hover { color: var(--accent); border-color: var(--accent); }
 .lnf-btn.next { color: var(--teal-lec); border-color: var(--teal-lec); background: #eef7f7; }
 .lnf-btn.next:hover { background: var(--teal-lec); color: #fff; }
 
-/* section spacing inside lec-inner */
 .lec-inner section { padding: 52px 0 0; }
 .lec-inner section:first-child { padding-top: 44px; }
 
@@ -218,7 +212,6 @@ tr:nth-child(even) td { background: var(--cream); }
 </head>
 <body>
 
-<!-- SITE NAV -->
 <div id="sk-progress"><div id="sk-progress-bar"></div></div>
 <nav class="sk-nav">
   <a href="../index.html" class="sk-nav-logo">Shoaib-K <span class="logo-badge">LUMS</span></a>
@@ -244,7 +237,6 @@ tr:nth-child(even) td { background: var(--cream); }
   </div>
 </nav>
 
-<!-- STICKY SUB-HEADER -->
 <div class="sticky-sub">
   <div class="bc-row">
     <a href="../index.html">Home</a><span>&#8250;</span>
@@ -259,10 +251,8 @@ tr:nth-child(even) td { background: var(--cream); }
   </div>
 </div>
 
-<!-- TWO-COLUMN FRAME -->
 <div class="course-frame">
 
-  <!-- SIDEBAR -->
   <aside class="csb">
     <div class="csb-head">
       <div class="csb-tag">MATH-101 &middot; Calculus I</div>
@@ -272,19 +262,16 @@ tr:nth-child(even) td { background: var(--cream); }
     <nav class="toc-nav">
       <span class="toc-ch">Course Overview</span>
       <a href="course-calc1.html" class="toc-a"><span class="dot"></span>Course Overview</a>
-
       <span class="toc-ch">Ch 1 &mdash; Limits</span>
       <a href="#" class="toc-a soon"><span class="dot"></span>L01 &middot; Intuition &amp; Definition</a>
       <a href="#" class="toc-a soon"><span class="dot"></span>L02 &middot; Limit Laws &amp; Continuity</a>
       <a href="#" class="toc-a soon"><span class="dot"></span>L03 &middot; Limits at Infinity</a>
-
       <span class="toc-ch">Ch 2 &mdash; Derivatives</span>
       <a href="#" class="toc-a soon"><span class="dot"></span>L04 &middot; The Derivative</a>
       <a href="#" class="toc-a soon"><span class="dot"></span>L05 &middot; Differentiation Rules</a>
       <a href="#" class="toc-a soon"><span class="dot"></span>L06 &middot; Chain Rule</a>
       <a href="#" class="toc-a soon"><span class="dot"></span>L07 &middot; Related Rates</a>
       <a href="#" class="toc-a soon"><span class="dot"></span>L08 &middot; Optimization</a>
-
       <span class="toc-ch">Ch 5 &mdash; Integration</span>
       <a href="calc1-s51.html" class="toc-a active live"><span class="dot"></span>L09 &middot; &#167;5.1 Indefinite Integration</a>
       <a href="#" class="toc-a soon"><span class="dot"></span>L10 &middot; &#167;5.2 Definite Integrals</a>
@@ -294,10 +281,8 @@ tr:nth-child(even) td { background: var(--cream); }
     </nav>
   </aside>
 
-  <!-- MAIN LECTURE CONTENT -->
   <main class="cmain">
 
-    <!-- LECTURE HERO -->
     <div class="lec-hero">
       <div class="lec-hero-tag">Calculus I &nbsp;&middot;&nbsp; Chapter 5 &nbsp;&middot;&nbsp; Section 5.1</div>
       <h1>The Art of<br><em>Integration</em></h1>
@@ -305,7 +290,6 @@ tr:nth-child(even) td { background: var(--cream); }
       <div class="lec-hero-line"></div>
     </div>
 
-    <!-- LECTURE INNER NAV (section jump pills) -->
     <nav class="lec-nav">
       <a href="#motivation">Motivation</a>
       <a href="#riemann">Riemann Sums</a>
@@ -321,9 +305,7 @@ tr:nth-child(even) td { background: var(--cream); }
       <a href="#practice">Practice</a>
     </nav>
 
-    <!-- ALL LECTURE CONTENT — centred and max-width constrained -->
     <div class="lec-inner">
-
 
 <!-- MOTIVATION -->
 <section id="motivation">
@@ -344,7 +326,7 @@ tr:nth-child(even) td { background: var(--cream); }
       <tr><td>2.0</td><td>50</td></tr>
       <tr><td>2.5</td><td>65</td></tr>
     </table>
-    <p>Best estimate: $(60+80+70+90+50+65)(0.5) = \mathbf{207.5 	ext{ km}}$</p>
+    <p>Best estimate: $(60+80+70+90+50+65)(0.5) = \mathbf{207.5 \text{ km}}$</p>
     <p style="margin-bottom:0">But this is only an approximation. The speed changed <em>continuously</em>. <strong>Integration gives us the exact answer.</strong></p>
   </div>
   <div class="callout"><strong>The Core Insight:</strong> If $v(t)$ is speed at time $t$, then the exact total distance from $t=a$ to $t=b$ is the area under the curve $y=v(t)$.</div>
@@ -368,7 +350,7 @@ tr:nth-child(even) td { background: var(--cream); }
       <li><strong>Pick a sample point</strong> $x_i^*$ in each sub-interval.</li>
       <li><strong>Build rectangles:</strong> width $\Delta x$, height $f(x_i^*)$.</li>
       <li><strong>Sum the areas:</strong> $\displaystyle S_n = \sum_{i=1}^{n} f(x_i^*)\,\Delta x$.</li>
-      <li><strong>Take the limit</strong> $n 	o \infty$ &mdash; sum becomes exact.</li>
+      <li><strong>Take the limit</strong> $n \to \infty$ &mdash; sum becomes exact.</li>
     </ol>
     <div class="widget">
       <div class="wt">&#11035; Interactive Riemann Sum Explorer</div>
@@ -386,7 +368,7 @@ tr:nth-child(even) td { background: var(--cream); }
         <div class="sp">Error: <span id="statErr">&mdash;</span></div>
       </div>
     </div>
-    <div class="def-box"><div class="lbl">Riemann Sum</div>$$S_n = \sum_{i=1}^{n} f(x_i^*)\,\Delta x,\qquad \Delta x = rac{b-a}{n}$$</div>
+    <div class="def-box"><div class="lbl">Riemann Sum</div>$$S_n = \sum_{i=1}^{n} f(x_i^*)\,\Delta x,\qquad \Delta x = \frac{b-a}{n}$$</div>
   </div>
 </section>
 
@@ -394,7 +376,7 @@ tr:nth-child(even) td { background: var(--cream); }
 <section id="defint">
   <div class="sec-label">&sect; 3 &mdash; The Formal Definition</div>
   <h2>The Definite Integral</h2>
-  <div class="bf">$$\int_a^b f(x)\,dx \;=\; \lim_{n	o\infty} \sum_{i=1}^{n} f(x_i^*)\,\Delta x$$</div>
+  <div class="bf">$$\int_a^b f(x)\,dx \;=\; \lim_{n\to\infty} \sum_{i=1}^{n} f(x_i^*)\,\Delta x$$</div>
   <div class="widget">
     <div class="wt">&#128210; Signed Area Explorer &mdash; $\int_0^b \sin(x)\,dx$</div>
     <canvas id="signedCanvas" height="260"></canvas>
@@ -461,7 +443,7 @@ tr:nth-child(even) td { background: var(--cream); }
     <text x="540" y="38" text-anchor="middle" font-size="11.5" font-family="monospace" fill="#b03a6e" font-weight="600">CONSTANT OF INTEGRATION</text>
   </svg>
   <div class="def-box"><div class="lbl">The Indefinite Integral</div><p>If $F'(x)=f(x)$:</p>$$\int f(x)\,dx = F(x) + C$$
-  <table style="margin-top:12px"><tr><th>Symbol</th><th>Name</th><th>Meaning</th></tr><tr><td>$\int$</td><td>Integral sign</td><td>Stretched &ldquo;S&rdquo; &mdash; commands antidifferentiation</td></tr><tr><td>$f(x)$</td><td>Integrand</td><td>Function to antidifferentiate</td></tr><tr><td>$dx$</td><td>Differential</td><td>Identifies variable; limit of $\Delta x	o 0$</td></tr><tr><td>$C$</td><td>Constant</td><td>Represents the full family of antiderivatives</td></tr></table></div>
+  <table style="margin-top:12px"><tr><th>Symbol</th><th>Name</th><th>Meaning</th></tr><tr><td>$\int$</td><td>Integral sign</td><td>Stretched &ldquo;S&rdquo; &mdash; commands antidifferentiation</td></tr><tr><td>$f(x)$</td><td>Integrand</td><td>Function to antidifferentiate</td></tr><tr><td>$dx$</td><td>Differential</td><td>Identifies variable; limit of $\Delta x \to 0$</td></tr><tr><td>$C$</td><td>Constant</td><td>Represents the full family of antiderivatives</td></tr></table></div>
 </section>
 
 <!-- INTEGRATION RULES -->
@@ -483,17 +465,16 @@ tr:nth-child(even) td { background: var(--cream); }
 
   <div class="card gl">
     <h4 style="margin-top:0;color:var(--gold-lec)">Rule 2 &mdash; The Power Rule</h4>
-    <div class="rule-highlight" style="background:#fff8ec">$$\int x^n\,dx = rac{x^{n+1}}{n+1} + C \qquad (n 
-eq -1)$$</div>
+    <div class="rule-highlight" style="background:#fff8ec">$$\int x^n\,dx = \frac{x^{n+1}}{n+1} + C \qquad (n \neq -1)$$</div>
     <p><em>Raise the exponent by 1, divide by the new exponent.</em></p>
     <div style="border-top:1px solid var(--border-lec);padding-top:14px;margin-top:14px">
-      <strong>Example 1.</strong> $\displaystyle\int x^5\,dx = rac{x^6}{6} + C$
+      <strong>Example 1.</strong> $\displaystyle\int x^5\,dx = \frac{x^6}{6} + C$
     </div>
     <div style="border-top:1px solid var(--border-lec);padding-top:12px;margin-top:12px">
-      <strong>Example 2 (fractional).</strong> $\displaystyle\int \sqrt{x}\,dx = rac{2}{3}x^{3/2}+C$
+      <strong>Example 2 (fractional).</strong> $\displaystyle\int \sqrt{x}\,dx = \frac{2}{3}x^{3/2}+C$
     </div>
     <div style="border-top:1px solid var(--border-lec);padding-top:12px;margin-top:12px">
-      <strong>Example 3 (negative).</strong> $\displaystyle\int x^{-3}\,dx = -rac{1}{2x^2}+C$
+      <strong>Example 3 (negative).</strong> $\displaystyle\int x^{-3}\,dx = -\frac{1}{2x^2}+C$
     </div>
     <button class="toggle-btn" style="margin-top:16px" onclick="toggleAnswer('pr_try')">Try: $\int x^{3/4}\,dx$</button>
     <div class="answer-box" id="pr_try">$\dfrac{4}{7}x^{7/4}+C$</div>
@@ -501,38 +482,36 @@ eq -1)$$</div>
 
   <div class="card tl">
     <h4 style="margin-top:0;color:var(--teal-lec)">Rule 3 &mdash; The Logarithmic Rule</h4>
-    <div class="rule-highlight" style="background:#eef7f7">$$\int rac{1}{x}\,dx = \ln|x| + C \qquad (x 
-eq 0)$$</div>
+    <div class="rule-highlight" style="background:#eef7f7">$$\int \frac{1}{x}\,dx = \ln|x| + C \qquad (x \neq 0)$$</div>
     <p>The power rule fails for $n=-1$. Since $\dfrac{d}{dx}\ln|x|=\dfrac{1}{x}$, the antiderivative is $\ln|x|$.</p>
-    <div style="border-top:1px solid var(--border-lec);padding-top:14px;margin-top:14px"><strong>Example.</strong> $\displaystyle\int rac{8}{x}\,dx = 8\ln|x|+C$</div>
+    <div style="border-top:1px solid var(--border-lec);padding-top:14px;margin-top:14px"><strong>Example.</strong> $\displaystyle\int \frac{8}{x}\,dx = 8\ln|x|+C$</div>
   </div>
 
   <div class="card sl">
     <h4 style="margin-top:0;color:var(--sky)">Rule 4 &mdash; The Exponential Rule</h4>
-    <div class="rule-highlight" style="background:#f0f4ff">$$\int e^x\,dx = e^x + C \qquad	ext{and}\qquad \int e^{kx}\,dx = rac{e^{kx}}{k}+C$$</div>
+    <div class="rule-highlight" style="background:#f0f4ff">$$\int e^x\,dx = e^x + C \qquad \text{and} \qquad \int e^{kx}\,dx = \frac{e^{kx}}{k}+C$$</div>
     <p>$e^x$ is its own derivative &mdash; and its own antiderivative.</p>
-    <div style="border-top:1px solid var(--border-lec);padding-top:12px;margin-top:12px"><strong>Example 1.</strong> $\displaystyle\int e^{3x}\,dx = rac{e^{3x}}{3}+C$</div>
-    <div style="border-top:1px solid var(--border-lec);padding-top:12px;margin-top:12px"><strong>Example 2.</strong> $\displaystyle\int 5e^{-2x}\,dx = -rac{5}{2}e^{-2x}+C$</div>
+    <div style="border-top:1px solid var(--border-lec);padding-top:12px;margin-top:12px"><strong>Example 1.</strong> $\displaystyle\int e^{3x}\,dx = \frac{e^{3x}}{3}+C$</div>
+    <div style="border-top:1px solid var(--border-lec);padding-top:12px;margin-top:12px"><strong>Example 2.</strong> $\displaystyle\int 5e^{-2x}\,dx = -\frac{5}{2}e^{-2x}+C$</div>
   </div>
 
   <div class="sub-divider"></div>
   <div class="subsec" style="margin-top:0">Algebraic Rules for Indefinite Integration</div>
   <div class="thm-box"><div class="lbl">Constant Multiple Rule</div>$$\int k\cdot f(x)\,dx = k\int f(x)\,dx$$</div>
-  <div class="thm-box"><div class="lbl">Sum and Difference Rule</div>$$\int igl[f(x) \pm g(x)igr]\,dx = \int f(x)\,dx \pm \int g(x)\,dx$$</div>
+  <div class="thm-box"><div class="lbl">Sum and Difference Rule</div>$$\int \bigl[f(x) \pm g(x)\bigr]\,dx = \int f(x)\,dx \pm \int g(x)\,dx$$</div>
 
   <div class="card al">
     <h4 style="margin-top:0;color:var(--accent)">&#9999;&#65039; Example &mdash; Combining Rules</h4>
-    <p>Find $\displaystyle\int\!\left(6x^2 - rac{4}{x} + 3e^x
-ight)dx$.</p>
+    <p>Find $\displaystyle\int\!\left(6x^2 - \frac{4}{x} + 3e^x\right)dx$.</p>
     <button class="toggle-btn" onclick="toggleAnswer('alg1')">Show Solution</button>
     <div class="answer-box" id="alg1">$$= 2x^3 - 4\ln|x| + 3e^x + C$$</div>
   </div>
 
   <div class="card gl">
     <h4 style="margin-top:0;color:var(--gold-lec)">&#9999;&#65039; Example &mdash; Simplify First</h4>
-    <p>Find $\displaystyle\intrac{x^3 - 4x}{x}\,dx$.</p>
+    <p>Find $\displaystyle\int\frac{x^3 - 4x}{x}\,dx$.</p>
     <button class="toggle-btn" onclick="toggleAnswer('alg2')">Show Solution</button>
-    <div class="answer-box" id="alg2">$$\int(x^2-4)\,dx = rac{x^3}{3}-4x+C$$</div>
+    <div class="answer-box" id="alg2">$$\int(x^2-4)\,dx = \frac{x^3}{3}-4x+C$$</div>
   </div>
 
   <div class="widget">
@@ -605,7 +584,7 @@ ight)dx$.</p>
     <button class="toggle-btn" onclick="toggleAnswer('ivp1')">Show Solution</button>
     <div class="answer-box" id="ivp1">
       <p>$R(q)=50q-q^2+C$. $R(0)=0 \Rightarrow C=0$.</p>
-      $$R(q)=50q-q^2 \qquad 	ext{(max at } q=25	ext{)}$$
+      $$R(q)=50q-q^2 \qquad \text{(max at } q=25\text{)}$$
     </div>
   </div>
   <div class="card tl">
@@ -638,7 +617,7 @@ ight)dx$.</p>
     <h4 style="margin-top:0;color:var(--accent)">&#128181; Example</h4>
     <p>$\$5{,}000$ at $6\%$ continuous compounding for 10 years.</p>
     <button class="toggle-btn" onclick="toggleAnswer('cc2')">Show Solution</button>
-    <div class="answer-box" id="cc2">$$B(10)=5000e^{0.6}pprox\$9{,}110.60$$</div>
+    <div class="answer-box" id="cc2">$$B(10)=5000e^{0.6}\approx\$9{,}110.60$$</div>
   </div>
   <div class="widget">
     <div class="wt">&#128200; Continuous Compounding Explorer &nbsp; $B(t)=Pe^{rt}$</div>
@@ -650,7 +629,7 @@ ight)dx$.</p>
     </div>
     <div class="srow"><div class="sp">$B(t)$ = $<span id="compResult">&mdash;</span></div><div class="sp">Interest = $<span id="compInterest">&mdash;</span></div><div class="sp">Doubles ~ <span id="compDouble">&mdash;</span> yrs</div></div>
   </div>
-  <div class="callout-gold"><strong>Rule of 70:</strong> At rate $r\%$, money doubles in $pprox 70/r$ years. From $Pe^{rt}=2P \Rightarrow t=\ln2/r pprox 0.693/r$.</div>
+  <div class="callout-gold"><strong>Rule of 70:</strong> At rate $r\%$, money doubles in $\approx 70/r$ years. From $Pe^{rt}=2P \Rightarrow t=\ln2/r \approx 0.693/r$.</div>
 </section>
 
 <!-- PRACTICE -->
@@ -660,25 +639,22 @@ ight)dx$.</p>
 
   <div class="card al"><h3 style="margin-top:0">Problem 1 &mdash; Power Rule</h3><p>$\displaystyle\int(4x^3-6x+5)\,dx$</p><button class="toggle-btn" onclick="toggleAnswer('p1')">Reveal Solution</button><div class="answer-box" id="p1">$$x^4-3x^2+5x+C$$</div></div>
 
-  <div class="card gl"><h3 style="margin-top:0">Problem 2 &mdash; Mixed Rules</h3><p>$\displaystyle\int\!\left(3\sqrt{x}-rac{5}{x}+2e^x
-ight)dx$</p><button class="toggle-btn" onclick="toggleAnswer('p2')">Reveal Solution</button><div class="answer-box" id="p2">$$2x^{3/2}-5\ln|x|+2e^x+C$$</div></div>
+  <div class="card gl"><h3 style="margin-top:0">Problem 2 &mdash; Mixed Rules</h3><p>$\displaystyle\int\!\left(3\sqrt{x}-\frac{5}{x}+2e^x\right)dx$</p><button class="toggle-btn" onclick="toggleAnswer('p2')">Reveal Solution</button><div class="answer-box" id="p2">$$2x^{3/2}-5\ln|x|+2e^x+C$$</div></div>
 
   <div class="card tl"><h3 style="margin-top:0">Problem 3 &mdash; Initial Value Problem</h3><p>$f'(x)=6x-4$, $f(2)=3$. Find $f(x)$.</p><button class="toggle-btn" onclick="toggleAnswer('p3')">Reveal Solution</button><div class="answer-box" id="p3">$$f(x)=3x^2-4x-1$$</div></div>
 
   <div class="card sl"><h3 style="margin-top:0">Problem 4 &mdash; Marginal Revenue</h3><p>$R'(q)=120-4q$, $R(0)=0$. Find $R(q)$ and maximising quantity.</p><button class="toggle-btn" onclick="toggleAnswer('p4')">Reveal Solution</button><div class="answer-box" id="p4"><p>$R(q)=120q-2q^2$. Max at $q=30$: $R(30)=\$1{,}800$.</p></div></div>
 
-  <div class="card al"><h3 style="margin-top:0">Problem 5 &mdash; Continuous Compounding</h3><p>How many years for $\$2{,}000$ to triple at $8\%$ continuous compounding?</p><button class="toggle-btn" onclick="toggleAnswer('p5')">Reveal Solution</button><div class="answer-box" id="p5">$$t=rac{\ln 3}{0.08}pprox 13.73	ext{ years}$$</div></div>
+  <div class="card al"><h3 style="margin-top:0">Problem 5 &mdash; Continuous Compounding</h3><p>How many years for $\$2{,}000$ to triple at $8\%$ continuous compounding?</p><button class="toggle-btn" onclick="toggleAnswer('p5')">Reveal Solution</button><div class="answer-box" id="p5">$$t=\frac{\ln 3}{0.08}\approx 13.73 \text{ years}$$</div></div>
 
-  <div class="card tl"><h3 style="margin-top:0">Problem 6 &mdash; Challenge</h3><p>$\dfrac{dP}{dt}=0.05P$, $P(0)=1000$. Find $P(t)$ and $P(20)$.</p><button class="toggle-btn" onclick="toggleAnswer('p6')">Reveal Solution</button><div class="answer-box" id="p6"><p>$P(t)=1000e^{0.05t}$.</p>$$P(20)=1000epprox 2{,}718$$</div></div>
+  <div class="card tl"><h3 style="margin-top:0">Problem 6 &mdash; Challenge</h3><p>$\dfrac{dP}{dt}=0.05P$, $P(0)=1000$. Find $P(t)$ and $P(20)$.</p><button class="toggle-btn" onclick="toggleAnswer('p6')">Reveal Solution</button><div class="answer-box" id="p6"><p>$P(t)=1000e^{0.05t}$.</p>$$P(20)=1000e\approx 2{,}718$$</div></div>
 
   <div class="divider"></div>
   <div class="callout-teal"><strong style="color:var(--teal-lec)">Coming up next &mdash;</strong> &sect;5.2 Definite Integrals &amp; Area Between Curves.</div>
 </section>
 
-
     </div><!-- end lec-inner -->
 
-    <!-- LECTURE FOOTER NAV -->
     <div class="lec-footer-nav">
       <a href="course-calc1.html" class="lnf-btn">&#8592; Course Overview</a>
       <div style="font-family:var(--fm-lec);font-size:.7rem;color:var(--muted);text-align:center">&sect;5.1 of 5 &middot; Chapter 5 &middot; Calculus I</div>
@@ -686,9 +662,8 @@ ight)dx$</p><button class="toggle-btn" onclick="toggleAnswer('p2')">Reveal Solut
     </div>
 
   </main>
-</div><!-- end course-frame -->
+</div>
 
-<!-- SITE FOOTER -->
 <footer class="sk-footer">
   <div class="sk-footer-inner">
     <div>
@@ -714,23 +689,21 @@ ight)dx$</p><button class="toggle-btn" onclick="toggleAnswer('p2')">Reveal Solut
     <p>Built with HTML, CSS &amp; Mathematics</p>
   </div>
 </footer>
+
 <script src="../js/main.js"></script>
 <script>
-// Progress bar
 window.addEventListener('scroll',()=>{
   const el=document.documentElement;
   const bar=document.getElementById('sk-progress-bar');
   if(bar) bar.style.width=(el.scrollTop/(el.scrollHeight-el.clientHeight)*100)+'%';
 },{passive:true});
 
-// Toggle answers
 function toggleAnswer(id){
   const el=document.getElementById(id);
   el.classList.toggle('show');
   if(window.MathJax&&el.classList.contains('show')) MathJax.typesetPromise([el]);
 }
 
-// Riemann reveal
 function toggleRiemann(btn){
   const sec=document.getElementById('riemannSection');
   const showing=sec.classList.toggle('show');
@@ -738,14 +711,12 @@ function toggleRiemann(btn){
   if(showing) setTimeout(drawRiemann,80);
 }
 
-// Functions
 const FNS={
   quad:{fn:x=>x*x,exact:(a,b)=>b**3/3-a**3/3},
   sin:{fn:x=>Math.sin(x)+1,exact:(a,b)=>(b-a)+Math.cos(a)-Math.cos(b)},
   sqrt:{fn:x=>Math.sqrt(x),exact:(a,b)=>2/3*(b**1.5-a**1.5)},
   cubic:{fn:x=>x**3/4+1,exact:(a,b)=>(b**4/16+b)-(a**4/16+a)}
 };
-function numInt(fn,a,b,n=2000){const dx=(b-a)/n;let s=0;for(let i=0;i<n;i++)s+=fn(a+(i+.5)*dx)*dx;return s;}
 
 const rA=0,rB=3;let rN=4;
 function updateN(v){rN=+v;document.getElementById('nVal').textContent=v;drawRiemann();}
@@ -870,7 +841,6 @@ function drawComp(P,r,tCur){
   ctx.fillStyle='#9ca3af';ctx.font='11px IBM Plex Mono,monospace';[0,10,20,30,40].forEach(t=>ctx.fillText(t+'yr',tX(t)-12,H-6));
 }
 
-// Rule builder
 const RULES={
   x3:['Identify $n=3$.','Apply power rule: raise exp by 1, divide.','$$\\int x^3\\,dx = \\frac{x^4}{4}+C$$'],
   x5:['Factor: $5\\int x^4\\,dx$.','$n=4$: result is $x^5/5$.','$$5\\cdot\\frac{x^5}{5}+C = x^5+C$$'],
