@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculus I Quiz · Integration · Shoaib-K · LUMS</title>
+<link rel="stylesheet" href="../css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<!-- jsPDF for result card -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&family=Source+Sans+3:wght@300;400;500;600&display=swap');
+
+:root {
+  --ink: #1a1a2e;
+  --paper: #fdf8f0;
+  --cream: #f5ede0;
+  --accent: #c0392b;
+  --gold: #d4a017;
+  --teal: #1a6b6b;
+  --sky: #2980b9;
+  --green: #27ae60;
+  --muted: #7f8c8d;
+  --border: #e0d6c8;
+  --shadow: 0 4px 24px rgba(26,26,46,.10);
+  --fh: 'Playfair Display', Georgia, serif;
+  --fb: 'Source Sans 3', sans-serif;
+  --fm: 'IBM Plex Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: var(--fb); min-height: 100vh; }
+
+/* ── PAGE HEADER ── */
+.quiz-header {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 32px 24px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.quiz-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.025) 40px,rgba(255,255,255,.025) 41px);
+}
+.quiz-header-tag {
+  font-family: var(--fm); font-size: .68rem; letter-spacing: .24em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 10px; position: relative;
+}
+.quiz-header h1 {
+  font-family: var(--fh); font-size: clamp(1.6rem,4vw,2.6rem);
+  font-weight: 700; position: relative; margin-bottom: 6px;
+}
+.quiz-header h1 em { color: var(--gold); font-style: italic; }
+.quiz-header p { font-size: .95rem; color: #c9c2b8; position: relative; }
+
+/* ── STATS BAR ── */
+.stats-bar {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+.stat-item { text-align: center; }
+.stat-num {
+  font-family: var(--fm); font-size: 1.4rem; font-weight: 700;
+  color: var(--teal); display: block;
+}
+.stat-lbl {
+  font-family: var(--fm); font-size: .62rem; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--muted);
+}
+
+/* ── MAIN CONTAINER ── */
+.quiz-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+}
+
+/* ── CARDS ── */
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 32px 36px;
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+}
+
+/* ── FORM ── */
+.form-title {
+  font-family: var(--fh); font-size: 1.5rem; font-weight: 700;
+  color: var(--ink); margin-bottom: 6px;
+}
+.form-sub { color: var(--muted); font-size: .92rem; margin-bottom: 28px; }
+
+.field { margin-bottom: 20px; }
+.field label {
+  display: block; font-family: var(--fm); font-size: .68rem;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 7px;
+}
+.field input {
+  width: 100%; padding: 11px 14px;
+  border: 1.5px solid var(--border); border-radius: 8px;
+  font-family: var(--fb); font-size: 1rem; color: var(--ink);
+  background: var(--paper); transition: border-color .2s;
+  outline: none;
+}
+.field input:focus { border-color: var(--teal); }
+.field .opt { font-family: var(--fm); font-size: .64rem; color: #aaa; margin-left: 6px; }
+
+.start-btn {
+  width: 100%; padding: 14px;
+  background: var(--teal); color: #fff;
+  border: none; border-radius: 10px;
+  font-family: var(--fm); font-size: .82rem; letter-spacing: .12em;
+  text-transform: uppercase; cursor: pointer;
+  transition: all .2s; margin-top: 8px;
+}
+.start-btn:hover { background: #145555; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,107,107,.3); }
+
+/* ── QUIZ AREA ── */
+.quiz-meta {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 24px; flex-wrap: wrap; gap: 10px;
+}
+.quiz-student-name {
+  font-family: var(--fh); font-size: 1.1rem; color: var(--ink);
+}
+.quiz-progress {
+  font-family: var(--fm); font-size: .75rem; color: var(--muted);
+}
+.progress-bar-wrap {
+  background: var(--cream); border-radius: 99px; height: 6px;
+  margin-bottom: 28px; overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%; background: var(--teal);
+  border-radius: 99px; transition: width .4s ease;
+}
+
+/* ── QUESTION CARD ── */
+.q-number {
+  font-family: var(--fm); font-size: .66rem; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+}
+.q-text {
+  font-family: var(--fh); font-size: 1.18rem; font-weight: 400;
+  color: var(--ink); margin-bottom: 22px; line-height: 1.6;
+}
+.q-marks {
+  font-family: var(--fm); font-size: .68rem; color: var(--muted);
+  margin-bottom: 18px;
+}
+
+/* ── OPTIONS ── */
+.options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.opt-btn {
+  padding: 13px 18px;
+  border: 1.5px solid var(--border); border-radius: 10px;
+  background: var(--paper); color: var(--ink);
+  font-family: var(--fb); font-size: .97rem;
+  cursor: pointer; text-align: left; transition: all .2s;
+  display: flex; align-items: center; gap: 12px;
+}
+.opt-btn:hover:not(:disabled) { border-color: var(--teal); background: #eef7f7; }
+.opt-btn.selected { border-color: var(--teal); background: #eef7f7; }
+.opt-btn.correct { border-color: var(--green); background: #f0faf4; color: var(--green); }
+.opt-btn.wrong { border-color: var(--accent); background: #fff5f5; color: var(--accent); }
+.opt-btn:disabled { cursor: default; }
+.opt-letter {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--cream); display: flex; align-items: center; justify-content: center;
+  font-family: var(--fm); font-size: .75rem; font-weight: 600;
+  flex-shrink: 0; transition: all .2s;
+}
+.opt-btn.selected .opt-letter { background: var(--teal); color: #fff; }
+.opt-btn.correct .opt-letter { background: var(--green); color: #fff; }
+.opt-btn.wrong .opt-letter { background: var(--accent); color: #fff; }
+
+/* ── FEEDBACK ── */
+.q-feedback {
+  padding: 12px 16px; border-radius: 8px;
+  font-size: .93rem; display: none; margin-bottom: 16px;
+}
+.q-feedback.correct { background: #f0faf4; border-left: 3px solid var(--green); color: #1a5c36; display: block; }
+.q-feedback.wrong { background: #fff5f5; border-left: 3px solid var(--accent); color: #7a1a1a; display: block; }
+
+/* ── NAV BUTTONS ── */
+.q-nav { display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px; }
+.nav-btn {
+  padding: 10px 24px; border-radius: 8px;
+  font-family: var(--fm); font-size: .76rem; letter-spacing: .1em;
+  text-transform: uppercase; cursor: pointer; transition: all .2s; border: none;
+}
+.nav-btn.primary { background: var(--teal); color: #fff; }
+.nav-btn.primary:hover { background: #145555; }
+.nav-btn.secondary { background: var(--cream); color: var(--muted); border: 1px solid var(--border); }
+.nav-btn.secondary:hover { border-color: var(--teal); color: var(--teal); }
+.nav-btn:disabled { opacity: .4; cursor: default; }
+
+/* ── RESULT CARD ── */
+.result-header {
+  text-align: center; margin-bottom: 28px;
+}
+.result-score-circle {
+  width: 120px; height: 120px; border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
+  border: 4px solid var(--teal);
+}
+.result-score-num {
+  font-family: var(--fm); font-size: 2rem; font-weight: 700; color: var(--teal);
+  line-height: 1;
+}
+.result-score-denom {
+  font-family: var(--fm); font-size: .82rem; color: var(--muted);
+}
+.result-name {
+  font-family: var(--fh); font-size: 1.4rem; color: var(--ink); margin-bottom: 4px;
+}
+.result-grade {
+  font-family: var(--fm); font-size: .9rem; letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.result-grade.A { color: var(--green); }
+.result-grade.B { color: var(--teal); }
+.result-grade.C { color: var(--gold); }
+.result-grade.F { color: var(--accent); }
+
+.result-breakdown { margin: 20px 0; }
+.rb-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+  font-size: .93rem;
+}
+.rb-row:last-child { border-bottom: none; }
+.rb-q { color: var(--muted); font-size: .85rem; }
+.rb-correct { color: var(--green); font-family: var(--fm); font-size: .8rem; }
+.rb-wrong { color: var(--accent); font-family: var(--fm); font-size: .8rem; }
+
+.result-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.action-btn {
+  flex: 1; min-width: 140px; padding: 12px 20px;
+  border-radius: 10px; font-family: var(--fm); font-size: .76rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  cursor: pointer; transition: all .2s; border: none;
+  text-align: center;
+}
+.action-btn.primary { background: var(--teal); color: #fff; }
+.action-btn.primary:hover { background: #145555; }
+.action-btn.secondary { background: var(--cream); color: var(--ink); border: 1px solid var(--border); }
+.action-btn.secondary:hover { border-color: var(--teal); }
+
+/* ── SIGNATURE ── */
+.sig-area {
+  margin-top: 28px; padding-top: 20px;
+  border-top: 1px solid var(--border);
+  text-align: right;
+}
+.sig-name {
+  font-family: var(--fh); font-size: 1.3rem; font-style: italic; color: var(--ink);
+}
+.sig-title { font-family: var(--fm); font-size: .68rem; color: var(--muted); margin-top: 2px; }
+
+/* ── HIDDEN ── */
+.hidden { display: none !important; }
+
+/* ── LOADER ── */
+.loader {
+  text-align: center; padding: 40px;
+  font-family: var(--fm); font-size: .82rem; color: var(--muted);
+}
+
+/* ── MOBILE ── */
+@media (max-width: 580px) {
+  .card { padding: 22px 18px; }
+  .stats-bar { gap: 24px; }
+  .quiz-container { padding: 20px 16px 40px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="quiz-header">
+  <div class="quiz-header-tag">MATH-101 &middot; Calculus I &middot; LUMS</div>
+  <h1>Integration Quiz &mdash; <em>Chapter 5</em></h1>
+  <p>Indefinite Integration &middot; Substitution &middot; Definite Integrals &middot; Applications</p>
+</div>
+
+<!-- LIVE STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-num" id="totalAttempts">—</span>
+    <span class="stat-lbl">Total Attempts</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num" id="avgScore">—</span>
+    <span class="stat-lbl">Average Score</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num" id="avgPct">—%</span>
+    <span class="stat-lbl">Average %</span>
+  </div>
+</div>
+
+<div class="quiz-container">
+
+  <!-- SECTION 1: STUDENT INFO FORM -->
+  <div id="sectionForm" class="card">
+    <div class="form-title">Before You Begin</div>
+    <div class="form-sub">Enter your details. Your name will appear on your result card.</div>
+
+    <div class="field">
+      <label>Full Name *</label>
+      <input type="text" id="fName" placeholder="e.g. Muhammad Ali Khan" autocomplete="name">
+    </div>
+    <div class="field">
+      <label>Class / Section *</label>
+      <input type="text" id="fClass" placeholder="e.g. MATH-101 Section A">
+    </div>
+    <div class="field">
+      <label>Institute *</label>
+      <input type="text" id="fInstitute" placeholder="e.g. LUMS" value="LUMS">
+    </div>
+    <div class="field">
+      <label>Campus ID <span class="opt">(optional)</span></label>
+      <input type="text" id="fCampusId" placeholder="e.g. 24010001">
+    </div>
+
+    <button class="start-btn" onclick="startQuiz()">Start Quiz &#8594;</button>
+    <div id="formError" style="color:var(--accent);font-family:var(--fm);font-size:.78rem;margin-top:12px;display:none;">
+      Please fill in your name, class, and institute before starting.
+    </div>
+  </div>
+
+  <!-- SECTION 2: QUIZ -->
+  <div id="sectionQuiz" class="hidden">
+    <div class="quiz-meta">
+      <div class="quiz-student-name" id="quizStudentName"></div>
+      <div class="quiz-progress" id="quizProgress">Question 1 of 5</div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <div class="card" id="questionCard">
+      <!-- Filled dynamically -->
+    </div>
+  </div>
+
+  <!-- SECTION 3: RESULT -->
+  <div id="sectionResult" class="hidden">
+    <div class="card">
+      <div class="result-header">
+        <div class="result-score-circle" id="scoreCircle">
+          <div class="result-score-num" id="scoreNum">0</div>
+          <div class="result-score-denom" id="scoreDenom">/ 5</div>
+        </div>
+        <div class="result-name" id="resultName"></div>
+        <div class="result-grade" id="resultGrade"></div>
+      </div>
+
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px">
+        <div style="flex:1;min-width:140px;background:var(--cream);border-radius:10px;padding:14px 18px;text-align:center">
+          <div style="font-family:var(--fm);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Score</div>
+          <div style="font-family:var(--fm);font-size:1.1rem;font-weight:700;color:var(--teal)" id="rScore"></div>
+        </div>
+        <div style="flex:1;min-width:140px;background:var(--cream);border-radius:10px;padding:14px 18px;text-align:center">
+          <div style="font-family:var(--fm);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Percentage</div>
+          <div style="font-family:var(--fm);font-size:1.1rem;font-weight:700;color:var(--teal)" id="rPct"></div>
+        </div>
+        <div style="flex:1;min-width:140px;background:var(--cream);border-radius:10px;padding:14px 18px;text-align:center">
+          <div style="font-family:var(--fm);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Institute</div>
+          <div style="font-family:var(--fm);font-size:1.1rem;font-weight:700;color:var(--teal)" id="rInstitute"></div>
+        </div>
+      </div>
+
+      <div class="result-breakdown" id="resultBreakdown"></div>
+
+      <div class="sig-area">
+        <div class="sig-name">Muhammad Shoaib Khan</div>
+        <div class="sig-title">Teaching Fellow &middot; Calculus I &middot; LUMS</div>
+        <div class="sig-title" id="resultDate" style="margin-top:4px"></div>
+      </div>
+
+      <div class="result-actions">
+        <button class="action-btn primary" onclick="downloadPDF()">&#11015; Download Result Card (PDF)</button>
+        <button class="action-btn secondary" onclick="retakeQuiz()">&#8635; Try Again</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end quiz-container -->
+
+<script>
+/* ═══════════════════════════════════════════════════
+   SUPABASE CONFIG
+═══════════════════════════════════════════════════ */
+const SUPABASE_URL = 'https://ujmxucxfqohlvssoxpsc.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_Oh6eOOEaCpb420HxsaMreA_lB0BRzN7';
+
+async function sbInsert(data) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/quiz_attempts`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify(data)
+  });
+  return res.ok;
+}
+
+async function sbGetStats() {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/quiz_attempts?select=score,percentage`, {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`
+    }
+  });
+  return res.ok ? await res.json() : [];
+}
+
+async function loadStats() {
+  try {
+    const rows = await sbGetStats();
+    if (!rows.length) {
+      document.getElementById('totalAttempts').textContent = '0';
+      document.getElementById('avgScore').textContent = '—';
+      document.getElementById('avgPct').textContent = '—%';
+      return;
+    }
+    const total = rows.length;
+    const avgScore = (rows.reduce((s, r) => s + r.score, 0) / total).toFixed(1);
+    const avgPct = (rows.reduce((s, r) => s + r.percentage, 0) / total).toFixed(1);
+    document.getElementById('totalAttempts').textContent = total;
+    document.getElementById('avgScore').textContent = avgScore + ' / 5';
+    document.getElementById('avgPct').textContent = avgPct + '%';
+  } catch(e) {
+    console.log('Stats load error:', e);
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   QUESTION BANK
+   Each question is a function that returns a fresh
+   randomised version with different constants.
+═══════════════════════════════════════════════════ */
+const QUESTION_BANK = [
+
+  // Q1 — Power Rule
+  () => {
+    const n = randInt(2, 6);
+    const correct = `\\frac{x^{${n+1}}}{${n+1}} + C`;
+    return {
+      text: `Find $\\displaystyle\\int x^{${n}}\\,dx$`,
+      topic: 'Power Rule',
+      options: shuffle([
+        { tex: `$${correct}$`, correct: true },
+        { tex: `$\\frac{x^{${n+2}}}{${n+2}} + C$`, correct: false },
+        { tex: `$${n}x^{${n-1}} + C$`, correct: false },
+        { tex: `$x^{${n+1}} + C$`, correct: false }
+      ]),
+      explanation: `Power rule: raise exponent by 1, divide by the new exponent. $\\int x^{${n}}\\,dx = \\frac{x^{${n+1}}}{${n+1}}+C$`
+    };
+  },
+
+  // Q2 — Constant multiple
+  () => {
+    const k = randInt(2, 9);
+    const n = randInt(2, 5);
+    const num = k*(n-1); // wrong option helper
+    return {
+      text: `Find $\\displaystyle\\int ${k}x^{${n}}\\,dx$`,
+      topic: 'Constant Multiple Rule',
+      options: shuffle([
+        { tex: `$\\frac{${k}}{${n+1}}x^{${n+1}} + C$`, correct: true },
+        { tex: `$\\frac{${k}}{${n}}x^{${n}} + C$`, correct: false },
+        { tex: `$${k*n}x^{${n-1}} + C$`, correct: false },
+        { tex: `$${k}x^{${n+1}} + C$`, correct: false }
+      ]),
+      explanation: `Pull the constant out: $${k}\\int x^{${n}}\\,dx = ${k}\\cdot\\frac{x^{${n+1}}}{${n+1}}+C = \\frac{${k}}{${n+1}}x^{${n+1}}+C$`
+    };
+  },
+
+  // Q3 — Exponential rule
+  () => {
+    const k = randInt(2, 7);
+    return {
+      text: `Find $\\displaystyle\\int e^{${k}x}\\,dx$`,
+      topic: 'Exponential Rule',
+      options: shuffle([
+        { tex: `$\\frac{e^{${k}x}}{${k}} + C$`, correct: true },
+        { tex: `$${k}e^{${k}x} + C$`, correct: false },
+        { tex: `$e^{${k}x} + C$`, correct: false },
+        { tex: `$\\frac{e^{${k+1}x}}{${k+1}} + C$`, correct: false }
+      ]),
+      explanation: `Exponential rule: $\\int e^{kx}\\,dx = \\frac{e^{kx}}{k}+C$. Here $k=${k}$, so the answer is $\\frac{e^{${k}x}}{${k}}+C$.`
+    };
+  },
+
+  // Q4 — Logarithmic rule
+  () => {
+    const k = randInt(2, 9);
+    return {
+      text: `Find $\\displaystyle\\int \\frac{${k}}{x}\\,dx$`,
+      topic: 'Logarithmic Rule',
+      options: shuffle([
+        { tex: `$${k}\\ln|x| + C$`, correct: true },
+        { tex: `$\\frac{${k}}{x^2} + C$`, correct: false },
+        { tex: `$\\ln(${k}x) + C$`, correct: false },
+        { tex: `$-\\frac{${k}}{x^2} + C$`, correct: false }
+      ]),
+      explanation: `Logarithmic rule: $\\int\\frac{1}{x}\\,dx = \\ln|x|+C$. So $\\int\\frac{${k}}{x}\\,dx = ${k}\\ln|x|+C$.`
+    };
+  },
+
+  // Q5 — Substitution (linear)
+  () => {
+    const a = randInt(2, 6), b = randInt(1, 8), n = randInt(3, 6);
+    return {
+      text: `Using substitution, find $\\displaystyle\\int (${a}x + ${b})^{${n}}\\,dx$`,
+      topic: 'Substitution — Linear',
+      options: shuffle([
+        { tex: `$\\dfrac{(${a}x+${b})^{${n+1}}}{${a}(${n+1})} + C$`, correct: true },
+        { tex: `$\\dfrac{(${a}x+${b})^{${n+1}}}{${n+1}} + C$`, correct: false },
+        { tex: `$${n}(${a}x+${b})^{${n-1}} + C$`, correct: false },
+        { tex: `$\\dfrac{(${a}x+${b})^{${n+1}}}{${a*(n+1)}} + C$`, correct: true  }
+      ].filter((v,i,arr) => {
+        // deduplicate — last option is same as first written differently
+        // keep only 4 unique
+        return i < 3 || (i===3 && false);
+      }).concat([
+        { tex: `$\\dfrac{${a}(${a}x+${b})^{${n+1}}}{${n+1}} + C$`, correct: false }
+      ])),
+      explanation: `Let $u=${a}x+${b}$, $du=${a}\\,dx$. Then $\\int u^{${n}}\\frac{du}{${a}} = \\frac{u^{${n+1}}}{${a}(${n+1})}+C = \\frac{(${a}x+${b})^{${n+1}}}{${a*(n+1)}}+C$`
+    };
+  },
+
+  // Q6 — Substitution (quadratic)
+  () => {
+    const c = randInt(1, 8);
+    const n = randInt(2, 5);
+    return {
+      text: `Find $\\displaystyle\\int x(x^2 + ${c})^{${n}}\\,dx$`,
+      topic: 'Substitution — Quadratic',
+      options: shuffle([
+        { tex: `$\\dfrac{(x^2+${c})^{${n+1}}}{${2*(n+1)}} + C$`, correct: true },
+        { tex: `$\\dfrac{(x^2+${c})^{${n+1}}}{${n+1}} + C$`, correct: false },
+        { tex: `$\\dfrac{x^2(x^2+${c})^{${n+1}}}{${n+1}} + C$`, correct: false },
+        { tex: `$\\dfrac{(x^2+${c})^{${n}}}{${2*n}} + C$`, correct: false }
+      ]),
+      explanation: `Let $u=x^2+${c}$, $du=2x\\,dx$, so $x\\,dx=\\frac{du}{2}$. Then $\\int u^{${n}}\\frac{du}{2}=\\frac{u^{${n+1}}}{${2*(n+1)}}+C=\\frac{(x^2+${c})^{${n+1}}}{${2*(n+1)}}+C$.`
+    };
+  },
+
+  // Q7 — Definite integral basic
+  () => {
+    const a = randInt(0, 2), b = randInt(3, 6), n = randInt(2, 4);
+    const exact = (Math.pow(b, n+1) - Math.pow(a, n+1)) / (n+1);
+    const wrong1 = (Math.pow(b, n+1) - Math.pow(a, n+1));
+    const wrong2 = exact + 1;
+    const wrong3 = Math.pow(b, n) - Math.pow(a, n);
+    return {
+      text: `Evaluate $\\displaystyle\\int_{${a}}^{${b}} x^{${n}}\\,dx$`,
+      topic: 'Definite Integral — FTC',
+      options: shuffle([
+        { tex: `$${frac(Math.pow(b,n+1)-Math.pow(a,n+1), n+1)}$`, correct: true },
+        { tex: `$${wrong1}$`, correct: false },
+        { tex: `$${frac(Math.pow(b,n+1)-Math.pow(a,n+1), n)}$`, correct: false },
+        { tex: `$${Math.pow(b,n) - Math.pow(a,n)}$`, correct: false }
+      ]),
+      explanation: `FTC: $\\left[\\frac{x^{${n+1}}}{${n+1}}\\right]_{${a}}^{${b}} = \\frac{${Math.pow(b,n+1)}}{${n+1}} - \\frac{${Math.pow(a,n+1)}}{${n+1}} = ${frac(Math.pow(b,n+1)-Math.pow(a,n+1),n+1)}$`
+    };
+  },
+
+  // Q8 — Definite with exponential
+  () => {
+    const a = 0, b = randInt(1, 3);
+    const ea = Math.exp(a), eb = Math.exp(b);
+    return {
+      text: `Evaluate $\\displaystyle\\int_{${a}}^{${b}} e^x\\,dx$`,
+      topic: 'Definite Integral — Exponential',
+      options: shuffle([
+        { tex: `$e^{${b}} - 1$`, correct: true },
+        { tex: `$e^{${b}} + 1$`, correct: false },
+        { tex: `$e^{${b}}$`, correct: false },
+        { tex: `$${b}e^{${b}}$`, correct: false }
+      ]),
+      explanation: `$\\left[e^x\\right]_0^{${b}} = e^{${b}} - e^0 = e^{${b}} - 1$`
+    };
+  },
+
+  // Q9 — Substitution in definite integral
+  () => {
+    const c = randInt(1, 6);
+    // int_0^1 2x(x^2+c)^3 dx, u=x^2+c, limits c to c+1
+    const lo = c, hi = c+1;
+    const ans = (Math.pow(hi,4) - Math.pow(lo,4)) / 4;
+    return {
+      text: `Evaluate $\\displaystyle\\int_0^1 2x(x^2+${c})^3\\,dx$`,
+      topic: 'Substitution in Definite Integral',
+      options: shuffle([
+        { tex: `$${ans}$`, correct: true },
+        { tex: `$${ans + 1}$`, correct: false },
+        { tex: `$\\frac{(x^2+${c})^4}{4}$`, correct: false },
+        { tex: `$${ans * 2}$`, correct: false }
+      ]),
+      explanation: `Let $u=x^2+${c}$, $du=2x\\,dx$. New limits: $x=0\\Rightarrow u=${c}$; $x=1\\Rightarrow u=${c+1}$. So $\\int_{${c}}^{${c+1}} u^3\\,du = \\left[\\frac{u^4}{4}\\right]_{${c}}^{${c+1}} = \\frac{${Math.pow(c+1,4)}-${Math.pow(c,4)}}{4} = ${ans}$`
+    };
+  },
+
+  // Q10 — Initial Value Problem
+  () => {
+    const a = randInt(2, 6), b = randInt(1, 8), x0 = randInt(0, 2), y0 = randInt(1, 10);
+    // f'(x)=ax+b, f(x0)=y0 => f(x)=ax^2/2+bx+C
+    const C = y0 - (a*x0*x0/2 + b*x0);
+    const Cstr = C >= 0 ? `+${C}` : `${C}`;
+    return {
+      text: `If $f'(x) = ${a}x + ${b}$ and $f(${x0}) = ${y0}$, find $f(x)$.`,
+      topic: 'Initial Value Problem',
+      options: shuffle([
+        { tex: `$\\frac{${a}}{2}x^2 + ${b}x ${Cstr}$`, correct: true },
+        { tex: `$${a}x^2 + ${b}x + ${y0}$`, correct: false },
+        { tex: `$\\frac{${a}}{2}x^2 + ${b}x + ${y0}$`, correct: false },
+        { tex: `$${a} + 0$`, correct: false }
+      ]),
+      explanation: `Integrate: $f(x)=\\frac{${a}}{2}x^2+${b}x+C$. Apply $f(${x0})=${y0}$: $C=${C}$. So $f(x)=\\frac{${a}}{2}x^2+${b}x${Cstr}$.`
+    };
+  },
+
+  // Q11 — Area under curve
+  () => {
+    const a = randInt(1, 4), b = randInt(a+1, a+4);
+    // area under f(x)=x from a to b
+    const area = (b*b - a*a) / 2;
+    return {
+      text: `Find the area under $f(x) = x$ from $x = ${a}$ to $x = ${b}$.`,
+      topic: 'Area Under a Curve',
+      options: shuffle([
+        { tex: `$${area}$`, correct: true },
+        { tex: `$${b*b - a*a}$`, correct: false },
+        { tex: `$${b - a}$`, correct: false },
+        { tex: `$${area + (b-a)}$`, correct: false }
+      ]),
+      explanation: `$\\int_{${a}}^{${b}} x\\,dx = \\left[\\frac{x^2}{2}\\right]_{${a}}^{${b}} = \\frac{${b*b}}{2} - \\frac{${a*a}}{2} = ${area}$`
+    };
+  },
+
+  // Q12 — Continuous compounding
+  () => {
+    const P = [1000, 2000, 5000][randInt(0,2)];
+    const r = [4, 6, 8][randInt(0,2)];
+    const t = randInt(5, 15);
+    return {
+      text: `Using continuous compounding, the balance after $${t}$ years on PKR $${P.toLocaleString()}$ at $${r}\\%$ per year is:`,
+      topic: 'Continuous Compounding',
+      options: shuffle([
+        { tex: `$${P}e^{${r/100}\\times ${t}}$`, correct: true },
+        { tex: `$${P}(1+${r/100})^{${t}}$`, correct: false },
+        { tex: `$${P}e^{${r}\\times ${t}}$`, correct: false },
+        { tex: `$${P}e^{${r/100}}$`, correct: false }
+      ]),
+      explanation: `Continuous compounding formula: $B(t)=Pe^{rt}$. Here $P=${P}$, $r=${r/100}$, $t=${t}$. Answer: $${P}e^{${r/100}\\times${t}}$.`
+    };
+  },
+
+  // Q13 — Net change
+  () => {
+    const a = randInt(2, 5), b = randInt(1, 6);
+    // v(t)=at-b, displacement from 0 to T
+    const T = randInt(3, 7);
+    const disp = a*T*T/2 - b*T;
+    return {
+      text: `A particle has velocity $v(t)=${a}t-${b}$ m/s. The net displacement from $t=0$ to $t=${T}$ is:`,
+      topic: 'Net Change',
+      options: shuffle([
+        { tex: `$${disp}$ m`, correct: true },
+        { tex: `$${disp + T}$ m`, correct: false },
+        { tex: `$${a*T - b}$ m`, correct: false },
+        { tex: `$${Math.abs(disp)}$ m`, correct: false }
+      ]),
+      explanation: `Net displacement $= \\int_0^{${T}}(${a}t-${b})\\,dt = \\left[\\frac{${a}t^2}{2}-${b}t\\right]_0^{${T}} = \\frac{${a}(${T})^2}{2}-${b}(${T}) = ${disp}$ m.`
+    };
+  },
+
+  // Q14 — Which substitution?
+  () => {
+    const c = randInt(1, 9);
+    return {
+      text: `For $\\displaystyle\\int \\frac{x^2}{(x^3+${c})^4}\\,dx$, the best substitution is:`,
+      topic: 'Choosing the Substitution',
+      options: shuffle([
+        { tex: `$u = x^3 + ${c}$`, correct: true },
+        { tex: `$u = x^2$`, correct: false },
+        { tex: `$u = x^3$`, correct: false },
+        { tex: `$u = (x^3+${c})^4$`, correct: false }
+      ]),
+      explanation: `Choose $u=x^3+${c}$ because $du=3x^2\\,dx$ and $x^2\\,dx=\\frac{du}{3}$ is present in the integrand. The integral becomes $\\int u^{-4}\\frac{du}{3}$.`
+    };
+  },
+
+  // Q15 — Rule identification
+  () => {
+    const n = randInt(2, 5);
+    const c = randInt(1, 8);
+    return {
+      text: `Which rule is used to evaluate $\\displaystyle\\int \\frac{${c}}{x^{${n}}}\\,dx$?`,
+      topic: 'Rule Identification',
+      options: shuffle([
+        { tex: 'Power Rule (with $n = -' + n + '$)', correct: true },
+        { tex: 'Logarithmic Rule', correct: false },
+        { tex: 'Exponential Rule', correct: false },
+        { tex: 'Constant Rule', correct: false }
+      ]),
+      explanation: `Write $\\frac{${c}}{x^{${n}}}=${c}x^{-${n}}$. Apply the power rule with $n=-${n}$: $\\int ${c}x^{-${n}}\\,dx = ${c}\\cdot\\frac{x^{-${n}+1}}{-${n}+1}+C = \\frac{${c}}{${-(n-1)}}x^{-${n-1}}+C$.`
+    };
+  }
+
+];
+
+/* ═══════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════ */
+function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function frac(num, den) {
+  if (num % den === 0) return String(num / den);
+  const g = gcd(Math.abs(num), Math.abs(den));
+  return `\\frac{${num/g}}{${den/g}}`;
+}
+
+function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+
+function gradeLabel(pct) {
+  if (pct >= 90) return { label: 'Excellent — A', cls: 'A' };
+  if (pct >= 75) return { label: 'Good — B', cls: 'B' };
+  if (pct >= 60) return { label: 'Satisfactory — C', cls: 'C' };
+  return { label: 'Needs Improvement — F', cls: 'F' };
+}
+
+/* ═══════════════════════════════════════════════════
+   QUIZ STATE
+═══════════════════════════════════════════════════ */
+let studentInfo = {};
+let questions = [];
+let currentQ = 0;
+let answers = []; // {chosen, correct, topic, qtext}
+const TOTAL_Q = 5;
+
+function pickQuestions() {
+  const pool = shuffle([...QUESTION_BANK]);
+  return pool.slice(0, TOTAL_Q).map(fn => fn());
+}
+
+/* ═══════════════════════════════════════════════════
+   FLOW
+═══════════════════════════════════════════════════ */
+function startQuiz() {
+  const name = document.getElementById('fName').value.trim();
+  const cls  = document.getElementById('fClass').value.trim();
+  const inst = document.getElementById('fInstitute').value.trim();
+  const id   = document.getElementById('fCampusId').value.trim();
+
+  if (!name || !cls || !inst) {
+    document.getElementById('formError').style.display = 'block';
+    return;
+  }
+  document.getElementById('formError').style.display = 'none';
+
+  studentInfo = { name, cls, inst, id };
+  questions = pickQuestions();
+  answers = [];
+  currentQ = 0;
+
+  document.getElementById('sectionForm').classList.add('hidden');
+  document.getElementById('sectionQuiz').classList.remove('hidden');
+  document.getElementById('quizStudentName').textContent = `Good luck, ${name}!`;
+
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  const progress = currentQ + 1;
+  document.getElementById('quizProgress').textContent = `Question ${progress} of ${TOTAL_Q}`;
+  document.getElementById('progressFill').style.width = `${(currentQ / TOTAL_Q) * 100}%`;
+
+  const optLetters = ['A','B','C','D'];
+
+  let html = `
+    <div class="q-number">Question ${progress} of ${TOTAL_Q} &nbsp;&middot;&nbsp; ${q.topic}</div>
+    <div class="q-text" id="qText">${q.text}</div>
+    <div class="q-marks">1 mark</div>
+    <div class="options" id="optionsContainer">
+  `;
+
+  q.options.forEach((opt, i) => {
+    html += `
+      <button class="opt-btn" id="opt${i}" onclick="selectOption(${i})">
+        <span class="opt-letter">${optLetters[i]}</span>
+        <span id="optText${i}">${opt.tex}</span>
+      </button>
+    `;
+  });
+
+  html += `</div>
+    <div class="q-feedback" id="qFeedback"></div>
+    <div class="q-nav">
+      <button class="nav-btn primary hidden" id="nextBtn" onclick="nextQuestion()">
+        ${currentQ === TOTAL_Q - 1 ? 'See Results &#8594;' : 'Next Question &#8594;'}
+      </button>
+    </div>
+  `;
+
+  document.getElementById('questionCard').innerHTML = html;
+
+  if (window.MathJax) {
+    MathJax.typesetPromise([document.getElementById('questionCard')]);
+  }
+}
+
+function selectOption(chosen) {
+  const q = questions[currentQ];
+  const opts = document.querySelectorAll('.opt-btn');
+  const isCorrect = q.options[chosen].correct;
+
+  // Disable all options
+  opts.forEach((btn, i) => {
+    btn.disabled = true;
+    if (q.options[i].correct) btn.classList.add('correct');
+  });
+  opts[chosen].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) opts[chosen].classList.add('wrong');
+
+  // Show feedback
+  const fb = document.getElementById('qFeedback');
+  fb.className = `q-feedback ${isCorrect ? 'correct' : 'wrong'}`;
+  fb.innerHTML = isCorrect
+    ? `&#10003; Correct! ${q.explanation}`
+    : `&#10007; Incorrect. ${q.explanation}`;
+
+  if (window.MathJax) MathJax.typesetPromise([fb]);
+
+  // Record answer
+  answers.push({
+    chosen,
+    correct: isCorrect,
+    topic: q.topic,
+    qtext: q.text
+  });
+
+  // Show next button
+  document.getElementById('nextBtn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= TOTAL_Q) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   RESULTS
+═══════════════════════════════════════════════════ */
+async function showResults() {
+  const score = answers.filter(a => a.correct).length;
+  const pct = Math.round(score / TOTAL_Q * 100);
+  const grade = gradeLabel(pct);
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+
+  document.getElementById('sectionQuiz').classList.add('hidden');
+  document.getElementById('sectionResult').classList.remove('hidden');
+
+  // Fill result card
+  document.getElementById('scoreNum').textContent = score;
+  document.getElementById('scoreDenom').textContent = `/ ${TOTAL_Q}`;
+  document.getElementById('resultName').textContent = studentInfo.name;
+  const gradeEl = document.getElementById('resultGrade');
+  gradeEl.textContent = grade.label;
+  gradeEl.className = `result-grade ${grade.cls}`;
+  document.getElementById('rScore').textContent = `${score} / ${TOTAL_Q}`;
+  document.getElementById('rPct').textContent = `${pct}%`;
+  document.getElementById('rInstitute').textContent = studentInfo.inst;
+  document.getElementById('resultDate').textContent = dateStr;
+
+  // Colour the score circle
+  const circle = document.getElementById('scoreCircle');
+  const colours = { A: '#27ae60', B: '#1a6b6b', C: '#d4a017', F: '#c0392b' };
+  circle.style.borderColor = colours[grade.cls];
+  document.getElementById('scoreNum').style.color = colours[grade.cls];
+
+  // Breakdown
+  let bdHtml = '';
+  answers.forEach((a, i) => {
+    bdHtml += `
+      <div class="rb-row">
+        <div>
+          <div style="font-weight:600">Q${i+1}: ${a.topic}</div>
+        </div>
+        <div class="${a.correct ? 'rb-correct' : 'rb-wrong'}">
+          ${a.correct ? '&#10003; Correct' : '&#10007; Wrong'}
+        </div>
+      </div>
+    `;
+  });
+  document.getElementById('resultBreakdown').innerHTML = bdHtml;
+
+  // Save to Supabase
+  try {
+    await sbInsert({
+      student_name: studentInfo.name,
+      student_class: studentInfo.cls,
+      institute: studentInfo.inst,
+      campus_id: studentInfo.id || null,
+      score,
+      total: TOTAL_Q,
+      percentage: pct
+    });
+    loadStats(); // refresh live stats
+  } catch(e) {
+    console.log('Save error:', e);
+  }
+
+  document.getElementById('progressFill').style.width = '100%';
+}
+
+/* ═══════════════════════════════════════════════════
+   PDF RESULT CARD
+═══════════════════════════════════════════════════ */
+function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const score = answers.filter(a => a.correct).length;
+  const pct = Math.round(score / TOTAL_Q * 100);
+  const grade = gradeLabel(pct);
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+  const W = 210, pad = 20;
+
+  // Background
+  doc.setFillColor(26, 26, 46);
+  doc.rect(0, 0, W, 60, 'F');
+
+  // Header text
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.setTextColor(212, 160, 23);
+  doc.text('MATH-101 · CALCULUS I · LUMS', W/2, 18, { align: 'center' });
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(22);
+  doc.setTextColor(253, 248, 240);
+  doc.text('Integration Quiz — Chapter 5', W/2, 32, { align: 'center' });
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(200, 190, 180);
+  doc.text('Official Result Card', W/2, 42, { align: 'center' });
+  doc.text(dateStr, W/2, 50, { align: 'center' });
+
+  // Score circle
+  const gradeColors = { A: [39,174,96], B: [26,107,107], C: [212,160,23], F: [192,57,43] };
+  const gc = gradeColors[grade.cls];
+  doc.setDrawColor(...gc);
+  doc.setLineWidth(2);
+  doc.circle(W/2, 82, 18);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(22);
+  doc.setTextColor(...gc);
+  doc.text(String(score), W/2, 87, { align: 'center' });
+  doc.setFontSize(9);
+  doc.setTextColor(127, 140, 141);
+  doc.text(`/ ${TOTAL_Q}`, W/2, 94, { align: 'center' });
+
+  // Student info
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.setTextColor(26, 26, 46);
+  doc.text(studentInfo.name, W/2, 112, { align: 'center' });
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(127,140,141);
+  doc.text(`${studentInfo.cls}  ·  ${studentInfo.inst}`, W/2, 119, { align: 'center' });
+  if (studentInfo.id) {
+    doc.text(`Campus ID: ${studentInfo.id}`, W/2, 125, { align: 'center' });
+  }
+
+  // Grade badge
+  doc.setFillColor(...gc);
+  doc.roundedRect(W/2 - 30, 130, 60, 10, 3, 3, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.setTextColor(255,255,255);
+  doc.text(grade.label.toUpperCase(), W/2, 136.5, { align: 'center' });
+
+  // Stats boxes
+  const boxes = [
+    { label: 'Score', value: `${score} / ${TOTAL_Q}` },
+    { label: 'Percentage', value: `${pct}%` },
+    { label: 'Institute', value: studentInfo.inst }
+  ];
+  const bw = (W - pad*2 - 10) / 3;
+  boxes.forEach((b, i) => {
+    const bx = pad + i*(bw+5);
+    doc.setFillColor(245, 237, 224);
+    doc.roundedRect(bx, 148, bw, 18, 3, 3, 'F');
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(127,140,141);
+    doc.text(b.label.toUpperCase(), bx + bw/2, 154, { align: 'center' });
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(26,107,107);
+    doc.text(b.value, bx + bw/2, 161, { align: 'center' });
+  });
+
+  // Breakdown table
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.setTextColor(26,26,46);
+  doc.text('Question Breakdown', pad, 178);
+
+  doc.setLineWidth(0.3);
+  doc.setDrawColor(224, 214, 200);
+  doc.line(pad, 180, W - pad, 180);
+
+  answers.forEach((a, i) => {
+    const y = 186 + i * 8;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(26,26,46);
+    doc.text(`Q${i+1}: ${a.topic}`, pad, y);
+    const col = a.correct ? [39,174,96] : [192,57,43];
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...col);
+    doc.text(a.correct ? '✓ Correct' : '✗ Wrong', W - pad, y, { align: 'right' });
+    doc.setDrawColor(224,214,200);
+    doc.setLineWidth(0.2);
+    doc.line(pad, y+2, W-pad, y+2);
+  });
+
+  // Signature
+  const sigY = 240;
+  doc.setDrawColor(224,214,200);
+  doc.setLineWidth(0.5);
+  doc.line(W - pad - 60, sigY, W - pad, sigY);
+
+  doc.setFont('helvetica', 'bolditalic');
+  doc.setFontSize(13);
+  doc.setTextColor(26,26,46);
+  doc.text('Muhammad Shoaib Khan', W - pad, sigY - 3, { align: 'right' });
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(127,140,141);
+  doc.text('Teaching Fellow · Calculus I · LUMS', W - pad, sigY + 5, { align: 'right' });
+
+  // Footer
+  doc.setFillColor(26, 26, 46);
+  doc.rect(0, 275, W, 22, 'F');
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(200,190,180);
+  doc.text('mathwithshoaib.github.io  ·  bssk.khan@gmail.com  ·  LUMS, Lahore, Pakistan', W/2, 283, { align: 'center' });
+  doc.setTextColor(212,160,23);
+  doc.text(`Generated ${dateStr}`, W/2, 289, { align: 'center' });
+
+  doc.save(`Calculus_Quiz_${studentInfo.name.replace(/\s+/g,'_')}.pdf`);
+}
+
+/* ═══════════════════════════════════════════════════
+   RETAKE
+═══════════════════════════════════════════════════ */
+function retakeQuiz() {
+  document.getElementById('sectionResult').classList.add('hidden');
+  document.getElementById('sectionForm').classList.remove('hidden');
+  document.getElementById('fName').value = '';
+  document.getElementById('fClass').value = '';
+  document.getElementById('fCampusId').value = '';
+}
+
+/* ═══════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════ */
+loadStats();
+</script>
+</body>
+</html>
