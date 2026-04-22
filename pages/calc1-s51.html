@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>§5.1 Indefinite Integration &amp; Diff. Equations · Calculus I · Shoaib-K</title>
 
-<!-- MathJax -->
 <script>
 MathJax = {
   tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
@@ -13,12 +12,9 @@ MathJax = {
 };
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
-
-<!-- Site nav CSS -->
 <link rel="stylesheet" href="../css/style.css">
 
 <style>
-/* ===== SHELL: sticky sub-header ===== */
 .sticky-sub {
   position: sticky;
   top: calc(var(--nav-h) + 3px);
@@ -47,14 +43,12 @@ MathJax = {
 .course-switcher a:hover { color: var(--amber); }
 .course-switcher a.active { color: var(--amber); border-bottom-color: var(--amber); }
 
-/* ===== TWO-COLUMN FRAME ===== */
 .course-frame {
   display: flex;
   padding-top: calc(var(--nav-h) + 3px + 37px + 40px);
   min-height: 100vh;
 }
 
-/* ===== SIDEBAR ===== */
 .csb {
   width: 252px; flex-shrink: 0;
   position: sticky;
@@ -81,28 +75,15 @@ MathJax = {
 .toc-a.live::after { content: '\2736'; font-size: .58rem; color: var(--teal); margin-left: auto; }
 .toc-a.soon { opacity: .38; pointer-events: none; }
 
-/* ===== MAIN CONTENT WRAPPER ===== */
 .cmain { flex: 1; min-width: 0; background: #fdf8f0; overflow: hidden; }
-
-/* ===== LECTURE CONTENT ===== */
-.lec-inner {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 0 52px 60px;
-}
+.lec-inner { max-width: 100%; margin: 0 auto; padding: 0 52px 60px; }
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&family=Source+Sans+3:wght@300;400;600&display=swap');
 
 :root {
-  --ink:    #1a1a2e;
-  --paper:  #fdf8f0;
-  --cream:  #f5ede0;
-  --accent: #c0392b;
-  --gold-lec: #d4a017;
-  --teal-lec: #1a6b6b;
-  --sky:    #2980b9;
-  --muted:  #7f8c8d;
-  --border-lec: #e0d6c8;
+  --ink: #1a1a2e; --paper: #fdf8f0; --cream: #f5ede0;
+  --accent: #c0392b; --gold-lec: #d4a017; --teal-lec: #1a6b6b;
+  --sky: #2980b9; --muted: #7f8c8d; --border-lec: #e0d6c8;
   --shadow-lec: 0 4px 24px rgba(26,26,46,.10);
   --fh-lec: 'Playfair Display', Georgia, serif;
   --fb-lec: 'Source Sans 3', sans-serif;
@@ -111,19 +92,8 @@ MathJax = {
 
 .cmain { font-family: var(--fb-lec); font-size: 1.05rem; line-height: 1.8; color: #1a1a2e; background: #fdf8f0; }
 
-.lec-hero {
-  background: var(--ink);
-  color: var(--paper);
-  padding: 52px 40px 44px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.lec-hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.03) 40px,rgba(255,255,255,.03) 41px);
-}
+.lec-hero { background: var(--ink); color: var(--paper); padding: 52px 40px 44px; text-align: center; position: relative; overflow: hidden; }
+.lec-hero::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.03) 40px,rgba(255,255,255,.03) 41px); }
 .lec-hero-tag { font-family: var(--fm-lec); font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-lec); margin-bottom: 14px; position: relative; }
 .lec-hero h1 { font-family: var(--fh-lec); font-size: clamp(2rem,4vw,3.4rem); font-weight: 700; line-height: 1.12; margin-bottom: 14px; position: relative; }
 .lec-hero h1 em { color: var(--gold-lec); font-style: italic; }
@@ -157,6 +127,7 @@ h4 { font-family: var(--fh-lec); font-size: 1.1rem; font-weight: 700; margin: 22
 .callout-teal strong { color: var(--teal-lec); }
 .callout-gold { background: #fff8ec; border-left: 4px solid var(--gold-lec); border-radius: 0 8px 8px 0; padding: 15px 20px; margin: 18px 0; font-size: .97rem; }
 .callout-gold strong { color: var(--gold-lec); }
+
 .widget { background: var(--ink); border-radius: 16px; padding: 26px 26px 18px; margin: 30px 0; color: #e8e2d9; }
 .wt { font-family: var(--fm-lec); font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-lec); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
 .wt::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.12); }
@@ -177,12 +148,8 @@ select { font-family: var(--fm-lec); font-size: .8rem; background: #1f2937; colo
 .steps li::before { content: counter(step); position: absolute; left: 0; top: 2px; width: 31px; height: 31px; background: var(--ink); color: var(--gold-lec); font-family: var(--fm-lec); font-size: .83rem; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .toggle-btn { font-family: var(--fm-lec); font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; background: var(--ink); color: var(--gold-lec); border: none; border-radius: 6px; padding: 9px 20px; cursor: pointer; margin-top: 10px; transition: opacity .2s; }
 .toggle-btn:hover { opacity: .8; }
-.reveal-btn { font-family: var(--fm-lec); font-size: .84rem; letter-spacing: .1em; text-transform: uppercase; background: linear-gradient(135deg, var(--teal-lec), #1e8888); color: #fff; border: none; border-radius: 10px; padding: 13px 30px; cursor: pointer; transition: transform .2s, box-shadow .2s; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 16px rgba(26,107,107,.3); }
-.reveal-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,107,107,.4); }
 .answer-box { display: none; background: #f0f9f0; border: 1.5px solid #27ae60; border-radius: 8px; padding: 18px 22px; margin-top: 12px; }
 .answer-box.show { display: block; }
-.hidden-section { display: none; }
-.hidden-section.show { display: block; }
 table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: .94rem; }
 th { background: var(--ink); color: var(--gold-lec); font-family: var(--fm-lec); font-size: .72rem; letter-spacing: .1em; padding: 9px 13px; text-align: left; }
 td { padding: 8px 13px; border-bottom: 1px solid var(--border-lec); }
@@ -260,68 +227,58 @@ tr:nth-child(even) td { background: var(--cream); }
       <a href="course-calc1.html" class="csb-back">&#8592; All Courses</a>
     </div>
     <nav class="toc-nav">
-  <span class="toc-ch">Course Overview</span>
-  <a href="course-calc1.html" class="toc-a"><span class="dot"></span>Course Overview</a>
-
-  <span class="toc-ch">Ch 1 — Functions, Graphs &amp; Limits</span>
-  <a href="#" class="toc-a soon"><span class="dot"></span>1.1 · Functions</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>1.2 · The Graph of a Function</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>1.3 · Lines and Linear Functions</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>1.4 · Functional Models</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>1.5 · Limits</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>1.6 · One-Sided Limits and Continuity</a>
-
-  <span class="toc-ch">Ch 2 — Differentiation: Basic Concepts</span>
-  <a href="#" class="toc-a soon"><span class="dot"></span>2.1 · The Derivative</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>2.2 · Techniques of Differentiation</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>2.3 · Product and Quotient Rules</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>2.4 · The Chain Rule</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>2.5 · Marginal Analysis</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>2.6 · Implicit Differentiation</a>
-
-  <span class="toc-ch">Ch 3 — Applications of the Derivative</span>
-  <a href="#" class="toc-a soon"><span class="dot"></span>3.1 · Increasing &amp; Decreasing Functions</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>3.2 · Concavity &amp; Inflection Points</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>3.3 · Curve Sketching</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>3.4 · Optimization; Elasticity</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>3.5 · Additional Optimization</a>
-
-  <span class="toc-ch">Ch 4 — Exponential &amp; Logarithmic Functions</span>
-  <a href="#" class="toc-a soon"><span class="dot"></span>4.1 · Exponential Functions</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>4.2 · Logarithmic Functions</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>4.3 · Differentiation of Exp &amp; Log</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>4.4 · Exponential Models</a>
-
-  <span class="toc-ch">Ch 5 — Integration</span>
-  <a href="calc1-s51.html" class="toc-a active live"><span class="dot"></span>5.1 · Indefinite Integration</a>
-  <a href="calc1-s52.html" class="toc-a live"><span class="dot"></span>5.2 · Integration by Substitution</a>
-  <a href="calc1-s52.html" class="toc-a live"><span class="dot"></span>5.3 · The Definite Integral &amp; FTC</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>5.4 · Applying Definite Integration</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>5.5 · Applications to Business</a>
-
-  <span class="toc-ch">Ch 6 — Additional Integration Topics</span>
-  <a href="#" class="toc-a soon"><span class="dot"></span>6.1 · Integration by Parts</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>6.2 · Numerical Integration</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>6.3 · Improper Integrals</a>
-  <a href="#" class="toc-a soon"><span class="dot"></span>6.4 · Continuous Probability</a>
-</nav>
+      <span class="toc-ch">Course Overview</span>
+      <a href="course-calc1.html" class="toc-a"><span class="dot"></span>Course Overview</a>
+      <span class="toc-ch">Ch 1 &mdash; Functions, Graphs &amp; Limits</span>
+      <a href="#" class="toc-a soon"><span class="dot"></span>1.1 &middot; Functions</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>1.2 &middot; The Graph of a Function</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>1.3 &middot; Lines and Linear Functions</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>1.4 &middot; Functional Models</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>1.5 &middot; Limits</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>1.6 &middot; One-Sided Limits and Continuity</a>
+      <span class="toc-ch">Ch 2 &mdash; Differentiation: Basic Concepts</span>
+      <a href="#" class="toc-a soon"><span class="dot"></span>2.1 &middot; The Derivative</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>2.2 &middot; Techniques of Differentiation</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>2.3 &middot; Product and Quotient Rules</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>2.4 &middot; The Chain Rule</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>2.5 &middot; Marginal Analysis</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>2.6 &middot; Implicit Differentiation</a>
+      <span class="toc-ch">Ch 3 &mdash; Applications of the Derivative</span>
+      <a href="#" class="toc-a soon"><span class="dot"></span>3.1 &middot; Increasing &amp; Decreasing Functions</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>3.2 &middot; Concavity &amp; Inflection Points</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>3.3 &middot; Curve Sketching</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>3.4 &middot; Optimization; Elasticity</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>3.5 &middot; Additional Optimization</a>
+      <span class="toc-ch">Ch 4 &mdash; Exponential &amp; Logarithmic Functions</span>
+      <a href="#" class="toc-a soon"><span class="dot"></span>4.1 &middot; Exponential Functions</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>4.2 &middot; Logarithmic Functions</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>4.3 &middot; Differentiation of Exp &amp; Log</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>4.4 &middot; Exponential Models</a>
+      <span class="toc-ch">Ch 5 &mdash; Integration</span>
+      <a href="calc1-s51.html" class="toc-a active live"><span class="dot"></span>5.1 &middot; Indefinite Integration</a>
+      <a href="calc1-s52.html" class="toc-a live"><span class="dot"></span>5.2 &middot; Integration by Substitution</a>
+      <a href="calc1-s53.html" class="toc-a live"><span class="dot"></span>5.3 &middot; The Definite Integral &amp; FTC</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>5.4 &middot; Applying Definite Integration</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>5.5 &middot; Applications to Business</a>
+      <span class="toc-ch">Ch 6 &mdash; Additional Integration Topics</span>
+      <a href="#" class="toc-a soon"><span class="dot"></span>6.1 &middot; Integration by Parts</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>6.2 &middot; Numerical Integration</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>6.3 &middot; Improper Integrals</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>6.4 &middot; Continuous Probability</a>
+    </nav>
   </aside>
 
   <main class="cmain">
 
     <div class="lec-hero">
       <div class="lec-hero-tag">Calculus I &nbsp;&middot;&nbsp; Chapter 5 &nbsp;&middot;&nbsp; Section 5.1</div>
-      <h1>The Art of<br><em>Integration</em></h1>
-      <p>From adding up infinitely many tiny pieces to the most powerful mathematical tool ever devised &mdash; your journey into a whole new world begins here.</p>
+      <h1>The Art of<br><em>Undoing</em></h1>
+      <p>You have spent two months mastering derivatives &mdash; the art of finding rates of change. Now we ask the reverse: given the rate, can we recover the original? Welcome to integration.</p>
       <div class="lec-hero-line"></div>
     </div>
 
     <nav class="lec-nav">
-      <a href="#motivation">Motivation</a>
-      <a href="#riemann">Riemann Sums</a>
-      <a href="#defint">Definite Integral</a>
-      <a href="#ftc">Fund. Theorem</a>
-      <a href="#s51">&#167; 5.1 Overview</a>
+      <a href="#story">The Big Shift</a>
       <a href="#antidiff">Antiderivatives</a>
       <a href="#notation">Notation</a>
       <a href="#rules51">Integration Rules</a>
@@ -333,105 +290,39 @@ tr:nth-child(even) td { background: var(--cream); }
 
     <div class="lec-inner">
 
-<!-- MOTIVATION -->
-<section id="motivation">
-  <div class="sec-label">&sect; 1 &mdash; The Big Question</div>
-  <h2>You Know Derivatives.<br>Now, Let&rsquo;s Work Backwards.</h2>
-  <p>You have spent weeks mastering <strong>derivatives</strong> &mdash; the tool that captures instantaneous rates of change. The derivative of position is velocity; the derivative of velocity is acceleration; the derivative of profit is marginal profit.</p>
-  <p>Now consider the reverse question &mdash; perhaps the most natural question in all of mathematics: <em>if I know only the rate of change, can I recover the original quantity?</em> This question, simple to ask and profound to answer, is the soul of integration.</p>
-  <div class="card al">
-    <h3 style="margin-top:0;color:var(--accent)">&#128663; A Road-Trip Problem</h3>
-    <p>Your car&rsquo;s <strong>speedometer</strong> works perfectly, but the odometer is broken. You need to know: <em>&ldquo;How far have I traveled in the last 3 hours?&rdquo;</em></p>
-    <p>You record your speed at half-hour intervals:</p>
-    <table>
-      <tr><th>Time (hr)</th><th>Speed (km/h)</th></tr>
-      <tr><td>0.0</td><td>60</td></tr>
-      <tr><td>0.5</td><td>80</td></tr>
-      <tr><td>1.0</td><td>70</td></tr>
-      <tr><td>1.5</td><td>90</td></tr>
-      <tr><td>2.0</td><td>50</td></tr>
-      <tr><td>2.5</td><td>65</td></tr>
-    </table>
-    <p>Best estimate: $(60+80+70+90+50+65)(0.5) = \mathbf{207.5 \text{ km}}$</p>
-    <p style="margin-bottom:0">But this is only an approximation. The speed changed <em>continuously</em>. <strong>Integration gives us the exact answer.</strong></p>
-  </div>
-  <div class="callout"><strong>The Core Insight:</strong> If $v(t)$ is speed at time $t$, then the exact total distance from $t=a$ to $t=b$ is the area under the curve $y=v(t)$.</div>
-</section>
+<!-- OPENING STORY -->
+<section id="story">
+  <div class="sec-label">The Big Shift</div>
+  <h2>Two Months of Derivatives.<br>Now, Everything Runs Backwards.</h2>
 
-<!-- RIEMANN SUMS -->
-<section id="riemann">
-  <div class="sec-label">&sect; 2 &mdash; Where Integration Comes From</div>
-  <h2>Riemann Sums: The Birth<br>of the Integral Sign</h2>
   <div class="card gl" style="background:linear-gradient(135deg,#fffdf5,#fff8ec)">
-    <p style="font-size:1.07rem;line-height:2;margin-bottom:0">Picture slicing the shaded region under a curve into a hundred paper-thin vertical strips. Each strip is almost a perfect rectangle &mdash; you know its width precisely, and its height is just the value of the function at one chosen point. Sum every rectangle&rsquo;s area, and you have a remarkably good approximation of the true area beneath the curve. Now imagine slicing into a thousand strips. A million. A <em>trillion</em>. Something extraordinary happens: as the strips grow infinitely thin, the approximation converges, with the certainty of mathematics, to a single perfect number. <strong>That number is the definite integral.</strong><br><br>The elongated $\displaystyle\int$ symbol? Leibniz invented it in 1675 as a stretched letter <strong>S</strong> &mdash; for <em>Summa</em>, Latin for sum. And the $dx$ at the end? It is the ghost of $\Delta x$ as it shrinks to zero, whispering: <em>&ldquo;I am the infinitely thin width of each slice.&rdquo;</em></p>
+    <p style="font-size:1.07rem;line-height:2;margin-bottom:0">
+      Think back to the beginning of this course. A car moves along a road and you asked: <em>"Given the position, what is the speed at this instant?"</em> You differentiated. The derivative gave you the rate of change.
+    </p>
+    <p style="font-size:1.07rem;line-height:2;margin-bottom:0;margin-top:12px">
+      Now flip the entire question around. The speedometer is broken, but the odometer works perfectly &mdash; you know <em>exactly how fast</em> the car is moving at every moment. The question is now: <em>"Given the speed, what was the total distance traveled?"</em>
+    </p>
+    <p style="font-size:1.07rem;line-height:2;margin-bottom:0;margin-top:12px">
+      This reverse question &mdash; recovering a quantity from its rate of change &mdash; is the soul of <strong>integration</strong>. If differentiation is the art of finding the derivative, integration is the art of <em>undoing</em> it. And just as the derivative turned out to be one of the most powerful ideas in mathematics, so too will its inverse.
+    </p>
   </div>
-  <div style="text-align:center;margin:30px 0 24px">
-    <button class="reveal-btn" id="riemannBtn" onclick="toggleRiemann(this)">
-      <span>&#11035;</span> &nbsp;Reveal Riemann Sum Explorer
-    </button>
-  </div>
-  <div id="riemannSection" class="hidden-section">
-    <ol class="steps">
-      <li><strong>Divide</strong> $[a,b]$ into $n$ equal sub-intervals, each of width $\Delta x = \dfrac{b-a}{n}$.</li>
-      <li><strong>Pick a sample point</strong> $x_i^*$ in each sub-interval.</li>
-      <li><strong>Build rectangles:</strong> width $\Delta x$, height $f(x_i^*)$.</li>
-      <li><strong>Sum the areas:</strong> $\displaystyle S_n = \sum_{i=1}^{n} f(x_i^*)\,\Delta x$.</li>
-      <li><strong>Take the limit</strong> $n \to \infty$ &mdash; sum becomes exact.</li>
-    </ol>
-    <div class="widget">
-      <div class="wt">&#11035; Interactive Riemann Sum Explorer</div>
-      <canvas id="riemannCanvas" height="300"></canvas>
-      <div class="controls">
-        <div class="cg"><label>Function</label><select id="fnSelect" onchange="drawRiemann()"><option value="quad">f(x) = x&sup2;</option><option value="sin">f(x) = sin(x) + 1</option><option value="sqrt">f(x) = &radic;x</option><option value="cubic">f(x) = x&sup3;/4 + 1</option></select></div>
-        <div class="cg"><label>Rectangles &nbsp;<span class="val" id="nVal">4</span></label><input type="range" id="nSlider" min="1" max="150" value="4" oninput="updateN(this.value)"></div>
-        <div class="cg"><label>Sample Point</label><select id="ruleSelect" onchange="drawRiemann()"><option value="left">Left endpoint</option><option value="right">Right endpoint</option><option value="mid">Midpoint</option></select></div>
-      </div>
-      <div class="srow">
-        <div class="sp">$n$ = <span id="statN">4</span></div>
-        <div class="sp">$\Delta x$ = <span id="statDx">&mdash;</span></div>
-        <div class="sp">Approx &asymp; <span id="statArea">&mdash;</span></div>
-        <div class="sp">Exact = <span id="statExact">&mdash;</span></div>
-        <div class="sp">Error: <span id="statErr">&mdash;</span></div>
-      </div>
-    </div>
-    <div class="def-box"><div class="lbl">Riemann Sum</div>$$S_n = \sum_{i=1}^{n} f(x_i^*)\,\Delta x,\qquad \Delta x = \frac{b-a}{n}$$</div>
-  </div>
-</section>
 
-<!-- DEFINITE INTEGRAL -->
-<section id="defint">
-  <div class="sec-label">&sect; 3 &mdash; The Formal Definition</div>
-  <h2>The Definite Integral</h2>
-  <div class="bf">$$\int_a^b f(x)\,dx \;=\; \lim_{n\to\infty} \sum_{i=1}^{n} f(x_i^*)\,\Delta x$$</div>
-  <div class="widget">
-    <div class="wt">&#128210; Signed Area Explorer &mdash; $\int_0^b \sin(x)\,dx$</div>
-    <canvas id="signedCanvas" height="260"></canvas>
-    <div class="controls"><div class="cg"><label>Upper limit $b$ = <span class="val" id="bVal">3.14</span></label><input type="range" id="bSlider" min="0.1" max="9.4" step="0.05" value="3.14" oninput="updateB(this.value)"></div></div>
-    <div class="srow"><div class="sp">Positive area: <span id="posArea">&mdash;</span></div><div class="sp">Negative area: <span id="negArea">&mdash;</span></div><div class="sp">Net integral: <span id="netArea">&mdash;</span></div></div>
+  <div class="callout-gold" style="margin-top:24px">
+    <strong>Where we are in the course:</strong> Chapters 1&ndash;4 built the machinery of differentiation. Chapter 5 opens a second world entirely &mdash; the world of accumulation, area, and antiderivatives. By the end of this chapter, you will see that these two worlds are secretly the same, connected by the most beautiful theorem in calculus.
   </div>
-</section>
 
-<!-- FTC -->
-<section id="ftc">
-  <div class="sec-label">&sect; 4 &mdash; The Bridge</div>
-  <h2>The Fundamental Theorem<br>of Calculus</h2>
-  <div class="thm-box"><div class="lbl">FTC &mdash; Evaluation Shortcut</div><p>If $F'(x) = f(x)$, then</p>$$\int_a^b f(x)\,dx = F(b) - F(a)$$<p style="margin-bottom:0;color:var(--teal-lec);font-style:italic">No limits. No infinite sums. Find an antiderivative, plug in, subtract.</p></div>
-  <div class="widget">
-    <div class="wt">&#128279; Accumulation Function $F(x)=\int_0^x t^2\,dt$</div>
-    <canvas id="ftcCanvas" height="280"></canvas>
-    <div class="controls"><div class="cg"><label>Upper limit $x$ = <span class="val" id="ftcX">2.00</span></label><input type="range" id="ftcSlider" min="0.01" max="4" step="0.05" value="2" oninput="updateFTC(this.value)"></div></div>
-    <div class="srow"><div class="sp">Shaded area = <span id="ftcArea">&mdash;</span></div><div class="sp">$F(x)=x^3/3$ = <span id="ftcFx">&mdash;</span></div><div class="sp">$F'(x)=x^2$ = <span id="ftcDeriv">&mdash;</span></div></div>
+  <div class="card al" style="margin-top:24px">
+    <h3 style="margin-top:0;color:var(--accent)">&#128663; A Concrete Example of the Reverse Problem</h3>
+    <p>A delivery rider in Lahore tracks her speed (km/h) every 30 minutes during a 3-hour shift:</p>
+    <table>
+      <tr><th>Time (hr)</th><th>0.0</th><th>0.5</th><th>1.0</th><th>1.5</th><th>2.0</th><th>2.5</th></tr>
+      <tr><td><strong>Speed (km/h)</strong></td><td>30</td><td>45</td><td>60</td><td>40</td><td>55</td><td>50</td></tr>
+    </table>
+    <p>Best estimate of distance: $(30+45+60+40+55+50)(0.5) = \mathbf{140 \text{ km}}$</p>
+    <p style="margin-bottom:0">But speed changes <em>continuously</em>. If speed were given by a formula $v(t)$, could we find the exact distance? Yes &mdash; that is precisely what integration will give us. We build toward it carefully, starting with the simplest version of the reverse problem.</p>
   </div>
-</section>
 
-<!-- SECTION 5.1 BANNER -->
-<section id="s51">
-  <div style="background:var(--ink);color:var(--paper);border-radius:16px;padding:36px 40px;position:relative;overflow:hidden">
-    <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent,transparent 30px,rgba(255,255,255,.02) 30px,rgba(255,255,255,.02) 31px)"></div>
-    <div class="sec-label" style="color:var(--gold-lec);position:relative">Section 5.1</div>
-    <h2 style="position:relative;color:var(--paper);margin-bottom:12px">Indefinite Integration<br>&amp; Differential Equations</h2>
-    <p style="position:relative;color:#c9c2b8;margin-bottom:0">Now that we understand what the integral <em>means</em>, we master the mechanics of computing it &mdash; and discover how integration unlocks a new class of equations that model the living, breathing world.</p>
-  </div>
+  <div class="callout"><strong>The Core Question of §5.1:</strong> Given a function $f(x)$, can we find a function $F(x)$ whose derivative is $f(x)$? That is, can we find $F$ such that $F'(x) = f(x)$?</div>
 </section>
 
 <!-- ANTIDIFFERENTIATION -->
@@ -439,16 +330,36 @@ tr:nth-child(even) td { background: var(--cream); }
   <div class="subsec">5.1a &mdash; Antidifferentiation</div>
   <h3 style="font-size:1.7rem;color:var(--ink);margin-top:0">Antidifferentiation</h3>
   <p>If differentiation is the art of finding rates of change, <strong>antidifferentiation</strong> is the art of running backwards &mdash; recovering a function from its derivative.</p>
-  <div class="def-box"><div class="lbl">Definition &mdash; Antiderivative</div><p>A function $F(x)$ is an <strong>antiderivative</strong> of $f(x)$ if $F'(x) = f(x)$ for all $x$.</p></div>
+  <div class="def-box">
+    <div class="lbl">Definition &mdash; Antiderivative</div>
+    <p>A function $F(x)$ is an <strong>antiderivative</strong> of $f(x)$ if $F'(x) = f(x)$ for all $x$ in the domain.</p>
+  </div>
+
+  <div class="card tl">
+    <h4 style="margin-top:0;color:var(--teal-lec)">First Examples</h4>
+    <p><strong>Example 1.</strong> Find an antiderivative of $f(x) = 3x^2$.</p>
+    <p>Ask: what function differentiates to $3x^2$? We know $\dfrac{d}{dx}(x^3) = 3x^2$. So $F(x) = x^3$ is an antiderivative.</p>
+    <p><strong>Example 2.</strong> Find an antiderivative of $f(x) = \cos x$.</p>
+    <p style="margin-bottom:0">Since $\dfrac{d}{dx}(\sin x) = \cos x$, we have $F(x) = \sin x$.</p>
+  </div>
+
   <h4>Fundamental Property of Antiderivatives</h4>
-  <div class="thm-box"><div class="lbl">Theorem</div><p>If $F(x)$ is an antiderivative of continuous $f(x)$, then every other antiderivative has the form $G(x) = F(x) + C$ for some constant $C$.</p></div>
-  <div class="card sl"><h4 style="margin-top:0;color:var(--sky)">&#128161; Quick Proof</h4><p>Let $H=G-F$. Then $H'=0$ everywhere, so $H$ is constant. Thus $G=F+C$. &#x220E;</p><p style="margin-bottom:0"><em>Example:</em> $x^3$, $x^3+7$, $x^3-\pi$ all have derivative $3x^2$.</p></div>
+  <div class="thm-box">
+    <div class="lbl">Theorem</div>
+    <p>If $F(x)$ is an antiderivative of continuous $f(x)$, then every other antiderivative has the form $G(x) = F(x) + C$ for some constant $C \in \mathbb{R}$.</p>
+  </div>
+  <div class="card sl">
+    <h4 style="margin-top:0;color:var(--sky)">&#128161; Why the $+C$? Quick Proof</h4>
+    <p>Let $G$ be any antiderivative of $f$, and $F$ another. Define $H = G - F$. Then $H'(x) = G'(x) - F'(x) = f(x) - f(x) = 0$ everywhere. A function with zero derivative everywhere must be a constant. So $G - F = C$, giving $G = F + C$. &#x220E;</p>
+    <p style="margin-bottom:0"><em>Geometric meaning:</em> All antiderivatives are vertical shifts of each other. The family $x^3$, $x^3+7$, $x^3 - \pi$ all have derivative $3x^2$ &mdash; they are the same curve, just shifted up or down.</p>
+  </div>
 </section>
 
 <!-- NOTATION -->
 <section id="notation">
   <div class="subsec">5.1b &mdash; The Indefinite Integral &amp; Its Notation</div>
   <h3 style="font-size:1.7rem;color:var(--ink);margin-top:0">The Indefinite Integral</h3>
+  <p>The collection of all antiderivatives of $f(x)$ is called the <strong>indefinite integral</strong> of $f$, written with the integral sign:</p>
   <svg class="annot-svg" viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
     <rect width="600" height="240" fill="#fdf8f0" rx="14"/>
     <rect x="7" y="7" width="586" height="226" fill="none" stroke="#e0d6c8" stroke-width="1.5" rx="10"/>
@@ -468,57 +379,77 @@ tr:nth-child(even) td { background: var(--cream); }
     <circle cx="532" cy="111" r="3.5" fill="#b03a6e"/>
     <text x="540" y="38" text-anchor="middle" font-size="11.5" font-family="monospace" fill="#b03a6e" font-weight="600">CONSTANT OF INTEGRATION</text>
   </svg>
-  <div class="def-box"><div class="lbl">The Indefinite Integral</div><p>If $F'(x)=f(x)$:</p>$$\int f(x)\,dx = F(x) + C$$
-  <table style="margin-top:12px"><tr><th>Symbol</th><th>Name</th><th>Meaning</th></tr><tr><td>$\int$</td><td>Integral sign</td><td>Stretched &ldquo;S&rdquo; &mdash; commands antidifferentiation</td></tr><tr><td>$f(x)$</td><td>Integrand</td><td>Function to antidifferentiate</td></tr><tr><td>$dx$</td><td>Differential</td><td>Identifies variable; limit of $\Delta x \to 0$</td></tr><tr><td>$C$</td><td>Constant</td><td>Represents the full family of antiderivatives</td></tr></table></div>
+  <div class="def-box">
+    <div class="lbl">The Indefinite Integral</div>
+    <p>If $F'(x)=f(x)$, then the indefinite integral is defined as:</p>
+    $$\int f(x)\,dx = F(x) + C$$
+    <table style="margin-top:12px">
+      <tr><th>Symbol</th><th>Name</th><th>Meaning</th></tr>
+      <tr><td>$\int$</td><td>Integral sign</td><td>Stretched &ldquo;S&rdquo; &mdash; Leibniz invented it in 1675 for <em>Summa</em> (sum)</td></tr>
+      <tr><td>$f(x)$</td><td>Integrand</td><td>The function being antidifferentiated</td></tr>
+      <tr><td>$dx$</td><td>Differential</td><td>Identifies the variable; connects to the limit $\Delta x \to 0$ later</td></tr>
+      <tr><td>$C$</td><td>Constant of integration</td><td>Represents the entire family of antiderivatives</td></tr>
+    </table>
+  </div>
+  <div class="callout-teal"><strong>Key difference:</strong> The <em>indefinite</em> integral $\int f(x)\,dx$ is a <em>family of functions</em> (with $+C$). The <em>definite</em> integral $\int_a^b f(x)\,dx$ is a <em>number</em>. We study the definite integral in §5.3.</div>
 </section>
 
 <!-- INTEGRATION RULES -->
 <section id="rules51">
   <div class="subsec">5.1c &mdash; Rules for Integrating Common Functions</div>
   <h3 style="font-size:1.7rem;color:var(--ink);margin-top:0">Integration Rules</h3>
+  <p>Each rule below is simply a differentiation rule read in reverse. Always verify by differentiating your answer.</p>
 
   <div class="card al">
     <h4 style="margin-top:0;color:var(--accent)">Rule 1 &mdash; The Constant Rule</h4>
     <div class="rule-highlight">$$\int k\,dx = kx + C$$</div>
-    <p>Since $\dfrac{d}{dx}(kx)=k$, the antiderivative of constant $k$ is $kx$.</p>
+    <p>Since $\dfrac{d}{dx}(kx)=k$, the antiderivative of any constant $k$ is $kx$.</p>
     <div style="border-top:1px solid var(--border-lec);padding-top:14px;margin-top:14px">
       <strong>Example 1.</strong> $\displaystyle\int 7\,dx = 7x + C$ &nbsp;&nbsp; <em>Check:</em> $\dfrac{d}{dx}(7x+C)=7$ &#10003;
     </div>
-    <div style="border-top:1px solid var(--border-lec);padding-top:12px;margin-top:12px"><strong>Example 2.</strong> $\displaystyle\int (-4)\,dx = -4x + C$</div>
+    <div style="border-top:1px solid var(--border-lec);padding-top:12px;margin-top:12px">
+      <strong>Example 2.</strong> $\displaystyle\int (-4)\,dx = -4x + C$
+    </div>
     <button class="toggle-btn" style="margin-top:16px" onclick="toggleAnswer('cr_ex3')">Try: $\int 0\,dx$</button>
-    <div class="answer-box" id="cr_ex3">$\displaystyle\int 0\,dx = C$</div>
+    <div class="answer-box" id="cr_ex3">$\displaystyle\int 0\,dx = C$ &nbsp; (a constant function has zero derivative, so any constant is an antiderivative of zero)</div>
   </div>
 
   <div class="card gl">
     <h4 style="margin-top:0;color:var(--gold-lec)">Rule 2 &mdash; The Power Rule</h4>
     <div class="rule-highlight" style="background:#fff8ec">$$\int x^n\,dx = \frac{x^{n+1}}{n+1} + C \qquad (n \neq -1)$$</div>
-    <p><em>Raise the exponent by 1, divide by the new exponent.</em></p>
+    <p><em>Raise the exponent by 1, divide by the new exponent.</em> This works for any $n \neq -1$, including fractions and negatives.</p>
     <div style="border-top:1px solid var(--border-lec);padding-top:14px;margin-top:14px">
       <strong>Example 1.</strong> $\displaystyle\int x^5\,dx = \frac{x^6}{6} + C$
     </div>
     <div style="border-top:1px solid var(--border-lec);padding-top:12px;margin-top:12px">
-      <strong>Example 2 (fractional).</strong> $\displaystyle\int \sqrt{x}\,dx = \frac{2}{3}x^{3/2}+C$
+      <strong>Example 2 (fractional exponent).</strong> $\displaystyle\int \sqrt{x}\,dx = \int x^{1/2}\,dx = \frac{x^{3/2}}{3/2} + C = \frac{2}{3}x^{3/2}+C$
     </div>
     <div style="border-top:1px solid var(--border-lec);padding-top:12px;margin-top:12px">
-      <strong>Example 3 (negative).</strong> $\displaystyle\int x^{-3}\,dx = -\frac{1}{2x^2}+C$
+      <strong>Example 3 (negative exponent).</strong> $\displaystyle\int x^{-3}\,dx = \frac{x^{-2}}{-2}+C = -\frac{1}{2x^2}+C$
     </div>
     <button class="toggle-btn" style="margin-top:16px" onclick="toggleAnswer('pr_try')">Try: $\int x^{3/4}\,dx$</button>
-    <div class="answer-box" id="pr_try">$\dfrac{4}{7}x^{7/4}+C$</div>
+    <div class="answer-box" id="pr_try">$\dfrac{x^{7/4}}{7/4}+C = \dfrac{4}{7}x^{7/4}+C$</div>
   </div>
 
   <div class="card tl">
     <h4 style="margin-top:0;color:var(--teal-lec)">Rule 3 &mdash; The Logarithmic Rule</h4>
     <div class="rule-highlight" style="background:#eef7f7">$$\int \frac{1}{x}\,dx = \ln|x| + C \qquad (x \neq 0)$$</div>
-    <p>The power rule fails for $n=-1$. Since $\dfrac{d}{dx}\ln|x|=\dfrac{1}{x}$, the antiderivative is $\ln|x|$.</p>
-    <div style="border-top:1px solid var(--border-lec);padding-top:14px;margin-top:14px"><strong>Example.</strong> $\displaystyle\int \frac{8}{x}\,dx = 8\ln|x|+C$</div>
+    <p>The power rule fails when $n=-1$ (division by zero). Since $\dfrac{d}{dx}\ln|x|=\dfrac{1}{x}$, this fills the gap.</p>
+    <div style="border-top:1px solid var(--border-lec);padding-top:14px;margin-top:14px">
+      <strong>Example.</strong> $\displaystyle\int \frac{8}{x}\,dx = 8\int\frac{1}{x}\,dx = 8\ln|x|+C$
+    </div>
   </div>
 
   <div class="card sl">
     <h4 style="margin-top:0;color:var(--sky)">Rule 4 &mdash; The Exponential Rule</h4>
     <div class="rule-highlight" style="background:#f0f4ff">$$\int e^x\,dx = e^x + C \qquad \text{and} \qquad \int e^{kx}\,dx = \frac{e^{kx}}{k}+C$$</div>
-    <p>$e^x$ is its own derivative &mdash; and its own antiderivative.</p>
-    <div style="border-top:1px solid var(--border-lec);padding-top:12px;margin-top:12px"><strong>Example 1.</strong> $\displaystyle\int e^{3x}\,dx = \frac{e^{3x}}{3}+C$</div>
-    <div style="border-top:1px solid var(--border-lec);padding-top:12px;margin-top:12px"><strong>Example 2.</strong> $\displaystyle\int 5e^{-2x}\,dx = -\frac{5}{2}e^{-2x}+C$</div>
+    <p>$e^x$ is its own derivative, so it is also its own antiderivative. The $k$ in the denominator corrects for the chain rule factor.</p>
+    <div style="border-top:1px solid var(--border-lec);padding-top:12px;margin-top:12px">
+      <strong>Example 1.</strong> $\displaystyle\int e^{3x}\,dx = \frac{e^{3x}}{3}+C$ &nbsp;&nbsp; <em>Check:</em> $\dfrac{d}{dx}\!\left(\dfrac{e^{3x}}{3}\right) = e^{3x}$ &#10003;
+    </div>
+    <div style="border-top:1px solid var(--border-lec);padding-top:12px;margin-top:12px">
+      <strong>Example 2.</strong> $\displaystyle\int 5e^{-2x}\,dx = 5\cdot\frac{e^{-2x}}{-2}+C = -\frac{5}{2}e^{-2x}+C$
+    </div>
   </div>
 
   <div class="sub-divider"></div>
@@ -530,12 +461,15 @@ tr:nth-child(even) td { background: var(--cream); }
     <h4 style="margin-top:0;color:var(--accent)">&#9999;&#65039; Example &mdash; Combining Rules</h4>
     <p>Find $\displaystyle\int\!\left(6x^2 - \frac{4}{x} + 3e^x\right)dx$.</p>
     <button class="toggle-btn" onclick="toggleAnswer('alg1')">Show Solution</button>
-    <div class="answer-box" id="alg1">$$= 2x^3 - 4\ln|x| + 3e^x + C$$</div>
+    <div class="answer-box" id="alg1">
+      $$\int 6x^2\,dx - \int\frac{4}{x}\,dx + \int 3e^x\,dx = 2x^3 - 4\ln|x| + 3e^x + C$$
+    </div>
   </div>
 
   <div class="card gl">
-    <h4 style="margin-top:0;color:var(--gold-lec)">&#9999;&#65039; Example &mdash; Simplify First</h4>
+    <h4 style="margin-top:0;color:var(--gold-lec)">&#9999;&#65039; Example &mdash; Simplify Before Integrating</h4>
     <p>Find $\displaystyle\int\frac{x^3 - 4x}{x}\,dx$.</p>
+    <p>First simplify: $\dfrac{x^3-4x}{x} = x^2 - 4$</p>
     <button class="toggle-btn" onclick="toggleAnswer('alg2')">Show Solution</button>
     <div class="answer-box" id="alg2">$$\int(x^2-4)\,dx = \frac{x^3}{3}-4x+C$$</div>
   </div>
@@ -561,22 +495,37 @@ tr:nth-child(even) td { background: var(--cream); }
 <section id="apps">
   <div class="subsec">5.1d &mdash; Applications</div>
   <h3 style="font-size:1.7rem;color:var(--ink);margin-top:0">Integration in Action</h3>
+
   <div class="card tl">
     <h4 style="margin-top:0;color:var(--teal-lec)">&#128200; Finding a Function from Its Slope</h4>
-    <p>A curve passes through $(1,4)$ with slope $f'(x)=3x^2-2x+1$. Find $f(x)$.</p>
+    <p>A curve passes through $(1,4)$ with slope function $f'(x)=3x^2-2x+1$. Find $f(x)$.</p>
     <button class="toggle-btn" onclick="toggleAnswer('slope1')">Show Solution</button>
     <div class="answer-box" id="slope1">
-      <p>$f(x)=x^3-x^2+x+C$. Apply $f(1)=4$: $C=3$.</p>
+      <p>Integrate: $f(x)=\displaystyle\int(3x^2-2x+1)\,dx = x^3-x^2+x+C$</p>
+      <p>Apply $f(1)=4$: $1-1+1+C=4 \Rightarrow C=3$</p>
       $$f(x)=x^3-x^2+x+3$$
     </div>
   </div>
+
   <div class="card gl">
     <h4 style="margin-top:0;color:var(--gold-lec)">&#128176; Total Cost from Marginal Cost</h4>
-    <p>$C'(x)=3x^2-12x+14$, fixed costs $\$35$. Find $C(x)$.</p>
+    <p>A firm's marginal cost is $C'(x)=3x^2-12x+14$ (PKR thousands/unit) with fixed costs of PKR 35 thousand. Find $C(x)$.</p>
     <button class="toggle-btn" onclick="toggleAnswer('mc1')">Show Solution</button>
     <div class="answer-box" id="mc1">
-      <p>$C(x)=x^3-6x^2+14x+K$. $C(0)=35 \Rightarrow K=35$.</p>
+      <p>$C(x)=\displaystyle\int(3x^2-12x+14)\,dx = x^3-6x^2+14x+K$</p>
+      <p>Fixed costs: $C(0)=35 \Rightarrow K=35$</p>
       $$C(x)=x^3-6x^2+14x+35$$
+    </div>
+  </div>
+
+  <div class="card al">
+    <h4 style="margin-top:0;color:var(--accent)">&#128663; Distance from Velocity</h4>
+    <p>A LUMS student cycles to campus with velocity $v(t) = 6t^2 - 4t + 3$ km/h, where $t$ is hours. If the student starts at position $s=0$, find the position function $s(t)$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('vel1')">Show Solution</button>
+    <div class="answer-box" id="vel1">
+      <p>$s(t) = \displaystyle\int(6t^2-4t+3)\,dt = 2t^3 - 2t^2 + 3t + C$</p>
+      <p>$s(0) = 0 \Rightarrow C = 0$</p>
+      $$s(t) = 2t^3-2t^2+3t \text{ km}$$
     </div>
   </div>
 </section>
@@ -586,104 +535,131 @@ tr:nth-child(even) td { background: var(--cream); }
   <div class="subsec">5.1e &mdash; Introduction to Differential Equations</div>
   <h3 style="font-size:1.7rem;color:var(--ink);margin-top:0">Differential Equations</h3>
   <p>A <strong>differential equation</strong> is an equation involving an unknown function and its derivatives &mdash; the language in which physics, biology, and economics write their deepest laws.</p>
-  <div class="def-box"><div class="lbl">Definition</div><p>The <strong>order</strong> of a DE is the order of the highest derivative appearing. In Calc I we study <strong>separable equations</strong> where variables can be separated.</p></div>
+  <div class="def-box">
+    <div class="lbl">Definition</div>
+    <p>The <strong>order</strong> of a DE is the order of the highest derivative appearing. In Calc I we study <strong>separable first-order equations</strong> where variables can be separated onto opposite sides.</p>
+  </div>
   <table>
     <tr><th>Type</th><th>Form</th><th>Note</th></tr>
     <tr><td><strong>Separable</strong></td><td>$\dfrac{dy}{dx}=f(x)g(y)$</td><td>Our focus in Calc I</td></tr>
     <tr><td>Linear (1st order)</td><td>$y'+P(x)y=Q(x)$</td><td>Integrating factor method</td></tr>
     <tr><td>Autonomous</td><td>$dy/dt=f(y)$</td><td>Right side depends only on $y$</td></tr>
-    <tr><td>Higher order</td><td>$y''+4y=\sin x$</td><td>Studied in Calc II / Diff. Eq.</td></tr>
+    <tr><td>Higher order</td><td>$y''+4y=\sin x$</td><td>Studied in Diff. Equations course</td></tr>
   </table>
-  <div class="thm-box"><div class="lbl">Method &mdash; Separation of Variables</div>
+  <div class="thm-box">
+    <div class="lbl">Method &mdash; Separation of Variables</div>
     <p>Given $\dfrac{dy}{dx}=f(x)\cdot g(y)$:</p>
     <ol class="steps" style="margin-top:14px">
-      <li>Separate: $\dfrac{dy}{g(y)}=f(x)\,dx$</li>
-      <li>Integrate both sides</li>
-      <li>Solve for $y$</li>
-      <li>Apply initial condition to find $C$</li>
+      <li>Separate variables: $\dfrac{dy}{g(y)}=f(x)\,dx$</li>
+      <li>Integrate both sides independently</li>
+      <li>Solve algebraically for $y$</li>
+      <li>Apply initial condition to find the specific constant $C$</li>
     </ol>
   </div>
-  <div class="note-box"><div class="lbl">Why It Works</div><p>Dividing by $g(y)$ and integrating w.r.t. $x$, using $dy=\dfrac{dy}{dx}dx$, converts the left side to $\int\dfrac{dy}{g(y)}$. Justified by FTC + Chain Rule.</p></div>
+  <div class="note-box">
+    <div class="lbl">Why It Works</div>
+    <p style="margin-bottom:0">Treating $\dfrac{dy}{dx}$ as a fraction and cross-multiplying is justified by the Chain Rule. When we integrate $\int\dfrac{dy}{g(y)}$, we are integrating the left side with respect to $y$, and the right side with respect to $x$ &mdash; legitimate because $dy = \dfrac{dy}{dx}dx$.</p>
+  </div>
+
   <div class="card al">
     <h4 style="margin-top:0;color:var(--accent)">&#128188; Revenue IVP</h4>
-    <p>$\dfrac{dR}{dq}=50-2q$, $R(0)=0$. Find $R(q)$.</p>
+    <p>The marginal revenue for a LUMS canteen is $\dfrac{dR}{dq}=50-2q$, with $R(0)=0$. Find $R(q)$ and the revenue-maximising quantity.</p>
     <button class="toggle-btn" onclick="toggleAnswer('ivp1')">Show Solution</button>
     <div class="answer-box" id="ivp1">
-      <p>$R(q)=50q-q^2+C$. $R(0)=0 \Rightarrow C=0$.</p>
-      $$R(q)=50q-q^2 \qquad \text{(max at } q=25\text{)}$$
+      <p>$R(q)=\displaystyle\int(50-2q)\,dq = 50q-q^2+C$</p>
+      <p>Apply $R(0)=0$: $C=0$</p>
+      $$R(q)=50q-q^2 \qquad \text{(max at } q=25\text{, giving }R=625\text{)}$$
     </div>
   </div>
+
   <div class="card tl">
     <h4 style="margin-top:0;color:var(--teal-lec)">&#127807; Exponential Growth/Decay</h4>
-    <p>Solve $\dfrac{dy}{dx}=ky$, $y(0)=y_0$.</p>
+    <p>Solve $\dfrac{dy}{dx}=ky$, $y(0)=y_0$. This models population growth, radioactive decay, and compound interest simultaneously.</p>
     <button class="toggle-btn" onclick="toggleAnswer('exp1')">Show Solution</button>
     <div class="answer-box" id="exp1">
-      <p>$\dfrac{dy}{y}=k\,dx$ &rarr; $\ln|y|=kx+C_1$ &rarr; $y=Ce^{kx}$.</p>
-      $$y=y_0 e^{kx}$$
+      <p>Separate: $\dfrac{dy}{y}=k\,dx$</p>
+      <p>Integrate: $\ln|y|=kx+C_1$</p>
+      <p>Exponentiate: $y=Ce^{kx}$ where $C=e^{C_1}$</p>
+      <p>Apply $y(0)=y_0$: $C=y_0$</p>
+      $$\boxed{y=y_0 e^{kx}}$$
+      <p style="margin-bottom:0">If $k>0$: exponential growth. If $k<0$: exponential decay.</p>
     </div>
   </div>
 </section>
 
 <!-- CONTINUOUS COMPOUNDING -->
 <section id="compounding">
-  <div class="subsec">5.1f &mdash; Continuous Compounding via Differential Equations</div>
-  <h3 style="font-size:1.7rem;color:var(--ink);margin-top:0">Continuous Compounding</h3>
-  <div class="card gl"><h4 style="margin-top:0;color:var(--gold-lec)">&#127968; The Model</h4><p>$\dfrac{dB}{dt}=rB$ &mdash; the richer you are, the faster it grows. This is the DE of continuous compounding.</p></div>
-  <div class="thm-box"><div class="lbl">Theorem &mdash; Continuous Compounding Formula</div><p>If $P$ dollars are invested at annual rate $r$ compounded continuously:</p>$$B(t)=Pe^{rt}$$</div>
+  <div class="subsec">5.1f &mdash; Continuous Compounding</div>
+  <h3 style="font-size:1.7rem;color:var(--ink);margin-top:0">Continuous Compounding<br>via Differential Equations</h3>
+  <div class="card gl">
+    <h4 style="margin-top:0;color:var(--gold-lec)">&#127968; The Model</h4>
+    <p style="margin-bottom:0">$\dfrac{dB}{dt}=rB$ &mdash; the balance grows at a rate proportional to itself. This is the DE of continuous compounding: the more you have, the faster it grows.</p>
+  </div>
+  <div class="thm-box">
+    <div class="lbl">Theorem &mdash; Continuous Compounding Formula</div>
+    <p>If $P$ rupees (or dollars) are invested at annual rate $r$ compounded continuously for $t$ years:</p>
+    $$B(t)=Pe^{rt}$$
+  </div>
   <div class="card tl">
-    <h4 style="margin-top:0;color:var(--teal-lec)">&#9999;&#65039; Full Derivation</h4>
+    <h4 style="margin-top:0;color:var(--teal-lec)">&#9999;&#65039; Full Derivation from the DE</h4>
     <button class="toggle-btn" onclick="toggleAnswer('cc1')">Show Derivation</button>
     <div class="answer-box" id="cc1">
       <p>IVP: $\dfrac{dB}{dt}=rB$, $B(0)=P$.</p>
-      <p>$\dfrac{dB}{B}=r\,dt$ &rarr; $\ln|B|=rt+C_1$ &rarr; $B=Ce^{rt}$.</p>
+      <p>Separate: $\dfrac{dB}{B}=r\,dt$</p>
+      <p>Integrate: $\ln|B|=rt+C_1$</p>
+      <p>Exponentiate: $B=Ce^{rt}$</p>
       <p>$B(0)=C=P$, therefore $B(t)=Pe^{rt}$ &#10003;</p>
     </div>
   </div>
   <div class="card al">
     <h4 style="margin-top:0;color:var(--accent)">&#128181; Example</h4>
-    <p>$\$5{,}000$ at $6\%$ continuous compounding for 10 years.</p>
+    <p>PKR 5,000 invested at $6\%$ annual rate compounded continuously. Find the balance after 10 years.</p>
     <button class="toggle-btn" onclick="toggleAnswer('cc2')">Show Solution</button>
-    <div class="answer-box" id="cc2">$$B(10)=5000e^{0.6}\approx\$9{,}110.60$$</div>
+    <div class="answer-box" id="cc2">$$B(10)=5000e^{0.06\times 10}=5000e^{0.6}\approx\text{PKR }9{,}110.60$$</div>
   </div>
   <div class="widget">
     <div class="wt">&#128200; Continuous Compounding Explorer &nbsp; $B(t)=Pe^{rt}$</div>
     <canvas id="compCanvas" height="260"></canvas>
     <div class="controls">
-      <div class="cg"><label>Principal $P$ = $<span class="val" id="pVal">5000</span></label><input type="range" id="pSlider" min="1000" max="20000" step="500" value="5000" oninput="updateComp()"></div>
+      <div class="cg"><label>Principal $P$ = PKR <span class="val" id="pVal">5000</span></label><input type="range" id="pSlider" min="1000" max="20000" step="500" value="5000" oninput="updateComp()"></div>
       <div class="cg"><label>Rate $r$ = <span class="val" id="rVal">6</span>%</label><input type="range" id="rSlider" min="1" max="20" step="0.5" value="6" oninput="updateComp()"></div>
       <div class="cg"><label>Years $t$ = <span class="val" id="tVal">10</span></label><input type="range" id="tSlider" min="1" max="40" step="1" value="10" oninput="updateComp()"></div>
     </div>
-    <div class="srow"><div class="sp">$B(t)$ = $<span id="compResult">&mdash;</span></div><div class="sp">Interest = $<span id="compInterest">&mdash;</span></div><div class="sp">Doubles ~ <span id="compDouble">&mdash;</span> yrs</div></div>
+    <div class="srow">
+      <div class="sp">$B(t)$ = PKR <span id="compResult">&mdash;</span></div>
+      <div class="sp">Interest = PKR <span id="compInterest">&mdash;</span></div>
+      <div class="sp">Doubles in ~ <span id="compDouble">&mdash;</span> yrs</div>
+    </div>
   </div>
-  <div class="callout-gold"><strong>Rule of 70:</strong> At rate $r\%$, money doubles in $\approx 70/r$ years. From $Pe^{rt}=2P \Rightarrow t=\ln2/r \approx 0.693/r$.</div>
+  <div class="callout-gold"><strong>Rule of 70:</strong> At rate $r\%$, money doubles in approximately $70/r$ years. Derived from $Pe^{rt}=2P \Rightarrow t=\dfrac{\ln 2}{r} \approx \dfrac{0.693}{r}$.</div>
 </section>
 
 <!-- PRACTICE -->
 <section id="practice">
-  <div class="sec-label">&sect; 8 &mdash; Test Yourself</div>
+  <div class="sec-label">&sect; 7 &mdash; Test Yourself</div>
   <h2>Practice Problems</h2>
 
   <div class="card al"><h3 style="margin-top:0">Problem 1 &mdash; Power Rule</h3><p>$\displaystyle\int(4x^3-6x+5)\,dx$</p><button class="toggle-btn" onclick="toggleAnswer('p1')">Reveal Solution</button><div class="answer-box" id="p1">$$x^4-3x^2+5x+C$$</div></div>
 
   <div class="card gl"><h3 style="margin-top:0">Problem 2 &mdash; Mixed Rules</h3><p>$\displaystyle\int\!\left(3\sqrt{x}-\frac{5}{x}+2e^x\right)dx$</p><button class="toggle-btn" onclick="toggleAnswer('p2')">Reveal Solution</button><div class="answer-box" id="p2">$$2x^{3/2}-5\ln|x|+2e^x+C$$</div></div>
 
-  <div class="card tl"><h3 style="margin-top:0">Problem 3 &mdash; Initial Value Problem</h3><p>$f'(x)=6x-4$, $f(2)=3$. Find $f(x)$.</p><button class="toggle-btn" onclick="toggleAnswer('p3')">Reveal Solution</button><div class="answer-box" id="p3">$$f(x)=3x^2-4x-1$$</div></div>
+  <div class="card tl"><h3 style="margin-top:0">Problem 3 &mdash; Initial Value Problem</h3><p>$f'(x)=6x-4$, $f(2)=3$. Find $f(x)$.</p><button class="toggle-btn" onclick="toggleAnswer('p3')">Reveal Solution</button><div class="answer-box" id="p3"><p>$f(x)=3x^2-4x+C$. Apply $f(2)=3$: $12-8+C=3 \Rightarrow C=-1$.</p>$$f(x)=3x^2-4x-1$$</div></div>
 
-  <div class="card sl"><h3 style="margin-top:0">Problem 4 &mdash; Marginal Revenue</h3><p>$R'(q)=120-4q$, $R(0)=0$. Find $R(q)$ and maximising quantity.</p><button class="toggle-btn" onclick="toggleAnswer('p4')">Reveal Solution</button><div class="answer-box" id="p4"><p>$R(q)=120q-2q^2$. Max at $q=30$: $R(30)=\$1{,}800$.</p></div></div>
+  <div class="card sl"><h3 style="margin-top:0">Problem 4 &mdash; Marginal Revenue</h3><p>$R'(q)=120-4q$, $R(0)=0$. Find $R(q)$ and the revenue-maximising quantity.</p><button class="toggle-btn" onclick="toggleAnswer('p4')">Reveal Solution</button><div class="answer-box" id="p4"><p>$R(q)=120q-2q^2$. Max where $R'(q)=0$: $q=30$, $R(30)=\text{PKR }1{,}800$.</p></div></div>
 
-  <div class="card al"><h3 style="margin-top:0">Problem 5 &mdash; Continuous Compounding</h3><p>How many years for $\$2{,}000$ to triple at $8\%$ continuous compounding?</p><button class="toggle-btn" onclick="toggleAnswer('p5')">Reveal Solution</button><div class="answer-box" id="p5">$$t=\frac{\ln 3}{0.08}\approx 13.73 \text{ years}$$</div></div>
+  <div class="card al"><h3 style="margin-top:0">Problem 5 &mdash; Continuous Compounding</h3><p>How many years for PKR 2,000 to triple at $8\%$ continuous compounding?</p><button class="toggle-btn" onclick="toggleAnswer('p5')">Reveal Solution</button><div class="answer-box" id="p5">$$2000e^{0.08t}=6000 \Rightarrow e^{0.08t}=3 \Rightarrow t=\frac{\ln 3}{0.08}\approx 13.73\text{ years}$$</div></div>
 
-  <div class="card tl"><h3 style="margin-top:0">Problem 6 &mdash; Challenge</h3><p>$\dfrac{dP}{dt}=0.05P$, $P(0)=1000$. Find $P(t)$ and $P(20)$.</p><button class="toggle-btn" onclick="toggleAnswer('p6')">Reveal Solution</button><div class="answer-box" id="p6"><p>$P(t)=1000e^{0.05t}$.</p>$$P(20)=1000e\approx 2{,}718$$</div></div>
+  <div class="card tl"><h3 style="margin-top:0">Problem 6 &mdash; Challenge DE</h3><p>$\dfrac{dP}{dt}=0.05P$, $P(0)=1000$. Find $P(t)$ and $P(20)$.</p><button class="toggle-btn" onclick="toggleAnswer('p6')">Reveal Solution</button><div class="answer-box" id="p6"><p>$P(t)=1000e^{0.05t}$.</p>$$P(20)=1000e^{1}=1000e\approx 2{,}718$$</div></div>
 
   <div class="divider"></div>
-  <div class="callout-teal"><strong style="color:var(--teal-lec)">Coming up next &mdash;</strong> &sect;5.2 Definite Integrals &amp; Area Between Curves.</div>
+  <div class="callout-teal"><strong style="color:var(--teal-lec)">Coming up next &mdash;</strong> &sect;5.2 Integration by Substitution &mdash; the chain rule in reverse, unlocking a whole new class of integrals.</div>
 </section>
 
     </div><!-- end lec-inner -->
 
     <div class="lec-footer-nav">
       <a href="course-calc1.html" class="lnf-btn">&#8592; Course Overview</a>
-      <div style="font-family:var(--fm-lec);font-size:.7rem;color:var(--muted);text-align:center">&sect;5.1 of 5 &middot; Chapter 5 &middot; Calculus I</div>
+      <div style="font-family:var(--fm-lec);font-size:.7rem;color:var(--muted);text-align:center">&sect;5.1 &middot; Chapter 5 &middot; Calculus I</div>
       <a href="calc1-s52.html" class="lnf-btn next">&sect;5.2 Substitution &#8594;</a>
     </div>
 
@@ -695,6 +671,11 @@ tr:nth-child(even) td { background: var(--cream); }
     <div>
       <div class="sk-footer-logo">Shoaib-K</div>
       <p style="color:var(--text2);font-size:.875rem;margin-top:10px">Mathematician &middot; Educator &middot; Researcher<br>LUMS, Lahore, Pakistan</p>
+      <div style="display:flex;gap:14px;margin-top:14px">
+        <a href="https://www.facebook.com/shoaiib.k" target="_blank">Facebook</a>
+        <a href="https://twitter.com/msking_shoaib" target="_blank">Twitter</a>
+        <a href="https://instagram.com/msking.shoaib" target="_blank">Instagram</a>
+      </div>
     </div>
     <div>
       <h5>Navigation</h5>
@@ -730,112 +711,6 @@ function toggleAnswer(id){
   if(window.MathJax&&el.classList.contains('show')) MathJax.typesetPromise([el]);
 }
 
-function toggleRiemann(btn){
-  const sec=document.getElementById('riemannSection');
-  const showing=sec.classList.toggle('show');
-  btn.innerHTML=showing?'<span>&#9650;</span> &nbsp;Hide Explorer':'<span>&#11035;</span> &nbsp;Reveal Riemann Sum Explorer';
-  if(showing) setTimeout(drawRiemann,80);
-}
-
-const FNS={
-  quad:{fn:x=>x*x,exact:(a,b)=>b**3/3-a**3/3},
-  sin:{fn:x=>Math.sin(x)+1,exact:(a,b)=>(b-a)+Math.cos(a)-Math.cos(b)},
-  sqrt:{fn:x=>Math.sqrt(x),exact:(a,b)=>2/3*(b**1.5-a**1.5)},
-  cubic:{fn:x=>x**3/4+1,exact:(a,b)=>(b**4/16+b)-(a**4/16+a)}
-};
-
-const rA=0,rB=3;let rN=4;
-function updateN(v){rN=+v;document.getElementById('nVal').textContent=v;drawRiemann();}
-
-function drawRiemann(){
-  const fnKey=document.getElementById('fnSelect').value;
-  const rule=document.getElementById('ruleSelect').value;
-  const fObj=FNS[fnKey],fn=fObj.fn;
-  const cv=document.getElementById('riemannCanvas');
-  if(!cv.offsetWidth)return;
-  cv.width=cv.offsetWidth*devicePixelRatio;cv.height=300*devicePixelRatio;
-  const ctx=cv.getContext('2d');ctx.scale(devicePixelRatio,devicePixelRatio);
-  const W=cv.offsetWidth,H=300,pad={l:46,r:18,t:16,b:32};
-  const gW=W-pad.l-pad.r,gH=H-pad.t-pad.b;
-  let yMax=0;for(let i=0;i<=200;i++){const y=fn(rA+(rB-rA)*i/200);if(y>yMax)yMax=y;}
-  yMax*=1.28;if(yMax<0.5)yMax=1;
-  const tX=x=>pad.l+(x-rA)/(rB-rA)*gW;
-  const tY=y=>pad.t+gH-y/yMax*gH;
-  ctx.fillStyle='#111827';ctx.fillRect(0,0,W,H);
-  ctx.strokeStyle='#1f2937';ctx.lineWidth=1;
-  for(let y=0;y<=yMax;y+=yMax/4){ctx.beginPath();ctx.moveTo(pad.l,tY(y));ctx.lineTo(pad.l+gW,tY(y));ctx.stroke();ctx.fillStyle='#6b7280';ctx.font='11px IBM Plex Mono,monospace';ctx.fillText(y.toFixed(1),4,tY(y)+4);}
-  const dx=(rB-rA)/rN;let sumArea=0;
-  for(let i=0;i<rN;i++){
-    let xs;if(rule==='left')xs=rA+i*dx;else if(rule==='right')xs=rA+(i+1)*dx;else xs=rA+(i+.5)*dx;
-    const h=fn(xs);if(h<0)continue;sumArea+=h*dx;
-    const rx=tX(rA+i*dx),rw=tX(rA+(i+1)*dx)-tX(rA+i*dx);
-    ctx.fillStyle='rgba(212,160,23,.28)';ctx.fillRect(rx,tY(h),rw,tY(0)-tY(h));
-    ctx.strokeStyle='#d4a017';ctx.lineWidth=1.3;ctx.strokeRect(rx,tY(h),rw,tY(0)-tY(h));
-  }
-  ctx.beginPath();ctx.moveTo(tX(rA),tY(fn(rA)));
-  for(let i=1;i<=300;i++){const x=rA+(rB-rA)*i/300;ctx.lineTo(tX(x),tY(fn(x)));}
-  ctx.strokeStyle='#60a5fa';ctx.lineWidth=2.5;ctx.stroke();
-  ctx.strokeStyle='#4b5563';ctx.lineWidth=1.5;
-  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,pad.t+gH);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(pad.l,pad.t+gH);ctx.lineTo(pad.l+gW,pad.t+gH);ctx.stroke();
-  ctx.fillStyle='#9ca3af';ctx.font='12px IBM Plex Mono,monospace';
-  for(let x=rA;x<=rB;x++)ctx.fillText(x,tX(x)-4,H-6);
-  const exact=fObj.exact(rA,rB);const err=Math.abs(sumArea-exact);
-  document.getElementById('statN').textContent=rN;
-  document.getElementById('statDx').textContent=((rB-rA)/rN).toFixed(4);
-  document.getElementById('statArea').textContent=sumArea.toFixed(5);
-  document.getElementById('statExact').textContent=exact.toFixed(5);
-  document.getElementById('statErr').textContent=err.toFixed(5);
-}
-
-function updateB(v){document.getElementById('bVal').textContent=parseFloat(v).toFixed(2);drawSigned(parseFloat(v));}
-function drawSigned(b){
-  const cv=document.getElementById('signedCanvas');
-  cv.width=cv.offsetWidth*devicePixelRatio;cv.height=260*devicePixelRatio;
-  const ctx=cv.getContext('2d');ctx.scale(devicePixelRatio,devicePixelRatio);
-  const W=cv.offsetWidth,H=260,pad={l:44,r:16,t:14,b:30};
-  const gW=W-pad.l-pad.r,gH=H-pad.t-pad.b;
-  const dA=0,dB=10,yMin=-1.2,yMax=1.2;
-  const tX=x=>pad.l+(x-dA)/(dB-dA)*gW;
-  const tY=y=>pad.t+gH-(y-yMin)/(yMax-yMin)*gH;
-  const fn=x=>Math.sin(x);
-  ctx.fillStyle='#111827';ctx.fillRect(0,0,W,H);
-  ctx.strokeStyle='#374151';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.l,tY(0));ctx.lineTo(pad.l+gW,tY(0));ctx.stroke();
-  ctx.strokeStyle='#4b5563';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,pad.t+gH);ctx.stroke();ctx.beginPath();ctx.moveTo(pad.l,pad.t+gH);ctx.lineTo(pad.l+gW,pad.t+gH);ctx.stroke();
-  for(let i=0;i<500;i++){const x1=i/500*b,x2=(i+1)/500*b,y1=fn(x1),y2=fn(x2),avgY=(y1+y2)/2;ctx.beginPath();ctx.moveTo(tX(x1),tY(0));ctx.lineTo(tX(x1),tY(y1));ctx.lineTo(tX(x2),tY(y2));ctx.lineTo(tX(x2),tY(0));ctx.closePath();ctx.fillStyle=avgY>=0?'rgba(41,128,185,.5)':'rgba(192,57,43,.5)';ctx.fill();}
-  ctx.beginPath();ctx.moveTo(tX(0),tY(fn(0)));for(let i=1;i<=400;i++){const x=dA+(dB-dA)*i/400;ctx.lineTo(tX(x),tY(fn(x)));}ctx.strokeStyle='#a78bfa';ctx.lineWidth=2.5;ctx.stroke();
-  ctx.fillStyle='#9ca3af';ctx.font='11px IBM Plex Mono,monospace';
-  [{v:0,l:'0'},{v:Math.PI,l:'\u03c0'},{v:2*Math.PI,l:'2\u03c0'},{v:3*Math.PI,l:'3\u03c0'}].forEach(({v,l})=>{if(v<=dB)ctx.fillText(l,tX(v)-5,H-6);});
-  let pos=0,neg=0;const dx2=b/2000;for(let i=0;i<2000;i++){const y=fn(i*dx2);if(y>=0)pos+=y*dx2;else neg+=y*dx2;}
-  document.getElementById('posArea').textContent=pos.toFixed(4);
-  document.getElementById('negArea').textContent=neg.toFixed(4);
-  document.getElementById('netArea').textContent=(pos+neg).toFixed(4);
-}
-
-function updateFTC(v){document.getElementById('ftcX').textContent=parseFloat(v).toFixed(2);drawFTC(parseFloat(v));}
-function drawFTC(x){
-  const cv=document.getElementById('ftcCanvas');
-  cv.width=cv.offsetWidth*devicePixelRatio;cv.height=280*devicePixelRatio;
-  const ctx=cv.getContext('2d');ctx.scale(devicePixelRatio,devicePixelRatio);
-  const W=cv.offsetWidth,H=280,pad={l:46,r:16,t:14,b:30};
-  const gW=W-pad.l-pad.r,gH=H-pad.t-pad.b;
-  const dA=0,dB=4.5,yMax=22;
-  const fn=t=>t*t,tX=v=>pad.l+(v-dA)/(dB-dA)*gW,tY=v=>pad.t+gH-v/yMax*gH;
-  ctx.fillStyle='#111827';ctx.fillRect(0,0,W,H);
-  [0,5,10,15,20].forEach(y=>{ctx.strokeStyle='#1f2937';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.l,tY(y));ctx.lineTo(pad.l+gW,tY(y));ctx.stroke();ctx.fillStyle='#6b7280';ctx.font='11px IBM Plex Mono,monospace';ctx.fillText(y,4,tY(y)+4);});
-  ctx.beginPath();ctx.moveTo(tX(0),tY(0));for(let i=0;i<=200;i++){const t=x*i/200;ctx.lineTo(tX(t),tY(fn(t)));}ctx.lineTo(tX(x),tY(0));ctx.closePath();ctx.fillStyle='rgba(212,160,23,.28)';ctx.fill();ctx.strokeStyle='#d4a017';ctx.lineWidth=1.3;ctx.stroke();
-  ctx.beginPath();ctx.moveTo(tX(0),tY(0));for(let i=1;i<=300;i++){const t=dA+(dB-dA)*i/300;ctx.lineTo(tX(t),tY(fn(t)));}ctx.strokeStyle='#60a5fa';ctx.lineWidth=2.5;ctx.stroke();
-  ctx.setLineDash([5,4]);ctx.strokeStyle='#d4a017';ctx.lineWidth=1.3;ctx.beginPath();ctx.moveTo(tX(x),tY(0));ctx.lineTo(tX(x),tY(fn(x)));ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle='#fbbf24';ctx.beginPath();ctx.arc(tX(x),tY(fn(x)),6,0,Math.PI*2);ctx.fill();
-  ctx.strokeStyle='#4b5563';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,pad.t+gH);ctx.stroke();ctx.beginPath();ctx.moveTo(pad.l,pad.t+gH);ctx.lineTo(pad.l+gW,pad.t+gH);ctx.stroke();
-  ctx.fillStyle='#9ca3af';ctx.font='11px IBM Plex Mono,monospace';[0,1,2,3,4].forEach(v=>ctx.fillText(v,tX(v)-4,H-6));
-  ctx.fillStyle='#fbbf24';ctx.font='bold 12px IBM Plex Mono,monospace';ctx.fillText('x='+x.toFixed(2),tX(x)+8,tY(fn(x))-8);
-  const area=x**3/3;
-  document.getElementById('ftcArea').textContent=area.toFixed(4);
-  document.getElementById('ftcFx').textContent=area.toFixed(4);
-  document.getElementById('ftcDeriv').textContent=(x*x).toFixed(4);
-}
-
 function updateComp(){
   const P=+document.getElementById('pSlider').value,r=+document.getElementById('rSlider').value/100,t=+document.getElementById('tSlider').value;
   document.getElementById('pVal').textContent=document.getElementById('pSlider').value;
@@ -847,51 +722,71 @@ function updateComp(){
   document.getElementById('compDouble').textContent=(Math.log(2)/r).toFixed(1);
   drawComp(P,r,t);
 }
+
 function drawComp(P,r,tCur){
   const cv=document.getElementById('compCanvas');
-  cv.width=cv.offsetWidth*devicePixelRatio;cv.height=260*devicePixelRatio;
-  const ctx=cv.getContext('2d');ctx.scale(devicePixelRatio,devicePixelRatio);
+  cv.width=cv.offsetWidth*devicePixelRatio; cv.height=260*devicePixelRatio;
+  const ctx=cv.getContext('2d'); ctx.scale(devicePixelRatio,devicePixelRatio);
   const W=cv.offsetWidth,H=260,pad={l:62,r:16,t:14,b:30};
   const gW=W-pad.l-pad.r,gH=H-pad.t-pad.b;
   const tMax=40,Bmax=P*Math.exp(r*tMax)*1.06;
   const tX=t=>pad.l+t/tMax*gW,tY=v=>pad.t+gH-v/Bmax*gH;
-  ctx.fillStyle='#111827';ctx.fillRect(0,0,W,H);
-  for(let i=0;i<=4;i++){const y=Bmax*i/4;ctx.strokeStyle='#1f2937';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.l,tY(y));ctx.lineTo(pad.l+gW,tY(y));ctx.stroke();ctx.fillStyle='#6b7280';ctx.font='10px IBM Plex Mono,monospace';ctx.fillText('$'+(y>=1000?(y/1000).toFixed(0)+'k':y.toFixed(0)),2,tY(y)+4);}
-  ctx.setLineDash([5,4]);ctx.strokeStyle='#6b7280';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(tX(0),tY(P));ctx.lineTo(tX(tMax),tY(P));ctx.stroke();ctx.setLineDash([]);
-  ctx.beginPath();ctx.moveTo(tX(0),tY(P));for(let i=1;i<=300;i++){const t=tMax*i/300;ctx.lineTo(tX(t),tY(P*Math.exp(r*t)));}ctx.strokeStyle='#34d399';ctx.lineWidth=2.5;ctx.stroke();
+  ctx.fillStyle='#111827'; ctx.fillRect(0,0,W,H);
+  for(let i=0;i<=4;i++){
+    const y=Bmax*i/4;
+    ctx.strokeStyle='#1f2937';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(pad.l,tY(y));ctx.lineTo(pad.l+gW,tY(y));ctx.stroke();
+    ctx.fillStyle='#6b7280';ctx.font='10px IBM Plex Mono,monospace';
+    ctx.fillText((y>=1000?(y/1000).toFixed(0)+'k':y.toFixed(0)),2,tY(y)+4);
+  }
+  ctx.setLineDash([5,4]);ctx.strokeStyle='#6b7280';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(tX(0),tY(P));ctx.lineTo(tX(tMax),tY(P));ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.beginPath();ctx.moveTo(tX(0),tY(P));
+  for(let i=1;i<=300;i++){const t=tMax*i/300;ctx.lineTo(tX(t),tY(P*Math.exp(r*t)));}
+  ctx.strokeStyle='#34d399';ctx.lineWidth=2.5;ctx.stroke();
   const Bval=P*Math.exp(r*tCur);
-  ctx.setLineDash([4,3]);ctx.strokeStyle='#fbbf24';ctx.lineWidth=1.1;ctx.beginPath();ctx.moveTo(tX(tCur),tY(Bval));ctx.lineTo(tX(tCur),tY(0));ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle='#fbbf24';ctx.beginPath();ctx.arc(tX(tCur),tY(Bval),7,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#92400e';ctx.lineWidth=2;ctx.stroke();
-  ctx.fillStyle='#fbbf24';ctx.font='bold 11px IBM Plex Mono,monospace';ctx.fillText('$'+Bval.toFixed(0),tX(tCur)+10,tY(Bval)-7);
-  ctx.strokeStyle='#4b5563';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,pad.t+gH);ctx.stroke();ctx.beginPath();ctx.moveTo(pad.l,pad.t+gH);ctx.lineTo(pad.l+gW,pad.t+gH);ctx.stroke();
-  ctx.fillStyle='#9ca3af';ctx.font='11px IBM Plex Mono,monospace';[0,10,20,30,40].forEach(t=>ctx.fillText(t+'yr',tX(t)-12,H-6));
+  ctx.setLineDash([4,3]);ctx.strokeStyle='#fbbf24';ctx.lineWidth=1.1;
+  ctx.beginPath();ctx.moveTo(tX(tCur),tY(Bval));ctx.lineTo(tX(tCur),tY(0));ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='#fbbf24';ctx.beginPath();ctx.arc(tX(tCur),tY(Bval),7,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#92400e';ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle='#fbbf24';ctx.font='bold 11px IBM Plex Mono,monospace';
+  ctx.fillText('PKR '+Bval.toFixed(0),tX(tCur)+10,tY(Bval)-7);
+  ctx.strokeStyle='#4b5563';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,pad.t+gH);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t+gH);ctx.lineTo(pad.l+gW,pad.t+gH);ctx.stroke();
+  ctx.fillStyle='#9ca3af';ctx.font='11px IBM Plex Mono,monospace';
+  [0,10,20,30,40].forEach(t=>ctx.fillText(t+'yr',tX(t)-12,H-6));
 }
 
 const RULES={
   x3:['Identify $n=3$.','Apply power rule: raise exp by 1, divide.','$$\\int x^3\\,dx = \\frac{x^4}{4}+C$$'],
-  x5:['Factor: $5\\int x^4\\,dx$.','$n=4$: result is $x^5/5$.','$$5\\cdot\\frac{x^5}{5}+C = x^5+C$$'],
-  sqrt2:['$\\sqrt{x}=x^{1/2}$, $n=\\tfrac{1}{2}$.','New exp $\\tfrac{3}{2}$, divide: $\\tfrac{2}{3}x^{3/2}$.','$$\\int\\sqrt{x}\\,dx = \\tfrac{2}{3}x^{3/2}+C$$'],
+  x5:['Factor out 5: $5\\int x^4\\,dx$.','Apply power rule with $n=4$.','$$5\\cdot\\frac{x^5}{5}+C = x^5+C$$'],
+  sqrt2:['Write $\\sqrt{x}=x^{1/2}$, so $n=\\tfrac{1}{2}$.','New exponent: $\\tfrac{3}{2}$. Divide: $\\tfrac{1}{3/2}=\\tfrac{2}{3}$.','$$\\int\\sqrt{x}\\,dx = \\tfrac{2}{3}x^{3/2}+C$$'],
   ex:['$e^x$ is its own antiderivative.','$$\\int e^x\\,dx = e^x+C$$'],
-  e3x:['Exp rule with $k=3$.','$$\\int e^{3x}\\,dx = \\frac{e^{3x}}{3}+C$$'],
-  recip:['Power rule fails for $n=-1$.','Log rule: $\\frac{d}{dx}\\ln|x|=\\frac{1}{x}$.','$$\\int\\frac{1}{x}\\,dx = \\ln|x|+C$$'],
-  poly:['Split by sum rule.','$3\\int x^2\\,dx - 2\\int x\\,dx + 5\\int dx$','$$x^3-x^2+5x+C$$'],
-  neg:['$n=-3$, new exp $-2$.','$$\\int x^{-3}\\,dx = -\\frac{1}{2x^2}+C$$']
+  e3x:['Exponential rule with $k=3$.','Divide by $k$: $\\frac{e^{3x}}{3}$.','$$\\int e^{3x}\\,dx = \\frac{e^{3x}}{3}+C$$'],
+  recip:['Power rule fails for $n=-1$.','Use logarithmic rule instead.','$$\\int\\frac{1}{x}\\,dx = \\ln|x|+C$$'],
+  poly:['Split using sum/difference rule.','Integrate each term separately.','$$\\int(3x^2-2x+5)\\,dx = x^3-x^2+5x+C$$'],
+  neg:['Write $x^{-3}$, so $n=-3$.','New exponent: $-2$. Divide by $-2$.','$$\\int x^{-3}\\,dx = \\frac{x^{-2}}{-2}+C = -\\frac{1}{2x^2}+C$$']
 };
+
 function showRule(){
   const steps=RULES[document.getElementById('ruleSelect2').value];
   let html='';
-  steps.forEach((s,i)=>{const last=i===steps.length-1;html+=`<div style="margin-bottom:10px;${last?'color:#fbbf24':'color:#e8e2d9'}">`;if(!last)html+=`<span style="color:#9ca3af;font-size:.72rem;margin-right:8px">Step ${i+1}.</span>`;html+=s+'</div>';});
-  const el=document.getElementById('ruleOutput');el.innerHTML=html;
+  steps.forEach((s,i)=>{
+    const last=i===steps.length-1;
+    html+=`<div style="margin-bottom:10px;${last?'color:#fbbf24':'color:#e8e2d9'}">`;
+    if(!last)html+=`<span style="color:#9ca3af;font-size:.72rem;margin-right:8px">Step ${i+1}.</span>`;
+    html+=s+'</div>';
+  });
+  const el=document.getElementById('ruleOutput');
+  el.innerHTML=html;
   if(window.MathJax)MathJax.typesetPromise([el]);
 }
 
-function initAll(){drawSigned(Math.PI);drawFTC(2);updateComp();showRule();}
-window.addEventListener('resize',()=>{
-  drawSigned(parseFloat(document.getElementById('bSlider').value));
-  drawFTC(parseFloat(document.getElementById('ftcSlider').value));
-  updateComp();
-  if(document.getElementById('riemannSection').classList.contains('show'))drawRiemann();
-},{passive:true});
+function initAll(){updateComp();showRule();}
+window.addEventListener('resize',()=>{updateComp();},{passive:true});
 document.fonts.ready.then(initAll);
 </script>
 </body>
