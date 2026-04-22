@@ -854,17 +854,22 @@ function selectOption(chosen) {
   const opts = document.querySelectorAll('.opt-btn');
   const isCorrect = q.options[chosen].correct;
 
-  // Disable all options
+  // Disable all options and highlight correct/wrong
   opts.forEach((btn, i) => {
     btn.disabled = true;
-    if (q.options[i].correct) btn.classList.add('correct');
+    if (q.options[i].correct) {
+      btn.classList.add('correct');
+    }
   });
-  opts[chosen].classList.add(isCorrect ? 'correct' : 'wrong');
-  if (!isCorrect) opts[chosen].classList.add('wrong');
+  if (!isCorrect) {
+    opts[chosen].classList.add('wrong');
+  }
 
   // Show feedback
   const fb = document.getElementById('qFeedback');
-  fb.className = `q-feedback ${isCorrect ? 'correct' : 'wrong'}`;
+  fb.className = '';
+  fb.classList.add('q-feedback');
+  fb.classList.add(isCorrect ? 'correct' : 'wrong');
   fb.innerHTML = isCorrect
     ? `&#10003; Correct! ${q.explanation}`
     : `&#10007; Incorrect. ${q.explanation}`;
@@ -879,8 +884,11 @@ function selectOption(chosen) {
     qtext: q.text
   });
 
-  // Show next button
-  document.getElementById('nextBtn').classList.remove('hidden');
+  // Show next button — works for both correct and wrong
+  const nextBtn = document.getElementById('nextBtn');
+  if (nextBtn) {
+    nextBtn.classList.remove('hidden');
+  }
 }
 
 function nextQuestion() {
