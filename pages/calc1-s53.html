@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>§5.3 The Definite Integral & FTC · Calculus I · Shoaib-K</title>
+
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+.sticky-sub {
+  position: sticky; top: calc(var(--nav-h) + 3px);
+  z-index: 500; background: var(--bg2); border-bottom: 1px solid var(--border);
+}
+.bc-row {
+  padding: 8px 24px; display: flex; align-items: center; gap: 8px;
+  font-family: var(--fm); font-size: .72rem; color: var(--text3);
+  border-bottom: 1px solid var(--border);
+}
+.bc-row a { color: var(--amber); transition: color .15s; text-decoration: none; }
+.bc-row a:hover { color: var(--text); }
+.bc-row .cur { color: var(--text2); font-weight: 500; }
+.course-switcher { display: flex; align-items: center; padding: 0 24px; overflow-x: auto; }
+.course-switcher a {
+  font-family: var(--fm); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--text3); padding: 9px 18px; border-bottom: 2px solid transparent;
+  white-space: nowrap; transition: all .2s; text-decoration: none;
+}
+.course-switcher a:hover { color: var(--amber); }
+.course-switcher a.active { color: var(--amber); border-bottom-color: var(--amber); }
+
+.course-frame { display: flex; padding-top: calc(var(--nav-h) + 3px + 37px + 40px); min-height: 100vh; }
+
+.csb {
+  width: 252px; flex-shrink: 0; position: sticky;
+  top: calc(var(--nav-h) + 3px + 37px + 40px);
+  height: calc(100vh - var(--nav-h) - 80px);
+  overflow-y: auto; background: var(--bg2); border-right: 1px solid var(--border);
+}
+.csb::-webkit-scrollbar { width: 3px; }
+.csb::-webkit-scrollbar-thumb { background: var(--amber-bd); border-radius: 2px; }
+.csb-head { padding: 18px 16px 12px; border-bottom: 1px solid var(--border); }
+.csb-tag { font-family: var(--fm); font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--amber); margin-bottom: 4px; }
+.csb-title { font-family: var(--fh); font-size: .95rem; color: var(--text); line-height: 1.3; }
+.csb-back { display: inline-flex; align-items: center; gap: 5px; font-family: var(--fm); font-size: .68rem; color: var(--text3); margin-top: 8px; transition: color .2s; text-decoration: none; }
+.csb-back:hover { color: var(--amber); }
+.toc-nav { padding: 8px 0 24px; }
+.toc-ch { font-family: var(--fm); font-size: .58rem; letter-spacing: .22em; text-transform: uppercase; color: var(--text3); padding: 10px 16px 3px; display: block; }
+.toc-a { display: flex; align-items: center; gap: 8px; padding: 6px 16px; font-family: var(--fm); font-size: .72rem; color: var(--text3); text-decoration: none; border-left: 2px solid transparent; transition: all .18s; line-height: 1.35; }
+.toc-a:hover { color: var(--text); background: rgba(255,255,255,.04); }
+.toc-a.active { color: var(--amber); border-left-color: var(--amber); background: rgba(232,160,32,.08); }
+.toc-a .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--border2); flex-shrink: 0; transition: background .2s; }
+.toc-a.active .dot { background: var(--amber); }
+.toc-a.live::after { content: '\2736'; font-size: .58rem; color: var(--teal); margin-left: auto; }
+.toc-a.soon { opacity: .38; pointer-events: none; }
+
+.cmain { flex: 1; min-width: 0; background: #fdf8f0; overflow: hidden; }
+.lec-inner { max-width: 100%; margin: 0 auto; padding: 0 52px 60px; }
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&family=Source+Sans+3:wght@300;400;600&display=swap');
+
+:root {
+  --ink: #1a1a2e; --paper: #fdf8f0; --cream: #f5ede0;
+  --accent: #c0392b; --gold-lec: #d4a017; --teal-lec: #1a6b6b;
+  --sky: #2980b9; --muted: #7f8c8d; --border-lec: #e0d6c8;
+  --shadow-lec: 0 4px 24px rgba(26,26,46,.10);
+  --fh-lec: 'Playfair Display', Georgia, serif;
+  --fb-lec: 'Source Sans 3', sans-serif;
+  --fm-lec: 'IBM Plex Mono', monospace;
+}
+
+.cmain { font-family: var(--fb-lec); font-size: 1.05rem; line-height: 1.8; color: #1a1a2e; background: #fdf8f0; }
+
+.lec-hero { background: var(--ink); color: var(--paper); padding: 52px 40px 44px; text-align: center; position: relative; overflow: hidden; }
+.lec-hero::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.03) 40px,rgba(255,255,255,.03) 41px); }
+.lec-hero-tag { font-family: var(--fm-lec); font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-lec); margin-bottom: 14px; position: relative; }
+.lec-hero h1 { font-family: var(--fh-lec); font-size: clamp(2rem,4vw,3.4rem); font-weight: 700; line-height: 1.12; margin-bottom: 14px; position: relative; }
+.lec-hero h1 em { color: var(--gold-lec); font-style: italic; }
+.lec-hero p { font-size: 1rem; color: #c9c2b8; max-width: 560px; margin: 0 auto 24px; position: relative; }
+.lec-hero-line { width: 56px; height: 3px; background: var(--gold-lec); margin: 0 auto; position: relative; }
+
+.lec-nav { background: rgba(253,248,240,.97); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border-lec); padding: 8px 20px; display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.lec-nav a { font-family: var(--fm-lec); font-size: .64rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 4px 11px; border-radius: 20px; border: 1px solid var(--border-lec); transition: all .2s; }
+.lec-nav a:hover { color: var(--accent); border-color: var(--accent); }
+
+.lec-inner p { margin-bottom: 16px; color: var(--ink); }
+.sec-label { font-family: var(--fm-lec); font-size: .68rem; letter-spacing: .26em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+h2 { font-family: var(--fh-lec); font-size: clamp(1.7rem,4vw,2.55rem); font-weight: 700; margin-bottom: 20px; line-height: 1.2; color: var(--ink); }
+h3 { font-family: var(--fh-lec); font-size: 1.32rem; font-weight: 700; margin: 30px 0 12px; color: var(--teal-lec); }
+h4 { font-family: var(--fh-lec); font-size: 1.1rem; font-weight: 700; margin: 22px 0 8px; color: var(--sky); }
+.subsec { font-family: var(--fm-lec); font-size: .74rem; letter-spacing: .18em; text-transform: uppercase; color: var(--sky); margin: 44px 0 6px; padding-bottom: 6px; border-bottom: 1px solid var(--border-lec); }
+.card { background: #fff; border: 1px solid var(--border-lec); border-radius: 12px; padding: 30px 34px; box-shadow: var(--shadow-lec); margin-bottom: 26px; }
+.card.al { border-left: 4px solid var(--accent); }
+.card.gl { border-left: 4px solid var(--gold-lec); }
+.card.tl { border-left: 4px solid var(--teal-lec); }
+.card.sl { border-left: 4px solid var(--sky); }
+.card.pl { border-left: 4px solid #27ae60; }
+.def-box { background: #eef7f7; border: 1.5px solid var(--teal-lec); border-radius: 8px; padding: 22px 26px; margin: 22px 0; }
+.def-box .lbl { font-family: var(--fm-lec); font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; color: var(--teal-lec); font-weight: 600; margin-bottom: 8px; }
+.thm-box { background: #fff8ec; border: 1.5px solid var(--gold-lec); border-radius: 8px; padding: 22px 26px; margin: 22px 0; }
+.thm-box .lbl { font-family: var(--fm-lec); font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gold-lec); font-weight: 600; margin-bottom: 8px; }
+.note-box { background: #f0f4ff; border: 1.5px solid var(--sky); border-radius: 8px; padding: 20px 24px; margin: 20px 0; }
+.note-box .lbl { font-family: var(--fm-lec); font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 8px; }
+.callout { background: #fdf0ef; border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; padding: 15px 20px; margin: 18px 0; font-size: .97rem; }
+.callout strong { color: var(--accent); }
+.callout-teal { background: #eef7f7; border-left: 4px solid var(--teal-lec); border-radius: 0 8px 8px 0; padding: 15px 20px; margin: 18px 0; font-size: .97rem; }
+.callout-teal strong { color: var(--teal-lec); }
+.callout-gold { background: #fff8ec; border-left: 4px solid var(--gold-lec); border-radius: 0 8px 8px 0; padding: 15px 20px; margin: 18px 0; font-size: .97rem; }
+.callout-gold strong { color: var(--gold-lec); }
+.callout-green { background: #f0faf4; border-left: 4px solid #27ae60; border-radius: 0 8px 8px 0; padding: 15px 20px; margin: 18px 0; font-size: .97rem; }
+.callout-green strong { color: #27ae60; }
+
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: .94rem; }
+th { background: var(--ink); color: var(--gold-lec); font-family: var(--fm-lec); font-size: .72rem; letter-spacing: .1em; padding: 9px 13px; text-align: left; }
+td { padding: 8px 13px; border-bottom: 1px solid var(--border-lec); }
+tr:nth-child(even) td { background: var(--cream); }
+
+.bf { text-align: center; font-size: 1.12rem; padding: 26px 18px; background: var(--cream); border-radius: 10px; margin: 22px 0; }
+.divider { width: 100%; height: 1px; background: var(--border-lec); margin: 52px 0; }
+.sub-divider { width: 100%; height: 1px; background: var(--border-lec); margin: 36px 0; }
+.rule-highlight { background: var(--cream); border-radius: 8px; padding: 18px 20px; text-align: center; margin: 14px 0; font-size: 1.05rem; }
+
+.toggle-btn { font-family: var(--fm-lec); font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; background: var(--ink); color: var(--gold-lec); border: none; border-radius: 6px; padding: 9px 20px; cursor: pointer; margin-top: 10px; transition: opacity .2s; }
+.toggle-btn:hover { opacity: .8; }
+.answer-box { display: none; background: #f0f9f0; border: 1.5px solid #27ae60; border-radius: 8px; padding: 18px 22px; margin-top: 12px; }
+.answer-box.show { display: block; }
+.hidden-section { display: none; }
+.hidden-section.show { display: block; }
+
+/* Riemann Widget */
+.widget { background: var(--ink); border-radius: 16px; padding: 26px 26px 18px; margin: 30px 0; color: #e8e2d9; }
+.wt { font-family: var(--fm-lec); font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-lec); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+.wt::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.12); }
+canvas { display: block; width: 100%; border-radius: 8px; background: #111827; }
+.controls { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 18px; align-items: flex-end; }
+.cg { display: flex; flex-direction: column; gap: 5px; min-width: 160px; flex: 1; }
+.cg label { font-family: var(--fm-lec); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: #9ca3af; }
+.cg .val { color: var(--gold-lec); font-size: .88rem; font-weight: 600; }
+input[type=range] { -webkit-appearance: none; width: 100%; height: 5px; background: #374151; border-radius: 3px; outline: none; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--gold-lec); border-radius: 50%; cursor: pointer; }
+select { font-family: var(--fm-lec); font-size: .8rem; background: #1f2937; color: #e8e2d9; border: 1px solid #374151; border-radius: 6px; padding: 5px 11px; cursor: pointer; }
+.srow { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 14px; }
+.sp { background: #1f2937; border-radius: 8px; padding: 9px 16px; font-family: var(--fm-lec); font-size: .8rem; }
+.sp span { color: var(--gold-lec); font-weight: 700; }
+
+/* Step approach boxes */
+.approach-step { background: #fff; border: 1px solid var(--border-lec); border-radius: 10px; padding: 20px 24px; margin-bottom: 16px; position: relative; }
+.approach-step .step-label { font-family: var(--fm-lec); font-size: .62rem; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.approach-step .step-title { font-family: var(--fh-lec); font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+
+/* Rule cards grid */
+.rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+.rule-card { background: #fff; border: 1px solid var(--border-lec); border-radius: 10px; padding: 18px 22px; }
+.rule-card .rlbl { font-family: var(--fm-lec); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--teal-lec); margin-bottom: 8px; }
+
+.lec-footer-nav { display: flex; justify-content: space-between; align-items: center; padding: 28px 40px; border-top: 1px solid var(--border-lec); flex-wrap: wrap; gap: 12px; background: #fdf8f0; }
+.lnf-btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--fm-lec); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 8px 18px; border: 1px solid var(--border-lec); border-radius: 8px; transition: all .2s; text-decoration: none; }
+.lnf-btn:hover { color: var(--accent); border-color: var(--accent); }
+.lnf-btn.next { color: var(--teal-lec); border-color: var(--teal-lec); background: #eef7f7; }
+.lnf-btn.next:hover { background: var(--teal-lec); color: #fff; }
+.lnf-btn.prev { color: var(--sky); border-color: var(--sky); background: #f0f4ff; }
+.lnf-btn.prev:hover { background: var(--sky); color: #fff; }
+
+.lec-inner section { padding: 52px 0 0; }
+.lec-inner section:first-child { padding-top: 44px; }
+
+/* SVG graph styling */
+.graph-svg { width: 100%; max-width: 580px; display: block; margin: 24px auto; border-radius: 10px; }
+
+@media (max-width: 860px) {
+  .csb { display: none; }
+  .lec-inner { padding: 0 18px 40px; }
+  .lec-hero { padding: 36px 20px 32px; }
+  .lec-footer-nav { padding: 20px 18px; }
+  .rules-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="sk-progress"><div id="sk-progress-bar"></div></div>
+<nav class="sk-nav">
+  <a href="../index.html" class="sk-nav-logo">Shoaib-K <span class="logo-badge">LUMS</span></a>
+  <div class="sk-nav-links" id="sk-nav-links">
+    <div class="sk-nav-item"><a href="../index.html" class="sk-nav-link">Home</a></div>
+    <div class="sk-nav-item"><a href="education.html" class="sk-nav-link">Education</a></div>
+    <div class="sk-nav-item">
+      <span class="sk-nav-link">Experience <span class="arrow">&#9662;</span></span>
+      <div class="sk-dropdown">
+        <a href="experience-instructor.html"><span class="dd-icon">&#127979;</span> As an Instructor</a>
+        <a href="experience-ta.html"><span class="dd-icon">&#128218;</span> As a TA</a>
+        <a href="math-circles.html"><span class="dd-icon">&#128309;</span> Math Circles</a>
+      </div>
+    </div>
+    <div class="sk-nav-item"><a href="courses.html" class="sk-nav-link active">Courses</a></div>
+    <div class="sk-nav-item"><a href="research.html" class="sk-nav-link">Research</a></div>
+    <div class="sk-nav-item"><a href="hobbies.html" class="sk-nav-link">Hobbies</a></div>
+    <div class="sk-nav-item"><a href="explore.html" class="sk-nav-link">Explore</a></div>
+    <div class="sk-nav-item"><a href="contact.html" class="sk-nav-link">Contact</a></div>
+  </div>
+  <div class="sk-hamburger" onclick="document.getElementById('sk-nav-links').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="sticky-sub">
+  <div class="bc-row">
+    <a href="../index.html">Home</a><span>&#8250;</span>
+    <a href="courses.html">Courses</a><span>&#8250;</span>
+    <a href="course-calc1.html">Calculus I</a><span>&#8250;</span>
+    <span class="cur">&#167;5.3 The Definite Integral &amp; FTC</span>
+  </div>
+  <div class="course-switcher">
+    <a href="course-precalc.html">Pre-Calculus</a>
+    <a href="course-calc1.html" class="active">Calculus I</a>
+    <a href="course-linalg.html">Linear Algebra I</a>
+  </div>
+</div>
+
+<div class="course-frame">
+  <aside class="csb">
+    <div class="csb-head">
+      <div class="csb-tag">MATH-101 &middot; Calculus I</div>
+      <div class="csb-title">Course Contents</div>
+      <a href="course-calc1.html" class="csb-back">&#8592; All Courses</a>
+    </div>
+    <nav class="toc-nav">
+      <span class="toc-ch">Course Overview</span>
+      <a href="course-calc1.html" class="toc-a"><span class="dot"></span>Course Overview</a>
+      <span class="toc-ch">Ch 1 &mdash; Functions, Graphs &amp; Limits</span>
+      <a href="#" class="toc-a soon"><span class="dot"></span>1.1 &middot; Functions</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>1.2 &middot; The Graph of a Function</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>1.3 &middot; Lines and Linear Functions</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>1.4 &middot; Functional Models</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>1.5 &middot; Limits</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>1.6 &middot; One-Sided Limits and Continuity</a>
+      <span class="toc-ch">Ch 2 &mdash; Differentiation: Basic Concepts</span>
+      <a href="#" class="toc-a soon"><span class="dot"></span>2.1 &middot; The Derivative</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>2.2 &middot; Techniques of Differentiation</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>2.3 &middot; Product and Quotient Rules</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>2.4 &middot; The Chain Rule</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>2.5 &middot; Marginal Analysis</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>2.6 &middot; Implicit Differentiation</a>
+      <span class="toc-ch">Ch 3 &mdash; Applications of the Derivative</span>
+      <a href="#" class="toc-a soon"><span class="dot"></span>3.1 &middot; Increasing &amp; Decreasing Functions</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>3.2 &middot; Concavity &amp; Inflection Points</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>3.3 &middot; Curve Sketching</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>3.4 &middot; Optimization; Elasticity</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>3.5 &middot; Additional Optimization</a>
+      <span class="toc-ch">Ch 4 &mdash; Exponential &amp; Logarithmic Functions</span>
+      <a href="#" class="toc-a soon"><span class="dot"></span>4.1 &middot; Exponential Functions</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>4.2 &middot; Logarithmic Functions</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>4.3 &middot; Differentiation of Exp &amp; Log</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>4.4 &middot; Exponential Models</a>
+      <span class="toc-ch">Ch 5 &mdash; Integration</span>
+      <a href="calc1-s51.html" class="toc-a live"><span class="dot"></span>5.1 &middot; Indefinite Integration</a>
+      <a href="calc1-s52.html" class="toc-a live"><span class="dot"></span>5.2 &middot; Integration by Substitution</a>
+      <a href="calc1-s53.html" class="toc-a active live"><span class="dot"></span>5.3 &middot; The Definite Integral &amp; FTC</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>5.4 &middot; Applying Definite Integration</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>5.5 &middot; Applications to Business</a>
+      <span class="toc-ch">Ch 6 &mdash; Additional Integration Topics</span>
+      <a href="#" class="toc-a soon"><span class="dot"></span>6.1 &middot; Integration by Parts</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>6.2 &middot; Numerical Integration</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>6.3 &middot; Improper Integrals</a>
+      <a href="#" class="toc-a soon"><span class="dot"></span>6.4 &middot; Continuous Probability</a>
+    </nav>
+  </aside>
+
+  <main class="cmain">
+    <div class="lec-hero">
+      <div class="lec-hero-tag">Calculus I &nbsp;&middot;&nbsp; Chapter 5 &nbsp;&middot;&nbsp; Section 5.3</div>
+      <h1>The Definite Integral &amp;<br><em>The Fundamental Theorem</em></h1>
+      <p>From infinite slices of area to the most powerful bridge in mathematics &mdash; connecting differentiation and integration into one breathtaking theorem.</p>
+      <div class="lec-hero-line"></div>
+    </div>
+
+    <nav class="lec-nav">
+      <a href="#story">Real-Life Story</a>
+      <a href="#objectives">Objectives</a>
+      <a href="#riemann">Riemann Sums</a>
+      <a href="#limit">Area as Limit</a>
+      <a href="#defint">Definite Integral</a>
+      <a href="#ftc">FTC</a>
+      <a href="#geometric">Geometry of FTC</a>
+      <a href="#rules">Integration Rules</a>
+      <a href="#substitution">Substitution</a>
+      <a href="#netchange">Net Change</a>
+      <a href="#applied">Applied Problems</a>
+    </nav>
+
+    <div class="lec-inner">
+
+<!-- REAL LIFE STORY -->
+<section id="story">
+  <div class="sec-label">Opening Story</div>
+  <h2>A Monsoon, a River, and<br>a Question of Survival</h2>
+
+  <div class="card gl" style="background:linear-gradient(135deg,#fffdf5,#fff8ec)">
+    <p style="font-size:1.07rem;line-height:2;margin-bottom:0">
+      It is July 2022. The monsoon has arrived in Sindh, and the Indus River is rising. Engineers at the Tarbela Dam need to answer one urgent question: <em>how much water will flow through this point in the next 72 hours?</em>
+    </p>
+    <p style="font-size:1.07rem;line-height:2;margin-bottom:0;margin-top:12px">
+      They have sensors reading the flow rate $R(t)$ in cubic metres per second, updated every hour. The rate changes constantly &mdash; faster after heavy rain, slower in the early morning. Nobody can memorise a continuously changing function. But every engineer in that room knows one thing: <strong>the total volume of water is the area under the $R(t)$ curve.</strong>
+    </p>
+    <p style="font-size:1.07rem;line-height:2;margin-bottom:0;margin-top:12px">
+      They need to compute $\displaystyle\int_0^{72} R(t)\,dt$. The decision to open the spillway &mdash; potentially displacing millions of people &mdash; depends on getting this number right. This is not a textbook exercise. This is the definite integral saving lives.
+    </p>
+  </div>
+
+  <p style="margin-top:20px">This story captures exactly why the definite integral exists. Whenever a quantity accumulates continuously &mdash; water, money, distance, electrical charge, heat &mdash; the tool that measures the total accumulation is the definite integral. And the tool that lets us compute it efficiently, without adding millions of rectangles by hand, is the <strong>Fundamental Theorem of Calculus</strong>.</p>
+
+  <div class="callout-gold"><strong>The Big Picture:</strong> The Fundamental Theorem reveals that differentiation and integration &mdash; which appear to be completely different operations &mdash; are actually inverse processes of each other. This is one of the most surprising and beautiful results in all of mathematics.</div>
+</section>
+
+<!-- LEARNING OBJECTIVES -->
+<section id="objectives">
+  <div class="sec-label">Learning Objectives</div>
+  <h2>What You Will Master<br>in This Section</h2>
+  <div class="card gl">
+    <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:14px">
+      <div style="width:32px;height:32px;background:var(--gold-lec);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink);font-family:var(--fm-lec);font-weight:700;font-size:.85rem;flex-shrink:0">1</div>
+      <p style="margin:0;padding-top:5px">Show how area under a curve can be expressed as the limit of a Riemann sum.</p>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:14px">
+      <div style="width:32px;height:32px;background:var(--gold-lec);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink);font-family:var(--fm-lec);font-weight:700;font-size:.85rem;flex-shrink:0">2</div>
+      <p style="margin:0;padding-top:5px">Define the definite integral and explore its algebraic properties and rules.</p>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:14px">
+      <div style="width:32px;height:32px;background:var(--gold-lec);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink);font-family:var(--fm-lec);font-weight:700;font-size:.85rem;flex-shrink:0">3</div>
+      <p style="margin:0;padding-top:5px">State the Fundamental Theorem of Calculus and use it to evaluate definite integrals efficiently.</p>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:14px">
+      <div style="width:32px;height:32px;background:var(--gold-lec);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink);font-family:var(--fm-lec);font-weight:700;font-size:.85rem;flex-shrink:0">4</div>
+      <p style="margin:0;padding-top:5px">Use the FTC to solve applied problems involving net change and accumulation.</p>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start">
+      <div style="width:32px;height:32px;background:var(--gold-lec);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink);font-family:var(--fm-lec);font-weight:700;font-size:.85rem;flex-shrink:0">5</div>
+      <p style="margin:0;padding-top:5px">Provide a geometric justification of the Fundamental Theorem of Calculus.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RIEMANN SUMS - STEP BY STEP -->
+<section id="riemann">
+  <div class="sec-label">&sect; 1 &mdash; Area as the Limit of a Sum</div>
+  <h2>From One Rectangle<br>to Infinite Precision</h2>
+
+  <p>Let us find the area under $f(x) = x^2$ from $x = 0$ to $x = 2$. We will start crudely and progressively improve.</p>
+
+  <!-- Step 1: 1 rectangle -->
+  <div class="approach-step">
+    <div class="step-label">Approximation 1</div>
+    <div class="step-title">One Rectangle — Very Rough</div>
+    <p>Use a single rectangle spanning the entire interval $[0, 2]$. Take the height as $f(1) = 1$ (midpoint).</p>
+    <div class="bf">Area $\approx f(1) \cdot 2 = 1 \times 2 = 2$</div>
+    <svg class="graph-svg" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="220" fill="#fdf8f0" rx="8"/>
+      <rect x="60" y="20" width="310" height="175" fill="none"/>
+      <!-- Grid -->
+      <line x1="60" y1="195" x2="370" y2="195" stroke="#e0d6c8" stroke-width="1"/>
+      <line x1="60" y1="20" x2="60" y2="195" stroke="#e0d6c8" stroke-width="1"/>
+      <!-- Rectangle -->
+      <rect x="60" y="107.5" width="155" height="87.5" fill="rgba(212,160,23,.25)" stroke="#d4a017" stroke-width="1.5"/>
+      <!-- Curve: x^2 from 0 to 2, scaled: x in [0,2] -> px [60,370], y in [0,4] -> px [195,20] -->
+      <polyline points="60,195 91.75,188.3 123.5,168.3 155.25,134.9 187,88.1 218.75,27.9 250.5,195" fill="none" stroke="none"/>
+      <path d="M60,195 Q123.5,168.3 187,88.1 Q218.75,48 250.5,13.9" fill="none" stroke="#2980b9" stroke-width="2.5"/>
+      <!-- Axes labels -->
+      <text x="60" y="210" font-size="11" font-family="monospace" fill="#7f8c8d" text-anchor="middle">0</text>
+      <text x="215" y="210" font-size="11" font-family="monospace" fill="#7f8c8d" text-anchor="middle">1</text>
+      <text x="370" y="210" font-size="11" font-family="monospace" fill="#7f8c8d" text-anchor="middle">2</text>
+      <text x="48" y="199" font-size="11" font-family="monospace" fill="#7f8c8d" text-anchor="end">0</text>
+      <text x="48" y="109" font-size="11" font-family="monospace" fill="#7f8c8d" text-anchor="end">2</text>
+      <text x="48" y="24" font-size="11" font-family="monospace" fill="#7f8c8d" text-anchor="end">4</text>
+      <text x="220" y="135" font-size="12" font-family="monospace" fill="#d4a017" font-weight="700">Area ≈ 2</text>
+      <text x="300" y="60" font-size="13" font-family="serif" fill="#2980b9" font-style="italic">f(x)=x²</text>
+    </svg>
+    <p style="margin-bottom:0">The true area is $\frac{8}{3} \approx 2.667$. Our estimate of $2$ has about 25% error. We can do better.</p>
+  </div>
+
+  <!-- Step 2: 4 rectangles -->
+  <div class="approach-step">
+    <div class="step-label">Approximation 2</div>
+    <div class="step-title">Four Rectangles — Much Better</div>
+    <p>Divide $[0,2]$ into 4 equal sub-intervals, each of width $\Delta x = 0.5$. Use right endpoints for height.</p>
+    <table>
+      <tr><th>Sub-interval</th><th>Right endpoint $x_i$</th><th>Height $f(x_i) = x_i^2$</th><th>Area of rectangle</th></tr>
+      <tr><td>$[0, 0.5]$</td><td>$0.5$</td><td>$0.25$</td><td>$0.25 \times 0.5 = 0.125$</td></tr>
+      <tr><td>$[0.5, 1]$</td><td>$1.0$</td><td>$1.00$</td><td>$1.00 \times 0.5 = 0.500$</td></tr>
+      <tr><td>$[1, 1.5]$</td><td>$1.5$</td><td>$2.25$</td><td>$2.25 \times 0.5 = 1.125$</td></tr>
+      <tr><td>$[1.5, 2]$</td><td>$2.0$</td><td>$4.00$</td><td>$4.00 \times 0.5 = 2.000$</td></tr>
+    </table>
+    <div class="bf">Total Area $\approx 0.125 + 0.500 + 1.125 + 2.000 = \mathbf{3.75}$</div>
+    <svg class="graph-svg" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="220" fill="#fdf8f0" rx="8"/>
+      <line x1="60" y1="195" x2="370" y2="195" stroke="#e0d6c8" stroke-width="1"/>
+      <line x1="60" y1="20" x2="60" y2="195" stroke="#e0d6c8" stroke-width="1"/>
+      <!-- 4 rectangles, right endpoints, width=77.5px each -->
+      <!-- [0,0.5]: height f(0.5)=0.25, scaled: 0.25/4*175=10.9px from top=184.1 -->
+      <rect x="60" y="184.1" width="77.5" height="10.9" fill="rgba(212,160,23,.3)" stroke="#d4a017" stroke-width="1.2"/>
+      <!-- [0.5,1]: height f(1)=1, 1/4*175=43.75, y=151.25 -->
+      <rect x="137.5" y="151.25" width="77.5" height="43.75" fill="rgba(212,160,23,.3)" stroke="#d4a017" stroke-width="1.2"/>
+      <!-- [1,1.5]: height f(1.5)=2.25, 2.25/4*175=98.4, y=96.6 -->
+      <rect x="215" y="96.6" width="77.5" height="98.4" fill="rgba(212,160,23,.3)" stroke="#d4a017" stroke-width="1.2"/>
+      <!-- [1.5,2]: height f(2)=4, 4/4*175=175, y=20 -->
+      <rect x="292.5" y="20" width="77.5" height="175" fill="rgba(212,160,23,.3)" stroke="#d4a017" stroke-width="1.2"/>
+      <path d="M60,195 Q155,170 215,108 Q280,48 370,20" fill="none" stroke="#2980b9" stroke-width="2.5"/>
+      <text x="60" y="210" font-size="11" font-family="monospace" fill="#7f8c8d" text-anchor="middle">0</text>
+      <text x="137.5" y="210" font-size="11" font-family="monospace" fill="#7f8c8d" text-anchor="middle">0.5</text>
+      <text x="215" y="210" font-size="11" font-family="monospace" fill="#7f8c8d" text-anchor="middle">1</text>
+      <text x="292.5" y="210" font-size="11" font-family="monospace" fill="#7f8c8d" text-anchor="middle">1.5</text>
+      <text x="370" y="210" font-size="11" font-family="monospace" fill="#7f8c8d" text-anchor="middle">2</text>
+      <text x="200" y="140" font-size="12" font-family="monospace" fill="#d4a017" font-weight="700">Area ≈ 3.75</text>
+      <text x="310" y="65" font-size="13" font-family="serif" fill="#2980b9" font-style="italic">f(x)=x²</text>
+    </svg>
+    <p style="margin-bottom:0">With 4 rectangles we get $3.75$ vs. the true $2.667$. Still overshooting (right endpoints overestimate for increasing functions), but closer. The key insight: <em>more rectangles means more accuracy.</em></p>
+  </div>
+
+  <!-- Step 3: n rectangles -->
+  <div class="approach-step">
+    <div class="step-label">General Formula</div>
+    <div class="step-title">$n$ Rectangles — The Riemann Sum</div>
+    <p>Divide $[a, b]$ into $n$ equal sub-intervals, each of width $\Delta x = \dfrac{b-a}{n}$. The right endpoint of the $i$-th sub-interval is $x_i = a + i\Delta x$.</p>
+    <div class="def-box">
+      <div class="lbl">Riemann Sum</div>
+      $$S_n = \sum_{i=1}^{n} f(x_i)\,\Delta x = \sum_{i=1}^{n} f\!\left(a + i\cdot\frac{b-a}{n}\right)\cdot\frac{b-a}{n}$$
+    </div>
+    <p>For our example $f(x)=x^2$, $[0,2]$, using right endpoints:</p>
+    $$S_n = \sum_{i=1}^{n} \left(\frac{2i}{n}\right)^2 \cdot \frac{2}{n} = \frac{8}{n^3}\sum_{i=1}^{n}i^2 = \frac{8}{n^3}\cdot\frac{n(n+1)(2n+1)}{6} = \frac{4(n+1)(2n+1)}{3n^2}$$
+    <table>
+      <tr><th>$n$</th><th>$S_n$</th><th>Error from $\frac{8}{3}$</th></tr>
+      <tr><td>$1$</td><td>$8.000$</td><td>$5.333$</td></tr>
+      <tr><td>$4$</td><td>$3.750$</td><td>$1.083$</td></tr>
+      <tr><td>$10$</td><td>$2.960$</td><td>$0.293$</td></tr>
+      <tr><td>$100$</td><td>$2.6934$</td><td>$0.0267$</td></tr>
+      <tr><td>$1000$</td><td>$2.6693$</td><td>$0.0027$</td></tr>
+      <tr><td>$\infty$</td><td>$\dfrac{8}{3} \approx 2.6\overline{6}$</td><td>$0$</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- INTERACTIVE RIEMANN EXPLORER -->
+<section id="limit">
+  <div class="sec-label">&sect; 2 &mdash; Interactive Exploration</div>
+  <h2>Play With It:<br>The Riemann Sum Explorer</h2>
+  <p>Drag the slider to increase the number of rectangles and watch the approximation converge to the exact area. Try different functions and endpoint rules.</p>
+
+  <div class="widget">
+    <div class="wt">&#11035; Interactive Riemann Sum Explorer</div>
+    <canvas id="riemannCanvas" height="300"></canvas>
+    <div class="controls">
+      <div class="cg">
+        <label>Function</label>
+        <select id="fnSelect" onchange="drawRiemann()">
+          <option value="sq">f(x) = x²</option>
+          <option value="cubic">f(x) = x³/4 + 1</option>
+          <option value="sin">f(x) = sin(x) + 1.2</option>
+          <option value="sqrt">f(x) = √x + 0.5</option>
+          <option value="exp">f(x) = eˣ/4</option>
+        </select>
+      </div>
+      <div class="cg">
+        <label>Rectangles &nbsp;<span class="val" id="nVal">6</span></label>
+        <input type="range" id="nSlider" min="1" max="200" value="6" oninput="updateN(this.value)">
+      </div>
+      <div class="cg">
+        <label>Sample Point</label>
+        <select id="ruleSelect" onchange="drawRiemann()">
+          <option value="right">Right endpoint</option>
+          <option value="left">Left endpoint</option>
+          <option value="mid">Midpoint</option>
+        </select>
+      </div>
+    </div>
+    <div class="srow">
+      <div class="sp">$n$ = <span id="statN">6</span></div>
+      <div class="sp">$\Delta x$ = <span id="statDx">&mdash;</span></div>
+      <div class="sp">Approx $\approx$ <span id="statApprox">&mdash;</span></div>
+      <div class="sp">Exact = <span id="statExact">&mdash;</span></div>
+      <div class="sp">Error = <span id="statErr">&mdash;</span></div>
+    </div>
+  </div>
+
+  <div class="thm-box">
+    <div class="lbl">Area as a Limit</div>
+    <p>The exact area under $f(x)$ from $a$ to $b$ is defined as the limit of the Riemann sum as $n \to \infty$:</p>
+    $$\text{Area} = \lim_{n \to \infty} S_n = \lim_{n \to \infty} \sum_{i=1}^{n} f(x_i^*)\,\Delta x$$
+    <p style="margin-bottom:0">This limit exists whenever $f$ is continuous on $[a,b]$. The beautiful fact is: <em>it does not matter which sample point $x_i^*$ we choose &mdash; left, right, or midpoint &mdash; the limit is always the same.</em></p>
+  </div>
+
+  <div class="card al">
+    <h4 style="margin-top:0;color:var(--accent)">Example &mdash; Area Using the Limit</h4>
+    <p>Find the area under $f(x) = 3x$ from $x = 0$ to $x = 2$ using the limit definition.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('lim1')">Show Full Solution</button>
+    <div class="answer-box" id="lim1">
+      <p>$\Delta x = \dfrac{2}{n}$, right endpoints: $x_i = \dfrac{2i}{n}$</p>
+      $$S_n = \sum_{i=1}^{n} 3\cdot\frac{2i}{n}\cdot\frac{2}{n} = \frac{12}{n^2}\sum_{i=1}^{n}i = \frac{12}{n^2}\cdot\frac{n(n+1)}{2} = \frac{6(n+1)}{n}$$
+      $$\text{Area} = \lim_{n\to\infty}\frac{6(n+1)}{n} = \lim_{n\to\infty}\left(6 + \frac{6}{n}\right) = 6$$
+      <p>Check: $f(x)=3x$ forms a triangle with base 2 and height 6. Area $= \frac{1}{2}(2)(6) = 6$ &#10003;</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEFINITE INTEGRAL DEFINITION -->
+<section id="defint">
+  <div class="sec-label">&sect; 3 &mdash; The Definite Integral</div>
+  <h2>Defining the<br>Definite Integral</h2>
+
+  <div class="def-box">
+    <div class="lbl">Definition &mdash; The Definite Integral</div>
+    <p>If $f$ is continuous on $[a,b]$, the <strong>definite integral of $f$ from $a$ to $b$</strong> is:</p>
+    $$\int_a^b f(x)\,dx = \lim_{n\to\infty}\sum_{i=1}^{n}f(x_i^*)\,\Delta x$$
+    <p style="margin-bottom:0">The number $a$ is the <strong>lower limit</strong> and $b$ is the <strong>upper limit</strong> of integration. The result is a <em>number</em>, not a function.</p>
+  </div>
+
+  <h3>Area as a Definite Integral</h3>
+  <p>When $f(x) \geq 0$ on $[a,b]$, the definite integral equals the area under the curve:</p>
+  <div class="bf">$$\text{Area} = \int_a^b f(x)\,dx$$</div>
+  <p>When $f(x)$ takes negative values, the integral computes the <strong>signed area</strong> — area above the $x$-axis counts positive, area below counts negative.</p>
+
+  <div class="widget">
+    <div class="wt">&#128210; Signed Area Explorer &mdash; $\int_0^b \sin(x)\,dx$</div>
+    <canvas id="signedCanvas" height="240"></canvas>
+    <div class="controls">
+      <div class="cg">
+        <label>Upper limit $b$ = <span class="val" id="bVal">3.14</span></label>
+        <input type="range" id="bSlider" min="0.1" max="9.4" step="0.05" value="3.14" oninput="updateB(this.value)">
+      </div>
+    </div>
+    <div class="srow">
+      <div class="sp">Positive area: <span id="posArea">&mdash;</span></div>
+      <div class="sp">Negative area: <span id="negArea">&mdash;</span></div>
+      <div class="sp">Net integral: <span id="netArea">&mdash;</span></div>
+    </div>
+  </div>
+
+  <div class="callout"><strong>Important:</strong> $\displaystyle\int_a^b f(x)\,dx$ gives <em>signed</em> area. If you want total (unsigned) area when $f$ dips below the axis, you must split the integral at the zeros and add absolute values.</div>
+</section>
+
+<!-- FTC -->
+<section id="ftc">
+  <div class="sec-label">&sect; 4 &mdash; The Bridge Between Two Worlds</div>
+  <h2>The Fundamental<br>Theorem of Calculus</h2>
+
+  <p>Without the FTC, computing $\displaystyle\int_0^2 x^2\,dx$ requires evaluating a limit of a sum &mdash; tedious. The FTC provides a miraculous shortcut.</p>
+
+  <div class="thm-box">
+    <div class="lbl">The Fundamental Theorem of Calculus</div>
+    <p>If $f$ is continuous on $[a,b]$ and $F$ is any antiderivative of $f$ (i.e. $F'(x) = f(x)$), then:</p>
+    $$\int_a^b f(x)\,dx = F(b) - F(a)$$
+    <p style="margin-bottom:0;color:var(--teal-lec);font-style:italic">We write $F(b) - F(a)$ as $\Big[F(x)\Big]_a^b$.</p>
+  </div>
+
+  <div class="callout-teal"><strong>What this means:</strong> To compute a definite integral, find any antiderivative $F(x)$, then simply subtract: $F(b) - F(a)$. The $+C$ cancels out, so we can ignore it.</div>
+
+  <h3>Using the FTC — Examples</h3>
+
+  <div class="card al">
+    <h4 style="margin-top:0;color:var(--accent)">Example 1 — Power Function</h4>
+    <p>Compute $\displaystyle\int_0^2 x^2\,dx$.</p>
+    <p><strong>Step 1:</strong> Find an antiderivative: $F(x) = \dfrac{x^3}{3}$</p>
+    <p><strong>Step 2:</strong> Apply the FTC:</p>
+    $$\int_0^2 x^2\,dx = \left[\frac{x^3}{3}\right]_0^2 = \frac{2^3}{3} - \frac{0^3}{3} = \frac{8}{3} - 0 = \frac{8}{3}$$
+    <p style="margin-bottom:0">This confirms our Riemann sum limit from earlier. The FTC computed it in two lines.</p>
+  </div>
+
+  <div class="card gl">
+    <h4 style="margin-top:0;color:var(--gold-lec)">Example 2 — Mixed Terms</h4>
+    <p>Compute $\displaystyle\int_1^3 (2x + e^x)\,dx$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('ftc2')">Show Solution</button>
+    <div class="answer-box" id="ftc2">
+      $$\int_1^3 (2x+e^x)\,dx = \Big[x^2 + e^x\Big]_1^3 = (9+e^3)-(1+e) = 8 + e^3 - e \approx 8 + 20.09 - 2.72 \approx 25.37$$
+    </div>
+  </div>
+
+  <div class="card tl">
+    <h4 style="margin-top:0;color:var(--teal-lec)">Example 3 — Rational Integrand</h4>
+    <p>Compute $\displaystyle\int_1^e \frac{3}{x}\,dx$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('ftc3')">Show Solution</button>
+    <div class="answer-box" id="ftc3">
+      $$\int_1^e \frac{3}{x}\,dx = \Big[3\ln|x|\Big]_1^e = 3\ln e - 3\ln 1 = 3(1) - 3(0) = 3$$
+    </div>
+  </div>
+
+  <div class="card sl">
+    <h4 style="margin-top:0;color:var(--sky)">Example 4 — Negative Exponent</h4>
+    <p>Compute $\displaystyle\int_1^4 \frac{1}{\sqrt{x}}\,dx$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('ftc4')">Show Solution</button>
+    <div class="answer-box" id="ftc4">
+      $$\int_1^4 x^{-1/2}\,dx = \Big[2x^{1/2}\Big]_1^4 = 2\sqrt{4} - 2\sqrt{1} = 4 - 2 = 2$$
+    </div>
+  </div>
+</section>
+
+<!-- GEOMETRIC JUSTIFICATION -->
+<section id="geometric">
+  <div class="sec-label">&sect; 5 &mdash; Geometric Justification</div>
+  <h2>Why Does the FTC Work?<br>A Visual Argument</h2>
+
+  <p>Define the <strong>accumulation function</strong> $A(x) = \displaystyle\int_a^x f(t)\,dt$ — the area under $f$ from $a$ up to $x$.</p>
+
+  <div class="widget">
+    <div class="wt">&#128279; Accumulation Function $A(x) = \int_0^x t^2\,dt$</div>
+    <canvas id="accumCanvas" height="270"></canvas>
+    <div class="controls">
+      <div class="cg">
+        <label>Upper limit $x$ = <span class="val" id="accumX">1.50</span></label>
+        <input type="range" id="accumSlider" min="0.01" max="3" step="0.05" value="1.5" oninput="updateAccum(this.value)">
+      </div>
+    </div>
+    <div class="srow">
+      <div class="sp">Shaded area $A(x)$ = <span id="accumArea">&mdash;</span></div>
+      <div class="sp">$F(x) = x^3/3$ = <span id="accumFx">&mdash;</span></div>
+      <div class="sp">$A'(x) = x^2$ = <span id="accumDeriv">&mdash;</span></div>
+    </div>
+  </div>
+
+  <div class="note-box">
+    <div class="lbl">The Key Geometric Insight</div>
+    <p>When $x$ increases by a tiny amount $h$, the extra area added is approximately a thin rectangle:</p>
+    $$A(x+h) - A(x) \approx f(x) \cdot h$$
+    <p>Dividing both sides by $h$ and taking $h \to 0$:</p>
+    $$A'(x) = \lim_{h\to 0}\frac{A(x+h)-A(x)}{h} = f(x)$$
+    <p style="margin-bottom:0">So $A(x)$ is an antiderivative of $f(x)$! Since $A(a) = 0$, and any antiderivative $F$ satisfies $F(x) = A(x) + C$, we get $\int_a^b f(x)\,dx = A(b) = F(b) - F(a)$.</p>
+  </div>
+
+  <div class="callout-gold"><strong>The Profound Truth:</strong> The FTC says that accumulation (integration) and rate of change (differentiation) are inverse operations. The area function, when differentiated, gives back the original function. This is why $\frac{d}{dx}\int_a^x f(t)\,dt = f(x)$.</div>
+</section>
+
+<!-- INTEGRATION RULES -->
+<section id="rules">
+  <div class="sec-label">&sect; 6 &mdash; Properties of the Definite Integral</div>
+  <h2>Integration Rules for<br>Definite Integrals</h2>
+
+  <p>These rules let us manipulate definite integrals algebraically without recomputing from scratch.</p>
+
+  <div class="rules-grid">
+    <div class="rule-card">
+      <div class="rlbl">Constant Multiple Rule</div>
+      $$\int_a^b k\,f(x)\,dx = k\int_a^b f(x)\,dx$$
+      <p style="font-size:.88rem;margin-bottom:0">Pull constants outside the integral.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rlbl">Sum / Difference Rule</div>
+      $$\int_a^b [f \pm g]\,dx = \int_a^b f\,dx \pm \int_a^b g\,dx$$
+      <p style="font-size:.88rem;margin-bottom:0">Split across addition or subtraction.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rlbl">Same Limits Rule</div>
+      $$\int_a^a f(x)\,dx = 0$$
+      <p style="font-size:.88rem;margin-bottom:0">No width means no area.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rlbl">Reversed Limits Rule</div>
+      $$\int_b^a f(x)\,dx = -\int_a^b f(x)\,dx$$
+      <p style="font-size:.88rem;margin-bottom:0">Switching limits negates the integral.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rlbl">Subdivision Rule</div>
+      $$\int_a^b f\,dx = \int_a^c f\,dx + \int_c^b f\,dx$$
+      <p style="font-size:.88rem;margin-bottom:0">Split the interval at any interior point $c$.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rlbl">Dominance Rule</div>
+      $$\text{If } f(x)\geq g(x) \text{ on } [a,b]:$$
+      $$\int_a^b f\,dx \geq \int_a^b g\,dx$$
+      <p style="font-size:.88rem;margin-bottom:0">Larger function, larger integral.</p>
+    </div>
+  </div>
+
+  <h3>Examples Using the Rules</h3>
+
+  <div class="card al">
+    <h4 style="margin-top:0;color:var(--accent)">Example 1 — Constant Multiple + Sum</h4>
+    <p>Given $\displaystyle\int_0^3 f(x)\,dx = 7$ and $\displaystyle\int_0^3 g(x)\,dx = 4$, find $\displaystyle\int_0^3 [5f(x) - 2g(x)]\,dx$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('rule1')">Show Solution</button>
+    <div class="answer-box" id="rule1">
+      $$\int_0^3 [5f(x)-2g(x)]\,dx = 5\int_0^3 f\,dx - 2\int_0^3 g\,dx = 5(7)-2(4) = 35-8 = 27$$
+    </div>
+  </div>
+
+  <div class="card gl">
+    <h4 style="margin-top:0;color:var(--gold-lec)">Example 2 — Subdivision Rule</h4>
+    <p>Given $\displaystyle\int_0^5 f(x)\,dx = 12$ and $\displaystyle\int_0^3 f(x)\,dx = 7$, find $\displaystyle\int_3^5 f(x)\,dx$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('rule2')">Show Solution</button>
+    <div class="answer-box" id="rule2">
+      <p>By the subdivision rule: $\displaystyle\int_0^5 f\,dx = \int_0^3 f\,dx + \int_3^5 f\,dx$</p>
+      $$\int_3^5 f\,dx = 12 - 7 = 5$$
+    </div>
+  </div>
+
+  <div class="card tl">
+    <h4 style="margin-top:0;color:var(--teal-lec)">Example 3 — Reversed Limits</h4>
+    <p>Compute $\displaystyle\int_4^1 \sqrt{x}\,dx$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('rule3')">Show Solution</button>
+    <div class="answer-box" id="rule3">
+      $$\int_4^1 \sqrt{x}\,dx = -\int_1^4 \sqrt{x}\,dx = -\Big[\frac{2}{3}x^{3/2}\Big]_1^4 = -\left(\frac{2}{3}(8) - \frac{2}{3}(1)\right) = -\frac{14}{3}$$
+    </div>
+  </div>
+
+  <div class="card sl">
+    <h4 style="margin-top:0;color:var(--sky)">Example 4 — All Rules Combined</h4>
+    <p>Compute $\displaystyle\int_{-1}^{2}(3x^2 - 4x + 1)\,dx$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('rule4')">Show Solution</button>
+    <div class="answer-box" id="rule4">
+      $$\Big[x^3 - 2x^2 + x\Big]_{-1}^{2} = (8-8+2)-(-1-2-1) = 2-(-4) = 6$$
+    </div>
+  </div>
+</section>
+
+<!-- SUBSTITUTION IN DEFINITE INTEGRALS -->
+<section id="substitution">
+  <div class="sec-label">&sect; 7 &mdash; Substitution in Definite Integrals</div>
+  <h2>Using Substitution with<br>Definite Integrals</h2>
+
+  <p>When a definite integral requires substitution, you have two approaches. The cleaner method is to <strong>change the limits of integration</strong> along with the variable.</p>
+
+  <div class="thm-box">
+    <div class="lbl">Substitution Rule for Definite Integrals</div>
+    <p>If $u = g(x)$ and $g'$ is continuous on $[a,b]$, then:</p>
+    $$\int_a^b f(g(x))\cdot g'(x)\,dx = \int_{g(a)}^{g(b)} f(u)\,du$$
+    <p style="margin-bottom:0;font-style:italic;color:var(--teal-lec)">Key: when $x = a$, $u = g(a)$; when $x = b$, $u = g(b)$. Change both limits!</p>
+  </div>
+
+  <div class="card al">
+    <h4 style="margin-top:0;color:var(--accent)">Example 1 — Change the Limits</h4>
+    <p>Compute $\displaystyle\int_0^2 2x(x^2+1)^3\,dx$.</p>
+    <p><strong>Let</strong> $u = x^2+1$, $du = 2x\,dx$.</p>
+    <p><strong>New limits:</strong> When $x=0$: $u = 1$. When $x=2$: $u = 5$.</p>
+    $$\int_1^5 u^3\,du = \left[\frac{u^4}{4}\right]_1^5 = \frac{625}{4} - \frac{1}{4} = \frac{624}{4} = 156$$
+    <p style="margin-bottom:0">No back-substitution needed! The new limits handle everything.</p>
+  </div>
+
+  <div class="card gl">
+    <h4 style="margin-top:0;color:var(--gold-lec)">Example 2 — Exponential with Substitution</h4>
+    <p>Compute $\displaystyle\int_0^1 xe^{x^2}\,dx$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('sub2')">Show Solution</button>
+    <div class="answer-box" id="sub2">
+      <p>Let $u = x^2$, $du = 2x\,dx$, so $x\,dx = \dfrac{du}{2}$.</p>
+      <p>New limits: $x=0 \Rightarrow u=0$; $x=1 \Rightarrow u=1$.</p>
+      $$\int_0^1 e^u\cdot\frac{du}{2} = \frac{1}{2}\Big[e^u\Big]_0^1 = \frac{1}{2}(e-1) \approx \frac{1}{2}(1.718) \approx 0.859$$
+    </div>
+  </div>
+
+  <div class="card tl">
+    <h4 style="margin-top:0;color:var(--teal-lec)">Example 3 — Rational with Substitution</h4>
+    <p>Compute $\displaystyle\int_0^3 \frac{x}{(x^2+1)^2}\,dx$.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('sub3')">Show Solution</button>
+    <div class="answer-box" id="sub3">
+      <p>Let $u = x^2+1$, $du = 2x\,dx$, so $x\,dx = \dfrac{du}{2}$.</p>
+      <p>New limits: $x=0 \Rightarrow u=1$; $x=3 \Rightarrow u=10$.</p>
+      $$\int_1^{10} \frac{1}{u^2}\cdot\frac{du}{2} = \frac{1}{2}\left[-\frac{1}{u}\right]_1^{10} = \frac{1}{2}\left(-\frac{1}{10}+1\right) = \frac{1}{2}\cdot\frac{9}{10} = \frac{9}{20}$$
+    </div>
+  </div>
+</section>
+
+<!-- NET CHANGE -->
+<section id="netchange">
+  <div class="sec-label">&sect; 8 &mdash; Net Change</div>
+  <h2>The Net Change Theorem</h2>
+
+  <div class="thm-box">
+    <div class="lbl">Net Change Theorem</div>
+    <p>If $F'(x) = f(x)$, then the net change in $F$ from $x = a$ to $x = b$ is:</p>
+    $$F(b) - F(a) = \int_a^b f(x)\,dx = \int_a^b F'(x)\,dx$$
+    <p style="margin-bottom:0;color:var(--teal-lec);font-style:italic">The integral of a rate of change gives the total (net) change in the quantity.</p>
+  </div>
+
+  <p>This is simply the FTC rewritten with emphasis on its interpretation. It tells us:</p>
+  <table>
+    <tr><th>If $f(x)$ represents...</th><th>Then $\int_a^b f(x)\,dx$ gives...</th></tr>
+    <tr><td>Velocity $v(t)$</td><td>Net displacement (not total distance)</td></tr>
+    <tr><td>Marginal cost $C'(x)$</td><td>Change in total cost from $x=a$ to $x=b$</td></tr>
+    <tr><td>Rate of population growth $P'(t)$</td><td>Net change in population</td></tr>
+    <tr><td>Flow rate $R(t)$ (water, current)</td><td>Total volume/charge accumulated</td></tr>
+    <tr><td>Rate of profit change</td><td>Net profit gained or lost</td></tr>
+  </table>
+
+  <div class="card al">
+    <h4 style="margin-top:0;color:var(--accent)">Example 1 — Displacement vs. Distance</h4>
+    <p>A particle moves along a line with velocity $v(t) = t^2 - 4t + 3$ m/s for $0 \leq t \leq 4$.</p>
+    <p>Find (a) the net displacement and (b) the total distance traveled.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('nc1')">Show Solution</button>
+    <div class="answer-box" id="nc1">
+      <p><strong>(a) Net displacement:</strong></p>
+      $$\int_0^4 (t^2-4t+3)\,dt = \left[\frac{t^3}{3}-2t^2+3t\right]_0^4 = \left(\frac{64}{3}-32+12\right)-0 = \frac{64}{3}-20 = \frac{4}{3} \approx 1.33 \text{ m}$$
+      <p><strong>(b) Total distance:</strong> First find where $v(t)=0$: $t^2-4t+3=(t-1)(t-3)=0$, so $t=1$ and $t=3$.</p>
+      <p>$v > 0$ on $[0,1]$, $v < 0$ on $[1,3]$, $v > 0$ on $[3,4]$.</p>
+      $$d = \int_0^1(t^2-4t+3)\,dt + \left|\int_1^3(t^2-4t+3)\,dt\right| + \int_3^4(t^2-4t+3)\,dt$$
+      $$= \frac{4}{3} + \left|-\frac{4}{3}\right| + \frac{4}{3} = \frac{4}{3}+\frac{4}{3}+\frac{4}{3} = 4 \text{ m}$$
+    </div>
+  </div>
+
+  <div class="card gl">
+    <h4 style="margin-top:0;color:var(--gold-lec)">Example 2 — Marginal Cost</h4>
+    <p>A factory's marginal cost is $C'(x) = 0.006x^2 - 0.6x + 30$ PKR/unit. Find the increase in cost when production goes from 50 to 100 units.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('nc2')">Show Solution</button>
+    <div class="answer-box" id="nc2">
+      $$\int_{50}^{100}(0.006x^2-0.6x+30)\,dx = \Big[0.002x^3-0.3x^2+30x\Big]_{50}^{100}$$
+      $$= (2000-3000+3000)-(250-750+1500) = 2000-1000 = \text{PKR }1000$$
+    </div>
+  </div>
+</section>
+
+<!-- APPLIED PROBLEMS -->
+<section id="applied">
+  <div class="sec-label">&sect; 9 &mdash; Applied Problems</div>
+  <h2>Integration in Practice</h2>
+
+  <div class="card pl">
+    <h4 style="margin-top:0;color:#27ae60">&#127759; Example 1 — Area of a Plot of Land</h4>
+    <p>A plot of land along the Ravi River in Lahore has one straight edge along the $x$-axis from $x=0$ to $x=6$ (hundred metres). The other boundary follows the curve $f(x) = -x^2 + 6x$ (hundred metres). Find the area of the plot.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('app1')">Show Solution</button>
+    <div class="answer-box" id="app1">
+      <p>The curve $f(x) = -x^2+6x = x(6-x) \geq 0$ on $[0,6]$, touching zero at the endpoints.</p>
+      $$\text{Area} = \int_0^6 (-x^2+6x)\,dx = \left[-\frac{x^3}{3}+3x^2\right]_0^6 = \left(-72+108\right)-0 = 36 \text{ (hundred m)}^2$$
+      <p>In actual units: $36 \times (100)^2 = 360{,}000 \text{ m}^2 = 36 \text{ hectares}$.</p>
+    </div>
+  </div>
+
+  <div class="card al">
+    <h4 style="margin-top:0;color:var(--accent)">&#9889; Example 2 — Electricity Consumption at LUMS</h4>
+    <p>LUMS's power consumption rate (in MW) during a 12-hour day follows $P(t) = 2 + 0.5\sin\!\left(\dfrac{\pi t}{12}\right)$ for $0 \leq t \leq 12$. Find the total energy consumed (in MWh).</p>
+    <button class="toggle-btn" onclick="toggleAnswer('app2')">Show Solution</button>
+    <div class="answer-box" id="app2">
+      $$E = \int_0^{12}\left(2+0.5\sin\frac{\pi t}{12}\right)dt = \left[2t - \frac{0.5 \cdot 12}{\pi}\cos\frac{\pi t}{12}\right]_0^{12}$$
+      $$= \left(24 - \frac{6}{\pi}\cos\pi\right) - \left(0 - \frac{6}{\pi}\cos 0\right) = 24 + \frac{6}{\pi} + \frac{6}{\pi} = 24 + \frac{12}{\pi} \approx 27.82 \text{ MWh}$$
+    </div>
+  </div>
+
+  <div class="card tl">
+    <h4 style="margin-top:0;color:var(--teal-lec)">&#128200; Example 3 — Revenue Accumulation</h4>
+    <p>A Karachi textile firm's revenue rate (in million PKR/month) is $R'(t) = \sqrt{4t+1}$. Find the total revenue earned in the first 6 months.</p>
+    <button class="toggle-btn" onclick="toggleAnswer('app3')">Show Solution</button>
+    <div class="answer-box" id="app3">
+      <p>Let $u = 4t+1$, $du = 4\,dt$. When $t=0$: $u=1$; when $t=6$: $u=25$.</p>
+      $$\int_0^6 \sqrt{4t+1}\,dt = \int_1^{25}\sqrt{u}\cdot\frac{du}{4} = \frac{1}{4}\cdot\frac{2}{3}\Big[u^{3/2}\Big]_1^{25} = \frac{1}{6}(125-1) = \frac{124}{6} = \frac{62}{3} \approx 20.67 \text{ million PKR}$$
+    </div>
+  </div>
+
+  <div class="card gl">
+    <h4 style="margin-top:0;color:var(--gold-lec)">&#127947; Example 4 — LUMS Students Walking</h4>
+    <p>During a LUMS sports event, students walk with speed $v(t) = \dfrac{t}{t^2+1}$ km/min for $0 \leq t \leq 5$ minutes. How far do they walk?</p>
+    <button class="toggle-btn" onclick="toggleAnswer('app4')">Show Solution</button>
+    <div class="answer-box" id="app4">
+      <p>Let $u = t^2+1$, $du = 2t\,dt$. When $t=0$: $u=1$; when $t=5$: $u=26$.</p>
+      $$\int_0^5 \frac{t}{t^2+1}\,dt = \int_1^{26}\frac{1}{u}\cdot\frac{du}{2} = \frac{1}{2}\Big[\ln u\Big]_1^{26} = \frac{1}{2}\ln 26 \approx \frac{1}{2}(3.258) \approx 1.629 \text{ km}$$
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="callout-teal"><strong style="color:var(--teal-lec)">Coming up next &mdash;</strong> &sect;5.4 Applying Definite Integration: Distribution of Wealth and Average Value &mdash; where we use integrals to measure economic inequality with the Lorenz curve and Gini coefficient.</div>
+</section>
+
+    </div><!-- end lec-inner -->
+
+    <div class="lec-footer-nav">
+      <a href="calc1-s52.html" class="lnf-btn prev">&#8592; §5.2 Substitution</a>
+      <div style="font-family:var(--fm-lec);font-size:.7rem;color:var(--muted);text-align:center">§5.3 &middot; Chapter 5 &middot; Calculus I</div>
+      <a href="course-calc1.html" class="lnf-btn next">§5.4 Applying Integration &#8594;</a>
+    </div>
+
+  </main>
+</div>
+
+<footer class="sk-footer">
+  <div class="sk-footer-inner">
+    <div>
+      <div class="sk-footer-logo">Shoaib-K</div>
+      <p style="color:var(--text2);font-size:.875rem;margin-top:10px">Mathematician &middot; Educator &middot; Researcher<br>LUMS, Lahore, Pakistan</p>
+      <div style="display:flex;gap:14px;margin-top:14px">
+        <a href="https://www.facebook.com/shoaiib.k" target="_blank">Facebook</a>
+        <a href="https://twitter.com/msking_shoaib" target="_blank">Twitter</a>
+        <a href="https://instagram.com/msking.shoaib" target="_blank">Instagram</a>
+      </div>
+    </div>
+    <div>
+      <h5>Navigation</h5>
+      <a href="../index.html">Home</a>
+      <a href="education.html">Education</a>
+      <a href="courses.html">Courses</a>
+      <a href="research.html">Research</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div>
+      <h5>Contact</h5>
+      <a href="mailto:bssk.khan@gmail.com">bssk.khan@gmail.com</a>
+      <a href="https://lums.edu.pk" target="_blank">LUMS Website</a>
+    </div>
+  </div>
+  <div class="sk-footer-bottom">
+    <p>&copy; 2025 Muhammad Shoaib Khan &middot; LUMS &middot; Lahore, Pakistan</p>
+    <p>Built with HTML, CSS &amp; Mathematics</p>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+window.addEventListener('scroll',()=>{
+  const el=document.documentElement;
+  const bar=document.getElementById('sk-progress-bar');
+  if(bar) bar.style.width=(el.scrollTop/(el.scrollHeight-el.clientHeight)*100)+'%';
+},{passive:true});
+
+function toggleAnswer(id){
+  const el=document.getElementById(id);
+  el.classList.toggle('show');
+  if(window.MathJax&&el.classList.contains('show')) MathJax.typesetPromise([el]);
+}
+
+/* ===== RIEMANN EXPLORER ===== */
+const FDATA={
+  sq:{fn:x=>x*x,exact:(a,b)=>(b**3-a**3)/3,a:0,b:2,label:'x²'},
+  cubic:{fn:x=>x**3/4+1,exact:(a,b)=>((b**4/16+b)-(a**4/16+a)),a:0,b:2,label:'x³/4+1'},
+  sin:{fn:x=>Math.sin(x)+1.2,exact:(a,b)=>(b-a)*1.2+Math.cos(a)-Math.cos(b),a:0,b:Math.PI,label:'sin(x)+1.2'},
+  sqrt:{fn:x=>Math.sqrt(x)+0.5,exact:(a,b)=>2/3*(b**1.5-a**1.5)+0.5*(b-a),a:0,b:4,label:'√x+0.5'},
+  exp:{fn:x=>Math.exp(x)/4,exact:(a,b)=>(Math.exp(b)-Math.exp(a))/4,a:0,b:2,label:'eˣ/4'}
+};
+
+let rN=6;
+function updateN(v){rN=+v;document.getElementById('nVal').textContent=v;drawRiemann();}
+
+function drawRiemann(){
+  const key=document.getElementById('fnSelect').value;
+  const rule=document.getElementById('ruleSelect').value;
+  const {fn,exact,a,b}=FDATA[key];
+  const cv=document.getElementById('riemannCanvas');
+  if(!cv.offsetWidth)return;
+  cv.width=cv.offsetWidth*devicePixelRatio; cv.height=300*devicePixelRatio;
+  const ctx=cv.getContext('2d'); ctx.scale(devicePixelRatio,devicePixelRatio);
+  const W=cv.offsetWidth,H=300,pad={l:50,r:18,t:16,b:32};
+  const gW=W-pad.l-pad.r,gH=H-pad.t-pad.b;
+  let yMax=0;
+  for(let i=0;i<=300;i++){const y=fn(a+(b-a)*i/300);if(y>yMax)yMax=y;}
+  yMax*=1.3; if(yMax<0.5)yMax=1;
+  const tX=x=>pad.l+(x-a)/(b-a)*gW;
+  const tY=y=>pad.t+gH-Math.max(0,y)/yMax*gH;
+  ctx.fillStyle='#111827'; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='#1f2937'; ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){
+    const y=yMax*i/4;
+    ctx.beginPath();ctx.moveTo(pad.l,tY(y));ctx.lineTo(pad.l+gW,tY(y));ctx.stroke();
+    ctx.fillStyle='#6b7280';ctx.font='11px IBM Plex Mono,monospace';ctx.fillText(y.toFixed(1),4,tY(y)+4);
+  }
+  const dx=(b-a)/rN; let sumArea=0;
+  for(let i=0;i<rN;i++){
+    let xs;
+    if(rule==='left')xs=a+i*dx;
+    else if(rule==='right')xs=a+(i+1)*dx;
+    else xs=a+(i+0.5)*dx;
+    const h=fn(xs); if(h<0)continue;
+    sumArea+=h*dx;
+    const rx=tX(a+i*dx),rw=tX(a+(i+1)*dx)-tX(a+i*dx);
+    ctx.fillStyle='rgba(212,160,23,.28)';ctx.fillRect(rx,tY(h),rw,tY(0)-tY(h));
+    ctx.strokeStyle='#d4a017';ctx.lineWidth=1.3;ctx.strokeRect(rx,tY(h),rw,tY(0)-tY(h));
+  }
+  ctx.beginPath();ctx.moveTo(tX(a),tY(fn(a)));
+  for(let i=1;i<=300;i++){const x=a+(b-a)*i/300;ctx.lineTo(tX(x),tY(fn(x)));}
+  ctx.strokeStyle='#60a5fa';ctx.lineWidth=2.5;ctx.stroke();
+  ctx.strokeStyle='#4b5563';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,pad.t+gH);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t+gH);ctx.lineTo(pad.l+gW,pad.t+gH);ctx.stroke();
+  ctx.fillStyle='#9ca3af';ctx.font='11px IBM Plex Mono,monospace';
+  [a,(a+b)/2,b].forEach(x=>ctx.fillText(x.toFixed(1),tX(x)-8,H-6));
+  const ex=exact(a,b);
+  document.getElementById('statN').textContent=rN;
+  document.getElementById('statDx').textContent=dx.toFixed(4);
+  document.getElementById('statApprox').textContent=sumArea.toFixed(5);
+  document.getElementById('statExact').textContent=ex.toFixed(5);
+  document.getElementById('statErr').textContent=Math.abs(sumArea-ex).toFixed(5);
+}
+
+/* ===== SIGNED AREA EXPLORER ===== */
+function updateB(v){document.getElementById('bVal').textContent=parseFloat(v).toFixed(2);drawSigned(parseFloat(v));}
+function drawSigned(b){
+  const cv=document.getElementById('signedCanvas');
+  cv.width=cv.offsetWidth*devicePixelRatio; cv.height=240*devicePixelRatio;
+  const ctx=cv.getContext('2d'); ctx.scale(devicePixelRatio,devicePixelRatio);
+  const W=cv.offsetWidth,H=240,pad={l:44,r:16,t:14,b:30};
+  const gW=W-pad.l-pad.r,gH=H-pad.t-pad.b;
+  const dA=0,dB=10,yMin=-1.3,yMax=1.3;
+  const tX=x=>pad.l+(x-dA)/(dB-dA)*gW;
+  const tY=y=>pad.t+gH-(y-yMin)/(yMax-yMin)*gH;
+  ctx.fillStyle='#111827'; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='#374151';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(pad.l,tY(0));ctx.lineTo(pad.l+gW,tY(0));ctx.stroke();
+  ctx.strokeStyle='#4b5563';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,pad.t+gH);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t+gH);ctx.lineTo(pad.l+gW,pad.t+gH);ctx.stroke();
+  const fn=x=>Math.sin(x);
+  for(let i=0;i<500;i++){
+    const x1=i/500*b,x2=(i+1)/500*b,y1=fn(x1),y2=fn(x2),avgY=(y1+y2)/2;
+    ctx.beginPath();ctx.moveTo(tX(x1),tY(0));ctx.lineTo(tX(x1),tY(y1));ctx.lineTo(tX(x2),tY(y2));ctx.lineTo(tX(x2),tY(0));ctx.closePath();
+    ctx.fillStyle=avgY>=0?'rgba(41,128,185,.5)':'rgba(192,57,43,.5)';ctx.fill();
+  }
+  ctx.beginPath();ctx.moveTo(tX(0),tY(fn(0)));
+  for(let i=1;i<=400;i++){const x=dA+(dB-dA)*i/400;ctx.lineTo(tX(x),tY(fn(x)));}
+  ctx.strokeStyle='#a78bfa';ctx.lineWidth=2.5;ctx.stroke();
+  ctx.fillStyle='#9ca3af';ctx.font='11px IBM Plex Mono,monospace';
+  [{v:0,l:'0'},{v:Math.PI,l:'π'},{v:2*Math.PI,l:'2π'},{v:3*Math.PI,l:'3π'}].forEach(({v,l})=>{
+    if(v<=dB)ctx.fillText(l,tX(v)-5,H-6);
+  });
+  let pos=0,neg=0;const dx=b/2000;
+  for(let i=0;i<2000;i++){const y=fn(i*dx);if(y>=0)pos+=y*dx;else neg+=y*dx;}
+  document.getElementById('posArea').textContent=pos.toFixed(4);
+  document.getElementById('negArea').textContent=neg.toFixed(4);
+  document.getElementById('netArea').textContent=(pos+neg).toFixed(4);
+}
+
+/* ===== ACCUMULATION FUNCTION ===== */
+function updateAccum(v){document.getElementById('accumX').textContent=parseFloat(v).toFixed(2);drawAccum(parseFloat(v));}
+function drawAccum(x){
+  const cv=document.getElementById('accumCanvas');
+  cv.width=cv.offsetWidth*devicePixelRatio; cv.height=270*devicePixelRatio;
+  const ctx=cv.getContext('2d'); ctx.scale(devicePixelRatio,devicePixelRatio);
+  const W=cv.offsetWidth,H=270,pad={l:50,r:16,t:14,b:30};
+  const gW=W-pad.l-pad.r,gH=H-pad.t-pad.b;
+  const dA=0,dB=3.5,yMax=12;
+  const fn=t=>t*t;
+  const tX=v=>pad.l+(v-dA)/(dB-dA)*gW;
+  const tY=v=>pad.t+gH-v/yMax*gH;
+  ctx.fillStyle='#111827'; ctx.fillRect(0,0,W,H);
+  [0,3,6,9,12].forEach(y=>{
+    ctx.strokeStyle='#1f2937';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(pad.l,tY(y));ctx.lineTo(pad.l+gW,tY(y));ctx.stroke();
+    ctx.fillStyle='#6b7280';ctx.font='11px IBM Plex Mono,monospace';ctx.fillText(y,4,tY(y)+4);
+  });
+  ctx.beginPath();ctx.moveTo(tX(0),tY(0));
+  for(let i=0;i<=200;i++){const t=x*i/200;ctx.lineTo(tX(t),tY(fn(t)));}
+  ctx.lineTo(tX(x),tY(0));ctx.closePath();
+  ctx.fillStyle='rgba(212,160,23,.28)';ctx.fill();
+  ctx.strokeStyle='#d4a017';ctx.lineWidth=1.3;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(tX(0),tY(0));
+  for(let i=1;i<=300;i++){const t=dA+(dB-dA)*i/300;ctx.lineTo(tX(t),tY(fn(t)));}
+  ctx.strokeStyle='#60a5fa';ctx.lineWidth=2.5;ctx.stroke();
+  ctx.setLineDash([5,4]);ctx.strokeStyle='#d4a017';ctx.lineWidth=1.3;
+  ctx.beginPath();ctx.moveTo(tX(x),tY(0));ctx.lineTo(tX(x),tY(fn(x)));ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='#fbbf24';ctx.beginPath();ctx.arc(tX(x),tY(fn(x)),6,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#4b5563';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,pad.t+gH);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t+gH);ctx.lineTo(pad.l+gW,pad.t+gH);ctx.stroke();
+  ctx.fillStyle='#9ca3af';ctx.font='11px IBM Plex Mono,monospace';
+  [0,1,2,3].forEach(v=>ctx.fillText(v,tX(v)-4,H-6));
+  ctx.fillStyle='#fbbf24';ctx.font='bold 12px IBM Plex Mono,monospace';
+  ctx.fillText('x='+x.toFixed(2),tX(x)+8,tY(fn(x))-8);
+  const area=x**3/3;
+  document.getElementById('accumArea').textContent=area.toFixed(4);
+  document.getElementById('accumFx').textContent=area.toFixed(4);
+  document.getElementById('accumDeriv').textContent=(x*x).toFixed(4);
+}
+
+function initAll(){drawRiemann();drawSigned(Math.PI);drawAccum(1.5);}
+window.addEventListener('resize',()=>{drawRiemann();drawSigned(parseFloat(document.getElementById('bSlider').value));drawAccum(parseFloat(document.getElementById('accumSlider').value));},{passive:true});
+document.fonts.ready.then(initAll);
+</script>
+</body>
+</html>
