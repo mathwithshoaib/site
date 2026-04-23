@@ -557,32 +557,117 @@ select { font-family: var(--fm-lec); font-size: .8rem; background: #1f2937; colo
       <tr><td>$[1.5, 2]$</td><td>$2.0$</td><td>$4.00$</td><td>$4.00 \times 0.5 = 2.000$</td></tr>
     </table>
     <div class="bf">Total Area $\approx 0.125 + 0.500 + 1.125 + 2.000 = \mathbf{3.75}$</div>
-    <svg class="graph-svg" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
-      <rect width="400" height="220" fill="#fdf8f0" rx="8"/>
-      <line x1="60" y1="195" x2="370" y2="195" stroke="#e0d6c8" stroke-width="1"/>
-      <line x1="60" y1="20" x2="60" y2="195" stroke="#e0d6c8" stroke-width="1"/>
-      <!-- 4 rectangles, right endpoints, width=77.5px each -->
-      <!-- [0,0.5]: height f(0.5)=0.25, scaled: 0.25/4*175=10.9px from top=184.1 -->
-      <rect x="60" y="184.1" width="77.5" height="10.9" fill="rgba(212,160,23,.3)" stroke="#d4a017" stroke-width="1.2"/>
-      <!-- [0.5,1]: height f(1)=1, 1/4*175=43.75, y=151.25 -->
-      <rect x="137.5" y="151.25" width="77.5" height="43.75" fill="rgba(212,160,23,.3)" stroke="#d4a017" stroke-width="1.2"/>
-      <!-- [1,1.5]: height f(1.5)=2.25, 2.25/4*175=98.4, y=96.6 -->
-      <rect x="215" y="96.6" width="77.5" height="98.4" fill="rgba(212,160,23,.3)" stroke="#d4a017" stroke-width="1.2"/>
-      <!-- [1.5,2]: height f(2)=4, 4/4*175=175, y=20 -->
-      <rect x="292.5" y="20" width="77.5" height="175" fill="rgba(212,160,23,.3)" stroke="#d4a017" stroke-width="1.2"/>
-      <path d="M60,195 Q155,170 215,108 Q280,48 370,20" fill="none" stroke="#2980b9" stroke-width="2.5"/>
-      <text x="60" y="210" font-size="11" font-family="monospace" fill="#7f8c8d" text-anchor="middle">0</text>
-      <text x="137.5" y="210" font-size="11" font-family="monospace" fill="#7f8c8d" text-anchor="middle">0.5</text>
-      <text x="215" y="210" font-size="11" font-family="monospace" fill="#7f8c8d" text-anchor="middle">1</text>
-      <text x="292.5" y="210" font-size="11" font-family="monospace" fill="#7f8c8d" text-anchor="middle">1.5</text>
-      <text x="370" y="210" font-size="11" font-family="monospace" fill="#7f8c8d" text-anchor="middle">2</text>
-      <text x="200" y="140" font-size="12" font-family="monospace" fill="#d4a017" font-weight="700">Area ≈ 3.75</text>
-      <text x="310" y="65" font-size="13" font-family="serif" fill="#2980b9" font-style="italic">f(x)=x²</text>
+
+    <svg class="graph-svg" viewBox="0 0 400 230" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="230" fill="#fdf8f0" rx="8"/>
+
+      <!--
+        Coordinate system (matches Approx 1 & 2):
+          x: 0→3  mapped to px 60→370  (103.33px per unit)
+          y: 0→6  mapped to px 205→20  (30.83px per unit)
+
+        x pixel positions:
+          x=0   → 60
+          x=0.5 → 111.67
+          x=1   → 163.33
+          x=1.5 → 215
+          x=2   → 266.67
+          x=3   → 370
+
+        y pixel positions (205 - y*30.83):
+          y=0    → 205
+          y=0.25 → 197.29
+          y=1    → 174.17
+          y=2.25 → 136.13
+          y=4    → 81.67
+
+        Rectangle width = 0.5 units = 51.67px
+      -->
+
+      <!-- Dashed grid guides -->
+      <line x1="111.67" y1="20" x2="111.67" y2="205" stroke="#e0d8cc" stroke-width="0.7" stroke-dasharray="3,3"/>
+      <line x1="163.33" y1="20" x2="163.33" y2="205" stroke="#e0d8cc" stroke-width="0.7" stroke-dasharray="3,3"/>
+      <line x1="215"    y1="20" x2="215"    y2="205" stroke="#e0d8cc" stroke-width="0.7" stroke-dasharray="3,3"/>
+      <line x1="266.67" y1="20" x2="266.67" y2="205" stroke="#e0d8cc" stroke-width="0.7" stroke-dasharray="3,3"/>
+      <line x1="60" y1="174.17" x2="370" y2="174.17" stroke="#e0d8cc" stroke-width="0.7" stroke-dasharray="3,3"/>
+      <line x1="60" y1="136.13" x2="370" y2="136.13" stroke="#e0d8cc" stroke-width="0.7" stroke-dasharray="3,3"/>
+      <line x1="60" y1="81.67"  x2="370" y2="81.67"  stroke="#e0d8cc" stroke-width="0.7" stroke-dasharray="3,3"/>
+
+      <!-- Rect 1: [0, 0.5], right endpoint x=0.5, f(0.5)=0.25 → top=197.29 -->
+      <rect x="60" y="197.29" width="51.67" height="7.71"
+            fill="rgba(52,152,219,0.22)" stroke="#2980b9" stroke-width="1.5"/>
+
+      <!-- Rect 2: [0.5, 1], right endpoint x=1, f(1)=1 → top=174.17 -->
+      <rect x="111.67" y="174.17" width="51.67" height="30.83"
+            fill="rgba(39,174,96,0.22)" stroke="#27ae60" stroke-width="1.5"/>
+
+      <!-- Rect 3: [1, 1.5], right endpoint x=1.5, f(1.5)=2.25 → top=136.13 -->
+      <rect x="163.33" y="136.13" width="51.67" height="68.87"
+            fill="rgba(155,89,182,0.22)" stroke="#8e44ad" stroke-width="1.5"/>
+
+      <!-- Rect 4: [1.5, 2], right endpoint x=2, f(2)=4 → top=81.67 -->
+      <rect x="215" y="81.67" width="51.67" height="123.33"
+            fill="rgba(212,160,23,0.22)" stroke="#d4a017" stroke-width="1.5"/>
+
+      <!-- Axes -->
+      <line x1="60" y1="205" x2="378" y2="205" stroke="#555" stroke-width="1.8"/>
+      <line x1="60" y1="205" x2="60"  y2="12"  stroke="#555" stroke-width="1.8"/>
+      <!-- Arrow heads -->
+      <polygon points="378,205 372,202 372,208" fill="#555"/>
+      <polygon points="60,12 57,18 63,18" fill="#555"/>
+
+      <!-- Smooth curve x² — same cubic bezier as Approx 1 & 2 -->
+      <path d="M 60,205 C 90,205 140,185 163.33,174.17
+               S 230,120 266.67,81.67
+               S 300,35 318.33,12.4"
+            fill="none" stroke="#2980b9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <!-- Tick marks x -->
+      <line x1="111.67" y1="202" x2="111.67" y2="208" stroke="#555" stroke-width="1.2"/>
+      <line x1="163.33" y1="202" x2="163.33" y2="208" stroke="#555" stroke-width="1.2"/>
+      <line x1="215"    y1="202" x2="215"    y2="208" stroke="#555" stroke-width="1.2"/>
+      <line x1="266.67" y1="202" x2="266.67" y2="208" stroke="#555" stroke-width="1.2"/>
+      <line x1="370"    y1="202" x2="370"    y2="208" stroke="#555" stroke-width="1.2"/>
+      <!-- Tick marks y -->
+      <line x1="57" y1="174.17" x2="63" y2="174.17" stroke="#555" stroke-width="1.2"/>
+      <line x1="57" y1="136.13" x2="63" y2="136.13" stroke="#555" stroke-width="1.2"/>
+      <line x1="57" y1="81.67"  x2="63" y2="81.67"  stroke="#555" stroke-width="1.2"/>
+
+      <!-- Axis labels x -->
+      <text x="60"    y="218" font-size="11" font-family="monospace" fill="#555"    text-anchor="middle">0</text>
+      <text x="111.67"y="218" font-size="11" font-family="monospace" fill="#2980b9" text-anchor="middle" font-weight="700">0.5</text>
+      <text x="163.33"y="218" font-size="11" font-family="monospace" fill="#27ae60" text-anchor="middle" font-weight="700">1</text>
+      <text x="215"   y="218" font-size="11" font-family="monospace" fill="#8e44ad" text-anchor="middle" font-weight="700">1.5</text>
+      <text x="266.67"y="218" font-size="11" font-family="monospace" fill="#d4a017" text-anchor="middle" font-weight="700">2</text>
+      <text x="370"   y="218" font-size="11" font-family="monospace" fill="#999"    text-anchor="middle">3</text>
+
+      <!-- Axis labels y -->
+      <text x="48" y="209"    font-size="11" font-family="monospace" fill="#555"    text-anchor="end">0</text>
+      <text x="48" y="178"    font-size="11" font-family="monospace" fill="#2980b9" text-anchor="end" font-weight="700">1</text>
+      <text x="48" y="140"    font-size="11" font-family="monospace" fill="#8e44ad" text-anchor="end" font-weight="700">2.25</text>
+      <text x="48" y="85.67"  font-size="11" font-family="monospace" fill="#d4a017" text-anchor="end" font-weight="700">4</text>
+
+      <!-- Axis name labels -->
+      <text x="382" y="209" font-size="12" font-family="monospace" fill="#555">x</text>
+      <text x="53"  y="10"  font-size="12" font-family="monospace" fill="#555">y</text>
+
+      <!-- Dots at right endpoints on the curve -->
+      <circle cx="111.67" cy="197.29" r="3.5" fill="#2980b9" stroke="#fff" stroke-width="1.5"/>
+      <circle cx="163.33" cy="174.17" r="3.5" fill="#27ae60" stroke="#fff" stroke-width="1.5"/>
+      <circle cx="215"    cy="136.13" r="3.5" fill="#8e44ad" stroke="#fff" stroke-width="1.5"/>
+      <circle cx="266.67" cy="81.67"  r="3.5" fill="#d4a017" stroke="#fff" stroke-width="1.5"/>
+
+      <!-- Area label -->
+      <text x="190" y="110" font-size="12" font-family="monospace" fill="#7a5c00" font-weight="700" text-anchor="middle">Area ≈ 3.75</text>
+
+      <!-- f(x) label -->
+      <text x="305" y="65" font-size="13" font-family="serif" fill="#2980b9" font-style="italic">f(x) = x²</text>
     </svg>
-    <p style="margin-bottom:0">With 4 rectangles we get $3.75$ vs. the true $2.667$. Still overshooting (right endpoints overestimate for increasing functions), but closer. The key insight: <em>more rectangles means more accuracy.</em></p>
+
+    <p style="margin-bottom:0">With 4 rectangles we get $3.75$ vs. the true $\frac{8}{3} \approx 2.667$. Still overshooting (right endpoints overestimate for increasing functions), but much closer than before. The key insight: <em>more rectangles means more accuracy.</em></p>
   </div>
 
-  <!-- Step 3: n rectangles -->
+  <!-- Step 4: n rectangles -->
   <div class="approach-step">
     <div class="step-label">General Formula</div>
     <div class="step-title">$n$ Rectangles — The Riemann Sum</div>
