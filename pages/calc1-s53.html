@@ -445,9 +445,108 @@ select { font-family: var(--fm-lec); font-size: .8rem; background: #1f2937; colo
     <p style="margin-bottom:0">The true area is $\frac{8}{3} \approx 2.667$. Our estimate of $8$ is a big overestimate — the rectangle towers over the curve everywhere. We can do better by using more rectangles.</p>  
   </div>
 
-  <!-- Step 2: 4 rectangles -->
+
+  <!-- Step 2: 2 rectangles -->
   <div class="approach-step">
     <div class="step-label">Approximation 2</div>
+    <div class="step-title">Two Rectangles — Getting Closer</div>
+    <p>Divide $[0, 2]$ into <strong>2 equal subintervals</strong> of width $\Delta x = 1$. Use the <strong>right endpoint</strong> of each.</p>
+    <div class="bf">
+      Area $\approx f(1)\cdot 1 + f(2)\cdot 1 = 1 + 4 = 5$
+    </div>
+
+    <svg class="graph-svg" viewBox="0 0 400 230" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="230" fill="#fdf8f0" rx="8"/>
+
+      <!--
+        Coordinate system (same as Approx 1):
+          x: 0→3  mapped to px 60→370  (103.33px per unit)
+          y: 0→6  mapped to px 205→20  (30.83px per unit)
+
+        Key px positions:
+          x=0→60,  x=1→163.3,  x=2→266.6,  x=3→370
+          y=0→205, y=1→174.2,  y=2→143.3,  y=4→81.7
+      -->
+
+      <!-- Dashed grid guides -->
+      <line x1="163.3" y1="20" x2="163.3" y2="205" stroke="#e0d8cc" stroke-width="0.7" stroke-dasharray="3,3"/>
+      <line x1="266.6" y1="20" x2="266.6" y2="205" stroke="#e0d8cc" stroke-width="0.7" stroke-dasharray="3,3"/>
+      <line x1="60" y1="174.2" x2="370" y2="174.2" stroke="#e0d8cc" stroke-width="0.7" stroke-dasharray="3,3"/>
+      <line x1="60" y1="81.7"  x2="370" y2="81.7"  stroke="#e0d8cc" stroke-width="0.7" stroke-dasharray="3,3"/>
+
+      <!-- Rectangle 1: x=0→1, height=f(1)=1  → top at y=174.2 -->
+      <rect x="60" y="174.2" width="103.3" height="30.8"
+            fill="rgba(52,152,219,0.22)" stroke="#2980b9" stroke-width="1.8"/>
+
+      <!-- Rectangle 2: x=1→2, height=f(2)=4  → top at y=81.7 -->
+      <rect x="163.3" y="81.7" width="103.3" height="123.3"
+            fill="rgba(212,160,23,0.22)" stroke="#d4a017" stroke-width="1.8"/>
+
+      <!-- Axes -->
+      <line x1="60" y1="205" x2="378" y2="205" stroke="#555" stroke-width="1.8"/>
+      <line x1="60" y1="205" x2="60"  y2="12"  stroke="#555" stroke-width="1.8"/>
+      <!-- Arrow heads -->
+      <polygon points="378,205 372,202 372,208" fill="#555"/>
+      <polygon points="60,12 57,18 63,18" fill="#555"/>
+
+      <!-- Smooth curve x² — cubic bezier -->
+      <path d="M 60,205 C 90,205 140,185 163.3,174.2
+               S 230,120 266.6,81.7
+               S 300,35 318.3,12.4"
+            fill="none" stroke="#2980b9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <!-- Tick marks x -->
+      <line x1="163.3" y1="202" x2="163.3" y2="208" stroke="#555" stroke-width="1.2"/>
+      <line x1="266.6" y1="202" x2="266.6" y2="208" stroke="#555" stroke-width="1.2"/>
+      <line x1="370"   y1="202" x2="370"   y2="208" stroke="#555" stroke-width="1.2"/>
+      <!-- Tick marks y -->
+      <line x1="57" y1="174.2" x2="63" y2="174.2" stroke="#555" stroke-width="1.2"/>
+      <line x1="57" y1="81.7"  x2="63" y2="81.7"  stroke="#555" stroke-width="1.2"/>
+
+      <!-- Axis labels x -->
+      <text x="60"    y="218" font-size="11" font-family="monospace" fill="#555" text-anchor="middle">0</text>
+      <text x="163.3" y="218" font-size="11" font-family="monospace" fill="#2980b9" text-anchor="middle" font-weight="700">1</text>
+      <text x="266.6" y="218" font-size="11" font-family="monospace" fill="#d4a017" text-anchor="middle" font-weight="700">2</text>
+      <text x="370"   y="218" font-size="11" font-family="monospace" fill="#999" text-anchor="middle">3</text>
+
+      <!-- Axis labels y -->
+      <text x="48" y="209"  font-size="11" font-family="monospace" fill="#555" text-anchor="end">0</text>
+      <text x="48" y="178"  font-size="11" font-family="monospace" fill="#2980b9" text-anchor="end" font-weight="700">1</text>
+      <text x="48" y="85.7" font-size="11" font-family="monospace" fill="#d4a017" text-anchor="end" font-weight="700">4</text>
+
+      <!-- Axis name labels -->
+      <text x="382" y="209" font-size="12" font-family="monospace" fill="#555">x</text>
+      <text x="53"  y="10"  font-size="12" font-family="monospace" fill="#555">y</text>
+
+      <!-- Dots at right endpoints -->
+      <circle cx="163.3" cy="174.2" r="4" fill="#2980b9" stroke="#fff" stroke-width="1.5"/>
+      <circle cx="266.6" cy="81.7"  r="4" fill="#d4a017" stroke="#fff" stroke-width="1.5"/>
+
+      <!-- Rectangle labels -->
+      <text x="111.6" y="192" font-size="11" font-family="monospace" fill="#2980b9" font-weight="700" text-anchor="middle">1×1=1</text>
+      <text x="215"   y="140" font-size="11" font-family="monospace" fill="#b8860b" font-weight="700" text-anchor="middle">4×1=4</text>
+
+      <!-- f(x) label -->
+      <text x="305" y="68" font-size="13" font-family="serif" fill="#2980b9" font-style="italic">f(x) = x²</text>
+    </svg>
+
+    <!-- Step-by-step calculation -->
+    <div style="background:#fffbf0; border-left:3px solid #d4a017; padding:10px 14px; margin:10px 0; border-radius:4px; font-family:monospace; font-size:0.93em; line-height:1.9;">
+      <div><strong>Δx = (2 − 0) / 2 = 1</strong></div>
+      <div>Rectangle 1 &nbsp;→ right endpoint x = 1, &nbsp;f(1) = 1² = <strong>1</strong> &nbsp;→ area = 1 × 1 = <strong>1</strong></div>
+      <div>Rectangle 2 &nbsp;→ right endpoint x = 2, &nbsp;f(2) = 2² = <strong>4</strong> &nbsp;→ area = 4 × 1 = <strong>4</strong></div>
+      <div style="border-top:1px solid #e0d0a0; margin-top:6px; padding-top:6px;">
+        Total &nbsp;≈ 1 + 4 = <strong>5</strong>
+      </div>
+    </div>
+
+    <p style="margin-bottom:0">The true area is $\frac{8}{3} \approx 2.667$. Two rectangles give us $5$ — still an overestimate, but already much better than $8$. More rectangles means a closer approximation.</p>
+  </div>
+
+  
+  <!-- Step 3: 4 rectangles -->
+  <div class="approach-step">
+    <div class="step-label">Approximation 3</div>
     <div class="step-title">Four Rectangles — Much Better</div>
     <p>Divide $[0,2]$ into 4 equal sub-intervals, each of width $\Delta x = 0.5$. Use right endpoints for height.</p>
     <table>
