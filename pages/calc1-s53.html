@@ -1412,7 +1412,11 @@ function drawAccum(x){
   document.getElementById('accumDeriv').textContent=(x*x).toFixed(4);
 }
 
-function initAll(){drawRiemann();drawSigned(Math.PI);drawAccum(1.5);}
+function initAll(){
+  if(document.getElementById('riemannCanvas')) drawRiemann();
+  drawSigned(Math.PI);
+  drawAccum(1.5);
+}
 window.addEventListener('resize',()=>{drawRiemann();drawSigned(parseFloat(document.getElementById('bSlider').value));drawAccum(parseFloat(document.getElementById('accumSlider').value));},{passive:true});
 document.fonts.ready.then(initAll);
 </script>
