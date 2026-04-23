@@ -692,7 +692,8 @@ select { font-family: var(--fm-lec); font-size: .8rem; background: #1f2937; colo
 
 <!-- INTERACTIVE RIEMANN EXPLORER -->
 <section id="limit">
-  <div class="sec-label">&sect; 2 &mdash; Interactive Exploration</div>
+  
+<div class="sec-label">&sect; 2 &mdash; Interactive Exploration</div>
   <h2>Play With It:<br>The Riemann Sum Explorer</h2>
   <p>Drag the slider to increase the number of rectangles and watch the approximation converge to the exact area. Try different functions and endpoint rules.</p>
 
@@ -703,11 +704,16 @@ select { font-family: var(--fm-lec); font-size: .8rem; background: #1f2937; colo
       <div class="cg">
         <label>Function</label>
         <select id="fnSelect" onchange="drawRiemann()">
-          <option value="sq">f(x) = x²</option>
-          <option value="cubic">f(x) = x³/4 + 1</option>
-          <option value="sin">f(x) = sin(x) + 1.2</option>
-          <option value="sqrt">f(x) = √x + 0.5</option>
-          <option value="exp">f(x) = eˣ/4</option>
+          <option value="sq">f(x) = x²/5</option>
+          <option value="cubic">f(x) = x³/20 + 0.5</option>
+          <option value="sin">f(x) = 2·sin(x) + 2.5</option>
+          <option value="cos">f(x) = 2·cos(x/2) + 2</option>
+          <option value="sqrt">f(x) = √(5x) + 0.5</option>
+          <option value="bell">f(x) = 4·e^(−(x−2.5)²)</option>
+          <option value="wave">f(x) = sin(x)·cos(x/2) + 2</option>
+          <option value="logistic">f(x) = 4/(1+e^(−2(x−2.5)))</option>
+          <option value="abs">f(x) = |sin(πx/2)| + 1</option>
+          <option value="bump">f(x) = x·e^(−x/2) + 0.5</option>
         </select>
       </div>
       <div class="cg">
@@ -731,6 +737,160 @@ select { font-family: var(--fm-lec); font-size: .8rem; background: #1f2937; colo
       <div class="sp">Error = <span id="statErr">&mdash;</span></div>
     </div>
   </div>
+
+<script>
+// ── Configuration ────────────────────────────────────────────────────────────
+const A = 0, B = 5; // x-axis range 0 → 5
+
+const FUNCTIONS = {
+  sq:       { fn: x => x*x/5,                        exact: (a,b) => b**3/15 - a**3/15,               label: "x²/5" },
+  cubic:    { fn: x => x**3/20 + 0.5,                exact: (a,b) => (b**4-a**4)/80 + 0.5*(b-a),      label: "x³/20 + 0.5" },
+  sin:      { fn: x => 2*Math.sin(x) + 2.5,          exact: (a,b) => -2*Math.cos(b)+2.5*b - (-2*Math.cos(a)+2.5*a), label: "2·sin(x) + 2.5" },
+  cos:      { fn: x => 2*Math.cos(x/2) + 2,          exact: (a,b) => 4*Math.sin(b/2)+2*b - (4*Math.sin(a/2)+2*a),  label: "2·cos(x/2) + 2" },
+  sqrt:     { fn: x => Math.sqrt(5*x) + 0.5,         exact: (a,b) => (2/3)*Math.sqrt(5)*(b**1.5 - a**1.5) + 0.5*(b-a), label: "√(5x) + 0.5" },
+  bell:     { fn: x => 4*Math.exp(-(x-2.5)**2),      exact: (a,b) => 4*Math.sqrt(Math.PI)/2*(erf(b-2.5)-erf(a-2.5)), label: "4·e^(−(x−2.5)²)" },
+  wave:     { fn: x => Math.sin(x)*Math.cos(x/2)+2,  exact: (a,b) => numericalIntegral(x=>Math.sin(x)*Math.cos(x/2)+2, a, b), label: "sin(x)·cos(x/2) + 2" },
+  logistic: { fn: x => 4/(1+Math.exp(-2*(x-2.5))),   exact: (a,b) => numericalIntegral(x=>4/(1+Math.exp(-2*(x-2.5))), a, b), label: "4/(1+e^(−2(x−2.5)))" },
+  abs:      { fn: x => Math.abs(Math.sin(Math.PI*x/2))+1, exact: (a,b) => numericalIntegral(x=>Math.abs(Math.sin(Math.PI*x/2))+1, a, b), label: "|sin(πx/2)| + 1" },
+  bump:     { fn: x => x*Math.exp(-x/2)+0.5,         exact: (a,b) => numericalIntegral(x=>x*Math.exp(-x/2)+0.5, a, b), label: "x·e^(−x/2) + 0.5" },
+};
+
+// Error function approximation for bell curve exact integral
+function erf(x) {
+  const t = 1/(1+0.3275911*Math.abs(x));
+  const poly = t*(0.254829592+t*(-0.284496736+t*(1.421413741+t*(-1.453152027+t*1.061405429))));
+  return Math.sign(x)*(1 - poly*Math.exp(-x*x));
+}
+
+// High-accuracy numerical integral (Simpson's rule, 2000 steps) for complex functions
+function numericalIntegral(f, a, b, n=2000) {
+  const h = (b-a)/n;
+  let sum = f(a)+f(b);
+  for(let i=1;i<n;i++) sum += (i%2===0?2:4)*f(a+i*h);
+  return sum*h/3;
+}
+
+// ── Drawing ───────────────────────────────────────────────────────────────────
+function drawRiemann() {
+  const canvas = document.getElementById('riemannCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.clientWidth || canvas.offsetWidth || 700;
+  canvas.width = W;
+  const H = canvas.height;
+
+  const n    = parseInt(document.getElementById('nSlider').value);
+  const key  = document.getElementById('fnSelect').value;
+  const rule = document.getElementById('ruleSelect').value;
+  const {fn, exact} = FUNCTIONS[key];
+
+  const pad  = { l:52, r:20, t:18, b:44 };
+  const pw   = W - pad.l - pad.r;
+  const ph   = H - pad.t - pad.b;
+
+  // Compute y range
+  const samples = 300;
+  let yMin = Infinity, yMax = -Infinity;
+  for(let i=0;i<=samples;i++){
+    const v = fn(A + (B-A)*i/samples);
+    if(isFinite(v)){ yMin=Math.min(yMin,v); yMax=Math.max(yMax,v); }
+  }
+  yMin = Math.min(yMin, 0);
+  const yPad = (yMax - yMin) * 0.12;
+  const yLo = yMin - yPad, yHi = yMax + yPad;
+
+  const xToP = x => pad.l + (x-A)/(B-A)*pw;
+  const yToP = y => pad.t + (1-(y-yLo)/(yHi-yLo))*ph;
+
+  ctx.clearRect(0,0,W,H);
+
+  // ── Grid ──
+  ctx.strokeStyle = 'rgba(180,195,220,0.35)';
+  ctx.lineWidth = 1;
+  const nGridX = 10, nGridY = 6;
+  for(let i=0;i<=nGridX;i++){
+    const gx = xToP(A + (B-A)*i/nGridX);
+    ctx.beginPath(); ctx.moveTo(gx,pad.t); ctx.lineTo(gx,pad.t+ph); ctx.stroke();
+  }
+  for(let j=0;j<=nGridY;j++){
+    const gy = pad.t + ph*j/nGridY;
+    ctx.beginPath(); ctx.moveTo(pad.l,gy); ctx.lineTo(pad.l+pw,gy); ctx.stroke();
+  }
+
+  // ── Rectangles ──
+  const dx = (B-A)/n;
+  let approx = 0;
+  for(let i=0;i<n;i++){
+    const x0 = A + i*dx;
+    const xs = rule==='left' ? x0 : rule==='right' ? x0+dx : x0+dx/2;
+    const h  = fn(xs);
+    approx += h*dx;
+    const px = xToP(x0), py = yToP(Math.max(h,0));
+    const ph2 = Math.abs(yToP(0) - yToP(h));
+    const pxW = xToP(x0+dx)-xToP(x0);
+
+    ctx.fillStyle = h>=0 ? 'rgba(79,140,255,0.28)' : 'rgba(255,100,100,0.28)';
+    ctx.fillRect(px, py, pxW, ph2);
+    ctx.strokeStyle = h>=0 ? 'rgba(79,140,255,0.75)' : 'rgba(255,100,100,0.75)';
+    ctx.lineWidth = n < 60 ? 1.2 : 0.5;
+    ctx.strokeRect(px, py, pxW, ph2);
+  }
+
+  // ── Curve ──
+  ctx.beginPath();
+  ctx.strokeStyle = '#e05a2b';
+  ctx.lineWidth = 2.5;
+  ctx.lineJoin = 'round';
+  for(let i=0;i<=pw*2;i++){
+    const x = A + (B-A)*i/(pw*2);
+    const y = fn(x);
+    const px = xToP(x), py = yToP(y);
+    i===0 ? ctx.moveTo(px,py) : ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+
+  // ── Axes ──
+  const zero = yToP(0);
+  ctx.strokeStyle = '#334155';
+  ctx.lineWidth = 1.8;
+  ctx.beginPath(); ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, pad.t+ph); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(pad.l, zero); ctx.lineTo(pad.l+pw, zero); ctx.stroke();
+
+  // x-axis ticks & labels
+  ctx.fillStyle = '#475569'; ctx.font = '11px Georgia,serif'; ctx.textAlign='center';
+  for(let i=0;i<=B;i++){
+    const tx = xToP(i);
+    ctx.beginPath(); ctx.moveTo(tx,zero); ctx.lineTo(tx,zero+5); ctx.stroke();
+    ctx.fillText(i, tx, zero+16);
+  }
+  // y-axis ticks & labels
+  ctx.textAlign='right';
+  const yStep = (yHi-yLo)/nGridY;
+  for(let j=0;j<=nGridY;j++){
+    const yv = yLo + yStep*j;
+    const ty = yToP(yv);
+    ctx.beginPath(); ctx.moveTo(pad.l-4, ty); ctx.lineTo(pad.l, ty); ctx.stroke();
+    ctx.fillText(yv.toFixed(1), pad.l-7, ty+4);
+  }
+
+  // ── Stats ──
+  const exactVal = exact(A,B);
+  const err = Math.abs(approx - exactVal);
+  document.getElementById('statN').textContent = n;
+  document.getElementById('statDx').textContent = dx.toFixed(4);
+  document.getElementById('statApprox').textContent = approx.toFixed(5);
+  document.getElementById('statExact').textContent = exactVal.toFixed(5);
+  document.getElementById('statErr').textContent = err.toFixed(5);
+  document.getElementById('nVal').textContent = n;
+}
+
+function updateN(v){ document.getElementById('nVal').textContent=v; drawRiemann(); }
+
+// Resize observer for responsive canvas
+const ro = new ResizeObserver(drawRiemann);
+ro.observe(document.getElementById('riemannCanvas'));
+window.addEventListener('load', drawRiemann);
+</script>
+
 
   <div class="thm-box">
     <div class="lbl">Area as a Limit</div>
@@ -1171,12 +1331,18 @@ function toggleAnswer(id){
 }
 
 /* ===== RIEMANN EXPLORER ===== */
+function erf(x){const t=1/(1+0.3275911*Math.abs(x));const p=t*(0.254829592+t*(-0.284496736+t*(1.421413741+t*(-1.453152027+t*1.061405429))));return Math.sign(x)*(1-p*Math.exp(-x*x));}
+function numInt(f,a,b,n=2000){const h=(b-a)/n;let s=f(a)+f(b);for(let i=1;i<n;i++)s+=(i%2?4:2)*f(a+i*h);return s*h/3;}
+
 const FDATA={
-  sq:{fn:x=>x*x,exact:(a,b)=>(b**3-a**3)/3,a:0,b:2,label:'x²'},
-  cubic:{fn:x=>x**3/4+1,exact:(a,b)=>((b**4/16+b)-(a**4/16+a)),a:0,b:2,label:'x³/4+1'},
-  sin:{fn:x=>Math.sin(x)+1.2,exact:(a,b)=>(b-a)*1.2+Math.cos(a)-Math.cos(b),a:0,b:Math.PI,label:'sin(x)+1.2'},
-  sqrt:{fn:x=>Math.sqrt(x)+0.5,exact:(a,b)=>2/3*(b**1.5-a**1.5)+0.5*(b-a),a:0,b:4,label:'√x+0.5'},
-  exp:{fn:x=>Math.exp(x)/4,exact:(a,b)=>(Math.exp(b)-Math.exp(a))/4,a:0,b:2,label:'eˣ/4'}
+  sq:    {fn:x=>x*x/5,           exact:(a,b)=>(b**3-a**3)/15,                                       a:0,b:5,label:'x²/5'},
+  cubic: {fn:x=>x**3/20+0.5,     exact:(a,b)=>((b**4-a**4)/80)+0.5*(b-a),                           a:0,b:5,label:'x³/20+0.5'},
+  sin:   {fn:x=>2*Math.sin(x)+2.5,exact:(a,b)=>2.5*(b-a)-2*Math.cos(b)+2*Math.cos(a),              a:0,b:5,label:'2sin(x)+2.5'},
+  cos:   {fn:x=>2*Math.cos(x/2)+2,exact:(a,b)=>4*Math.sin(b/2)-4*Math.sin(a/2)+2*(b-a),            a:0,b:5,label:'2cos(x/2)+2'},
+  sqrt:  {fn:x=>Math.sqrt(5*x)+0.5,exact:(a,b)=>Math.sqrt(5)*2/3*(b**1.5-a**1.5)+0.5*(b-a),       a:0,b:5,label:'√(5x)+0.5'},
+  bell:  {fn:x=>4*Math.exp(-(x-2.5)**2),exact:(a,b)=>2*Math.sqrt(Math.PI)*(erf(b-2.5)-erf(a-2.5)),a:0,b:5,label:'4e^(-(x-2.5)²)'},
+  bump:  {fn:x=>x*Math.exp(-x/2)+0.5,   exact:(a,b)=>numInt(x=>x*Math.exp(-x/2)+0.5,a,b),         a:0,b:5,label:'xe^(-x/2)+0.5'},
+  wave:  {fn:x=>Math.abs(Math.sin(Math.PI*x/2))+1,exact:(a,b)=>numInt(x=>Math.abs(Math.sin(Math.PI*x/2))+1,a,b),a:0,b:5,label:'|sin(πx/2)|+1'},
 };
 
 let rN=6;
@@ -1223,7 +1389,7 @@ function drawRiemann(){
   ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,pad.t+gH);ctx.stroke();
   ctx.beginPath();ctx.moveTo(pad.l,pad.t+gH);ctx.lineTo(pad.l+gW,pad.t+gH);ctx.stroke();
   ctx.fillStyle='#9ca3af';ctx.font='11px IBM Plex Mono,monospace';
-  [a,(a+b)/2,b].forEach(x=>ctx.fillText(x.toFixed(1),tX(x)-8,H-6));
+  [0,1,2,3,4,5].forEach(x=>ctx.fillText(x,tX(x)-4,H-6));
   const ex=exact(a,b);
   document.getElementById('statN').textContent=rN;
   document.getElementById('statDx').textContent=dx.toFixed(4);
