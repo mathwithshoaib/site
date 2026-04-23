@@ -744,6 +744,74 @@ select { font-family: var(--fm-lec); font-size: .8rem; background: #1f2937; colo
   <div class="card al">
     <h4 style="margin-top:0;color:var(--accent)">Example &mdash; Area Using the Limit</h4>
     <p>Find the area under $f(x) = 3x$ from $x = 0$ to $x = 2$ using the limit definition.</p>
+    <div style="text-align:center;margin:1rem 0;">
+  <canvas id="areaCanvas" width="340" height="260"
+    style="max-width:100%;border-radius:8px;"></canvas>
+</div>
+
+<script>
+(function(){
+  const canvas = document.getElementById('areaCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  function cx(x){ return 50 + (x/2.5)*(W-70); }
+  function cy(y){ return H-40 - (y/7)*(H-60); }
+
+  // Shaded region under f(x)=3x from 0 to 2
+  ctx.beginPath();
+  ctx.moveTo(cx(0), cy(0));
+  ctx.lineTo(cx(2), cy(0));
+  ctx.lineTo(cx(2), cy(6));
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(59,130,246,0.25)';
+  ctx.fill();
+
+  // Axes
+  ctx.strokeStyle = '#374151';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(cx(0), cy(0)); ctx.lineTo(cx(2.5), cy(0)); // x-axis
+  ctx.moveTo(cx(0), cy(0)); ctx.lineTo(cx(0), cy(7));   // y-axis
+  ctx.stroke();
+
+  // Tick marks and labels
+  ctx.fillStyle = '#374151';
+  ctx.font = '13px sans-serif';
+  ctx.textAlign = 'center';
+  [1, 2].forEach(x => {
+    ctx.beginPath(); ctx.moveTo(cx(x), cy(0)); ctx.lineTo(cx(x), cy(0)+5); ctx.stroke();
+    ctx.fillText(x, cx(x), cy(0)+18);
+  });
+  ctx.textAlign = 'right';
+  [2, 4, 6].forEach(y => {
+    ctx.beginPath(); ctx.moveTo(cx(0), cy(y)); ctx.lineTo(cx(0)-5, cy(y)); ctx.stroke();
+    ctx.fillText(y, cx(0)-8, cy(y)+4);
+  });
+
+  // f(x) = 3x line
+  ctx.beginPath();
+  ctx.moveTo(cx(0), cy(0));
+  ctx.lineTo(cx(2.3), cy(6.9));
+  ctx.strokeStyle = '#dc2626';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  // Label
+  ctx.fillStyle = '#dc2626';
+  ctx.font = 'bold 13px sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('f(x) = 3x', cx(1.55), cy(4.2));
+
+  // Axis arrow tips
+  ctx.fillStyle = '#374151';
+  [[cx(2.5), cy(0), 'x'], [cx(0), cy(7), 'y']].forEach(([x,y,l]) => {
+    ctx.font = '13px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(l === 'x' ? 'x' : 'y', x + (l==='x'?8:0), y + (l==='y'?-5:4));
+  });
+})();
+</script>
     <button class="toggle-btn" onclick="toggleAnswer('lim1')">Show Full Solution</button>
     <div class="answer-box" id="lim1">
       <p>$\Delta x = \dfrac{2}{n}$, right endpoints: $x_i = \dfrac{2i}{n}$</p>
