@@ -366,7 +366,7 @@ body{background:var(--paper);color:var(--ink);font-family:var(--fb);min-height:1
     <div class="form-sub">Enter your details. Your name will appear on your result card.</div>
     <div class="field">
       <label>Full Name *</label>
-      <input type="text" id="fName" placeholder="e.g. Muhammad Ali Khan" autocomplete="name">
+      <input type="text" id="fName" placeholder="e.g. Muhammad Shoaib Khan" autocomplete="name">
     </div>
     <div class="field">
       <label>Class / Section *</label>
@@ -866,6 +866,276 @@ const QUESTION_BANK = [
     };
   },
 
+
+  // QN1 — Same Limits Trap (looks scary, answer is trivially 0)
+  () => {
+    const a = randInt(2, 9);
+    const p = randInt(3, 7);
+    const q = randInt(2, 6);
+    const r = randInt(1, 8);
+    return {
+      text: `Evaluate $\\displaystyle\\int_{${a}}^{${a}} \\left( x^{${p}} - ${q}x^{${r}} + e^{x} \\right) dx$`,
+      topic: 'Conceptual Trap — Same Limits',
+      options: shuffle([
+        { tex: `$0$`, correct: true },
+        { tex: `$e^{${a}} - ${a}$`, correct: false },
+        { tex: `$\\dfrac{${a}^{${p+1}}}{${p+1}} - ${q}\\cdot\\dfrac{${a}^{${r+1}}}{${r+1}} + e^{${a}}$`, correct: false },
+        { tex: `$1$`, correct: false }
+      ]),
+      explanation: `When the upper and lower limits are identical, the integral is always $0$ — regardless of how complex the integrand looks. No calculation needed: $\\int_a^a f(x)\\,dx = 0$ for any $f$.`
+    };
+  },
+
+  // QN2 — Same Limits Trap v2 (rational-looking expression)
+  () => {
+    const a = randInt(3, 12);
+    const k = randInt(2, 9);
+    const n = randInt(2, 5);
+    return {
+      text: `Evaluate $\\displaystyle\\int_{${a}}^{${a}} \\dfrac{${k}x^{${n}} + \\sqrt{x}}{x^2 + 1}\\,dx$`,
+      topic: 'Conceptual Trap — Same Limits',
+      options: shuffle([
+        { tex: `$0$`, correct: true },
+        { tex: `$${k}$`, correct: false },
+        { tex: `$\\ln(${a}^2+1)$`, correct: false },
+        { tex: `$${a}$`, correct: false }
+      ]),
+      explanation: `No matter how intimidating the integrand, $\\int_a^a f(x)\\,dx = 0$ always. The integrand here has no closed-form antiderivative, but the answer is still immediately $0$ by the same-limits property.`
+    };
+  },
+
+  // QN3 — Graph: Net signed area (positive + negative regions)
+  () => {
+    const posA  = randInt(3, 10);   // area of positive region [0, p]
+    const negA  = randInt(2, 8);    // area of negative region [p, q]
+    const p     = randInt(2, 5);
+    const q     = p + randInt(2, 4);
+    const net   = posA - negA;
+    const total = posA + negA;
+    return {
+      text: `The graph of $f(x)$ is shown below. The shaded region from $x=0$ to $x=${p}$ lies <strong>above</strong> the $x$-axis with area $${posA}$. The shaded region from $x=${p}$ to $x=${q}$ lies <strong>below</strong> the $x$-axis with area $${negA}$. Find $\\displaystyle\\int_0^{${q}} f(x)\\,dx$.`,
+      topic: 'Graph — Net Signed Area',
+      options: shuffle([
+        { tex: `$${net}$`, correct: true },
+        { tex: `$${total}$`, correct: false },
+        { tex: `$${-net}$`, correct: false },
+        { tex: `$${posA}$`, correct: false }
+      ]),
+      explanation: `The definite integral gives <em>signed</em> area. Area above the axis is positive, area below is negative. So $\\int_0^{${q}} f(x)\\,dx = ${posA} + (-${negA}) = ${net}$. The total (unsigned) area would be $${total}$, but the integral gives net signed area.`
+    };
+  },
+
+  // QN4 — Graph: Total area vs net area distinction
+  () => {
+    const a1 = randInt(4, 12);
+    const a2 = randInt(3, 9);
+    const a3 = randInt(2, 7);
+    const c1 = randInt(2, 4);
+    const c2 = c1 + randInt(2, 3);
+    const c3 = c2 + randInt(2, 3);
+    const net = a1 - a2 + a3;
+    const total = a1 + a2 + a3;
+    return {
+      text: `From the graph of $f(x)$: the region on $[0,${c1}]$ is above the axis with area $${a1}$; on $[${c1},${c2}]$ it is below the axis with area $${a2}$; on $[${c2},${c3}]$ it is above the axis with area $${a3}$. What is $\\displaystyle\\int_0^{${c3}} f(x)\\,dx$?`,
+      topic: 'Graph — Net vs Total Area',
+      options: shuffle([
+        { tex: `$${net}$`, correct: true },
+        { tex: `$${total}$`, correct: false },
+        { tex: `$${a1 - a2}$`, correct: false },
+        { tex: `$${a1 + a3}$`, correct: false }
+      ]),
+      explanation: `$\\int_0^{${c3}} f(x)\\,dx = (+${a1}) + (-${a2}) + (+${a3}) = ${net}$. The signed area adds the positive regions and subtracts the negative ones. The total (unsigned) area $${total}$ is what you'd get using $\\int|f(x)|\\,dx$, but the definite integral gives net signed area.`
+    };
+  },
+
+  // QN5 — Graph: Given integral values, find on sub-interval (subdivision rule)
+  () => {
+    const a = 0;
+    const c = randInt(2, 5);
+    const b = c + randInt(2, 5);
+    const full = randInt(8, 25);
+    const part1 = randInt(2, full - 2);
+    const part2 = full - part1;
+    return {
+      text: `From a graph it is known that $\\displaystyle\\int_{${a}}^{${b}} f(x)\\,dx = ${full}$ and $\\displaystyle\\int_{${a}}^{${c}} f(x)\\,dx = ${part1}$. Find $\\displaystyle\\int_{${c}}^{${b}} f(x)\\,dx$.`,
+      topic: 'Graph — Subdivision Rule',
+      options: shuffle([
+        { tex: `$${part2}$`, correct: true },
+        { tex: `$${full + part1}$`, correct: false },
+        { tex: `$${full - part1 + 1}$`, correct: false },
+        { tex: `$${part1}$`, correct: false }
+      ]),
+      explanation: `By the subdivision rule: $\\int_{${a}}^{${b}} f\\,dx = \\int_{${a}}^{${c}} f\\,dx + \\int_{${c}}^{${b}} f\\,dx$. So $\\int_{${c}}^{${b}} f\\,dx = ${full} - ${part1} = ${part2}$.`
+    };
+  },
+
+  // QN6 — Graph: Reversed limits (sign flip trap)
+  () => {
+    const posA = randInt(3, 15);
+    const a = randInt(1, 4);
+    const b = a + randInt(2, 5);
+    return {
+      text: `It is known that $\\displaystyle\\int_{${a}}^{${b}} f(x)\\,dx = ${posA}$. What is $\\displaystyle\\int_{${b}}^{${a}} f(x)\\,dx$?`,
+      topic: 'Conceptual — Reversed Limits',
+      options: shuffle([
+        { tex: `$-${posA}$`, correct: true },
+        { tex: `$${posA}$`, correct: false },
+        { tex: `$0$`, correct: false },
+        { tex: `$\\dfrac{1}{${posA}}$`, correct: false }
+      ]),
+      explanation: `Reversing the limits of integration negates the integral: $\\int_b^a f\\,dx = -\\int_a^b f\\,dx = -${posA}$. This follows directly from the definition — you are summing in the opposite direction.`
+    };
+  },
+
+  // QN7 — Graph: Constant multiple on a known integral
+  () => {
+    const k = randInt(2, 8);
+    const val = randInt(3, 12);
+    const a = randInt(0, 3);
+    const b = a + randInt(2, 6);
+    const ans = k * val;
+    return {
+      text: `If $\\displaystyle\\int_{${a}}^{${b}} f(x)\\,dx = ${val}$, find $\\displaystyle\\int_{${a}}^{${b}} ${k}f(x)\\,dx$.`,
+      topic: 'Conceptual — Constant Multiple',
+      options: shuffle([
+        { tex: `$${ans}$`, correct: true },
+        { tex: `$${val}$`, correct: false },
+        { tex: `$${val + k}$`, correct: false },
+        { tex: `$${ans + k}$`, correct: false }
+      ]),
+      explanation: `By the constant multiple rule: $\\int_${a}^{${b}} ${k}f(x)\\,dx = ${k}\\int_${a}^{${b}} f(x)\\,dx = ${k} \\times ${val} = ${ans}$.`
+    };
+  },
+
+  // QN8 — Graph: Linear combination of two known integrals
+  () => {
+    const fVal = randInt(3, 10);
+    const gVal = randInt(2, 8);
+    const k1   = randInt(2, 5);
+    const k2   = randInt(2, 5);
+    const a = randInt(0, 2);
+    const b = a + randInt(3, 6);
+    const ans = k1 * fVal - k2 * gVal;
+    return {
+      text: `Given $\\displaystyle\\int_{${a}}^{${b}} f(x)\\,dx = ${fVal}$ and $\\displaystyle\\int_{${a}}^{${b}} g(x)\\,dx = ${gVal}$, evaluate $\\displaystyle\\int_{${a}}^{${b}} \\left[${k1}f(x) - ${k2}g(x)\\right]dx$.`,
+      topic: 'Conceptual — Linear Combination',
+      options: shuffle([
+        { tex: `$${ans}$`, correct: true },
+        { tex: `$${k1*fVal + k2*gVal}$`, correct: false },
+        { tex: `$${fVal - gVal}$`, correct: false },
+        { tex: `$${k1*fVal}$`, correct: false }
+      ]),
+      explanation: `Use linearity: $\\int[${k1}f-${k2}g]\\,dx = ${k1}\\int f\\,dx - ${k2}\\int g\\,dx = ${k1}(${fVal}) - ${k2}(${gVal}) = ${k1*fVal} - ${k2*gVal} = ${ans}$.`
+    };
+  },
+
+  // QN9 — Application: Marginal cost → total cost increase
+  () => {
+    const a  = randInt(1, 4);   // coefficient of x^2 term (×0.01)
+    const b  = randInt(2, 8);   // coefficient of x
+    const c  = randInt(5, 20);  // constant
+    const x1 = randInt(10, 40);
+    const x2 = x1 + randInt(10, 30);
+    // C'(x) = 0.0a*x^2 - b*x + c  (kept simple so numbers work)
+    // Use C'(x) = b + c*x for cleaner numbers
+    const coeff = randInt(2,6);
+    const cons  = randInt(10,40);
+    // Total cost increase = integral of (coeff*x + cons) from x1 to x2
+    const ans = coeff*(x2*x2 - x1*x1)/2 + cons*(x2-x1);
+    return {
+      text: `A factory's marginal cost is $C'(x) = ${coeff}x + ${cons}$ (PKR per unit). Find the increase in total cost when production rises from $x=${x1}$ to $x=${x2}$ units.`,
+      topic: 'Application — Marginal Cost',
+      options: shuffle([
+        { tex: `$\\text{PKR }${ans}$`, correct: true },
+        { tex: `$\\text{PKR }${ans + cons}$`, correct: false },
+        { tex: `$\\text{PKR }${coeff*(x2-x1) + cons}$`, correct: false },
+        { tex: `$\\text{PKR }${ans - (x2-x1)*coeff}$`, correct: false }
+      ]),
+      explanation: `Cost increase $= \\int_{${x1}}^{${x2}}(${coeff}x+${cons})\\,dx = \\left[\\dfrac{${coeff}x^2}{2}+${cons}x\\right]_{${x1}}^{${x2}}$
+$= \\left(\\dfrac{${coeff}\\cdot${x2*x2}}{2}+${cons}\\cdot${x2}\\right) - \\left(\\dfrac{${coeff}\\cdot${x1*x1}}{2}+${cons}\\cdot${x1}\\right) = \\text{PKR }${ans}$.`
+    };
+  },
+
+  // QN10 — Application: Net displacement vs total distance
+  () => {
+    const v0 = randInt(2, 6);   // v(t) = v0 - k*t, zero at t = v0/k
+    const k  = randInt(1, 3);
+    const T  = (v0/k) * 2;      // go exactly twice the zero-crossing time
+    const zero = v0/k;
+    // net displacement = integral of (v0 - k*t) from 0 to T
+    const net = v0*T - k*T*T/2;
+    const dist1 = v0*zero - k*zero*zero/2;   // positive part
+    const dist2 = Math.abs(v0*(T-zero) - k*(T*T-zero*zero)/2); // should equal dist1
+    const totalDist = dist1 + dist2;
+    return {
+      text: `A particle moves with velocity $v(t) = ${v0} - ${k}t$ m/s for $0 \\leq t \\leq ${T}$. Which of the following is true?`,
+      topic: 'Application — Displacement vs Distance',
+      options: shuffle([
+        { tex: `Net displacement $= ${net}$ m; total distance $= ${totalDist}$ m`, correct: true },
+        { tex: `Net displacement $= ${totalDist}$ m; total distance $= ${net}$ m`, correct: false },
+        { tex: `Net displacement $= ${dist1}$ m; total distance $= ${dist1}$ m`, correct: false },
+        { tex: `Both are equal to $${totalDist}$ m`, correct: false }
+      ]),
+      explanation: `Net displacement $= \\int_0^{${T}}(${v0}-${k}t)\\,dt = \\left[${v0}t - \\dfrac{${k}t^2}{2}\\right]_0^{${T}} = ${net}$ m. The particle reverses at $t=${zero}$ (when $v=0$). Total distance $= \\int_0^{${zero}}(${v0}-${k}t)\\,dt + \\left|\\int_{${zero}}^{${T}}(${v0}-${k}t)\\,dt\\right| = ${dist1}+${dist2} = ${totalDist}$ m.`
+    };
+  },
+
+  // QN11 — Conceptual: FTC — derivative of an accumulation function
+  () => {
+    const a = randInt(0, 3);
+    const p = randInt(2, 5);
+    const c = randInt(1, 8);
+    return {
+      text: `If $G(x) = \\displaystyle\\int_{${a}}^{x} \\left(t^{${p}} + ${c}\\right) dt$, find $G'(x)$.`,
+      topic: 'Conceptual — FTC Part 1',
+      options: shuffle([
+        { tex: `$x^{${p}} + ${c}$`, correct: true },
+        { tex: `$\\dfrac{x^{${p+1}}}{${p+1}} + ${c}x$`, correct: false },
+        { tex: `$\\dfrac{x^{${p+1}}}{${p+1}} + ${c}x - \\dfrac{${a}^{${p+1}}}{${p+1}} - ${c*a}$`, correct: false },
+        { tex: `$${p}x^{${p-1}}$`, correct: false }
+      ]),
+      explanation: `By the Fundamental Theorem of Calculus (Part 1): $\\dfrac{d}{dx}\\int_a^x f(t)\\,dt = f(x)$. So $G'(x) = x^{${p}} + ${c}$. The lower limit $${a}$ is a constant and does not affect the derivative. The antiderivative form is a distractor — differentiating undoes the integration.`
+    };
+  },
+
+  // QN12 — Conceptual: Which antiderivative is correct?
+  () => {
+    const a = randInt(2, 6);
+    const b = randInt(1, 8);
+    const n = randInt(2, 4);
+    // f(x) = a*x^n + b/x  =>  F(x) = a*x^(n+1)/(n+1) + b*ln|x| + C
+    return {
+      text: `Which of the following is a correct antiderivative of $f(x) = ${a}x^{${n}} + \\dfrac{${b}}{x}$?`,
+      topic: 'Conceptual — Identifying Antiderivatives',
+      options: shuffle([
+        { tex: `$\\dfrac{${a}}{${n+1}}x^{${n+1}} + ${b}\\ln|x| + C$`, correct: true },
+        { tex: `$\\dfrac{${a}}{${n+1}}x^{${n+1}} - \\dfrac{${b}}{x^2} + C$`, correct: false },
+        { tex: `$${a*n}x^{${n-1}} - \\dfrac{${b}}{x^2} + C$`, correct: false },
+        { tex: `$${a}x^{${n+1}} + ${b}\\ln|x| + C$`, correct: false }
+      ]),
+      explanation: `Integrate term by term: $\\int ${a}x^{${n}}\\,dx = \\dfrac{${a}}{${n+1}}x^{${n+1}}$ (power rule), and $\\int \\dfrac{${b}}{x}\\,dx = ${b}\\ln|x|$ (log rule). The second distractor applies the derivative rules instead — a very common mistake.`
+    };
+  },
+
+  // QN13 — Conceptual: What does the +C mean?
+  () => {
+    const a = randInt(2, 7);
+    const n = randInt(2, 5);
+    return {
+      text: `Two students find antiderivatives of $f(x) = ${a}x^{${n}}$. Student A writes $F(x) = \\dfrac{${a}}{${n+1}}x^{${n+1}}$ and Student B writes $G(x) = \\dfrac{${a}}{${n+1}}x^{${n+1}} + ${randInt(2,9)}$. Which statement is correct?`,
+      topic: 'Conceptual — The Constant of Integration',
+      options: shuffle([
+        { tex: `Both are correct — any two antiderivatives of the same function differ by a constant`, correct: true },
+        { tex: `Only $F(x)$ is correct — the constant must be zero`, correct: false },
+        { tex: `Only $G(x)$ is correct — you must always include a non-zero constant`, correct: false },
+        { tex: `Neither is correct — the $+C$ must be written explicitly`, correct: false }
+      ]),
+      explanation: `If $F'(x) = f(x)$, then $F(x) + C$ for any constant $C$ is also an antiderivative, since the derivative of a constant is zero. Both students are correct — they have found two members of the same family of antiderivatives. The $+C$ in indefinite integrals represents this entire family.`
+    };
+  },
+
+
+  
   // Q15 — Subdivision Rule
   () => {
     const total = randInt(8,20), part1 = randInt(3, total-2);
