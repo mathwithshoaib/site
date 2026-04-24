@@ -634,240 +634,279 @@ function confirmWithdraw() {
 ═══════════════════════════════════════════════════ */
 const QUESTION_BANK = [
 
-  // Q1 — Power Rule
+  // Q1 — Power Rule (harder: negative exponent, must rewrite first)
   () => {
-    const n = randInt(2,6);
+    const n = randInt(2,5);
     return {
-      text: `Find $\\displaystyle\\int x^{${n}}\\,dx$`,
-      topic: 'Power Rule',
+      text: `Rewrite and integrate: $\\displaystyle\\int \\dfrac{1}{x^{${n}}}\\,dx$`,
+      topic: 'Power Rule — Negative Exponent',
       options: shuffle([
-        { tex: `$\\dfrac{x^{${n+1}}}{${n+1}} + C$`, correct: true },
-        { tex: `$\\dfrac{x^{${n+2}}}{${n+2}} + C$`, correct: false },
-        { tex: `$${n}x^{${n-1}} + C$`, correct: false },
-        { tex: `$x^{${n+1}} + C$`, correct: false }
+        { tex: `$\\dfrac{-1}{${n-1}}x^{-${n-1}} + C$`, correct: true },
+        { tex: `$\\ln|x^{${n}}| + C$`, correct: false },
+        { tex: `$\\dfrac{1}{${n+1}}x^{${n+1}} + C$`, correct: false },
+        { tex: `$-${n}x^{-${n+1}} + C$`, correct: false }
       ]),
-      explanation: `Power rule: raise the exponent by 1 and divide by the new exponent. $\\int x^{${n}}\\,dx = \\dfrac{x^{${n+1}}}{${n+1}}+C$`
+      explanation: `Rewrite as $x^{-${n}}$. Power rule: $\\int x^{-${n}}\\,dx = \\dfrac{x^{-${n}+1}}{-${n}+1}+C = \\dfrac{x^{-${n-1}}}{-${n-1}}+C = \\dfrac{-1}{${n-1}x^{${n-1}}}+C$. The logarithmic rule only applies when the exponent is exactly $-1$.`
     };
   },
 
-  // Q2 — Constant Multiple
+  // Q2 — Constant Multiple (harder: fractional coefficient, must simplify)
   () => {
-    const k = randInt(2,9), n = randInt(2,5);
+    const k = randInt(2,5), n = randInt(2,5);
+    const denom = randInt(2,4);
+    // integrand: (k/denom)*x^n  =>  answer: k/(denom*(n+1)) * x^(n+1) + C
+    const numAns = k, denAns = denom*(n+1);
+    const g = gcd(numAns, denAns);
     return {
-      text: `Find $\\displaystyle\\int ${k}x^{${n}}\\,dx$`,
-      topic: 'Constant Multiple Rule',
+      text: `Find $\\displaystyle\\int \\dfrac{${k}}{${denom}}x^{${n}}\\,dx$`,
+      topic: 'Constant Multiple — Fractional Coefficient',
       options: shuffle([
-        { tex: `$\\dfrac{${k}}{${n+1}}x^{${n+1}} + C$`, correct: true },
-        { tex: `$\\dfrac{${k}}{${n}}x^{${n}} + C$`, correct: false },
-        { tex: `$${k*n}x^{${n-1}} + C$`, correct: false },
-        { tex: `$${k}x^{${n+1}} + C$`, correct: false }
+        { tex: `$\\dfrac{${numAns/g}}{${denAns/g}}x^{${n+1}} + C$`, correct: true },
+        { tex: `$\\dfrac{${k}}{${denom*n}}x^{${n}} + C$`, correct: false },
+        { tex: `$\\dfrac{${k}}{${denom}}x^{${n+1}} + C$`, correct: false },
+        { tex: `$\\dfrac{${k*n}}{${denom}}x^{${n-1}} + C$`, correct: false }
       ]),
-      explanation: `Pull the constant out: $${k}\\int x^{${n}}\\,dx = ${k}\\cdot\\dfrac{x^{${n+1}}}{${n+1}}+C = \\dfrac{${k}}{${n+1}}x^{${n+1}}+C$`
+      explanation: `Pull the constant out: $\\dfrac{${k}}{${denom}}\\int x^{${n}}\\,dx = \\dfrac{${k}}{${denom}}\\cdot\\dfrac{x^{${n+1}}}{${n+1}}+C = \\dfrac{${k}}{${denom*(n+1)}}x^{${n+1}}+C = \\dfrac{${numAns/g}}{${denAns/g}}x^{${n+1}}+C$. The third distractor forgets to divide by the new exponent.`
     };
   },
 
-  // Q3 — Exponential Rule
+  // Q3 — Exponential Rule (harder: chain rule in reverse, coefficient trap)
   () => {
-    const k = randInt(2,7);
+    const a = randInt(2,6), b = randInt(1,8);
+    // integral of e^(ax+b) = e^(ax+b)/a + C
     return {
-      text: `Find $\\displaystyle\\int e^{${k}x}\\,dx$`,
-      topic: 'Exponential Rule',
+      text: `Find $\\displaystyle\\int e^{${a}x + ${b}}\\,dx$`,
+      topic: 'Exponential — Linear Exponent',
       options: shuffle([
-        { tex: `$\\dfrac{e^{${k}x}}{${k}} + C$`, correct: true },
-        { tex: `$${k}e^{${k}x} + C$`, correct: false },
-        { tex: `$e^{${k}x} + C$`, correct: false },
-        { tex: `$\\dfrac{e^{${k+1}x}}{${k+1}} + C$`, correct: false }
+        { tex: `$\\dfrac{e^{${a}x+${b}}}{${a}} + C$`, correct: true },
+        { tex: `$${a}e^{${a}x+${b}} + C$`, correct: false },
+        { tex: `$e^{${a}x+${b}} + C$`, correct: false },
+        { tex: `$(${a}x+${b})e^{${a}x+${b}} + C$`, correct: false }
       ]),
-      explanation: `Exponential rule: $\\int e^{kx}\\,dx = \\dfrac{e^{kx}}{k}+C$. Here $k=${k}$, so the answer is $\\dfrac{e^{${k}x}}{${k}}+C$.`
+      explanation: `Let $u=${a}x+${b}$, $du=${a}\\,dx$. Then $\\int e^u\\dfrac{du}{${a}} = \\dfrac{e^u}{${a}}+C = \\dfrac{e^{${a}x+${b}}}{${a}}+C$. Forgetting to divide by the inner coefficient ${a} is the most common error here.`
     };
   },
 
-  // Q4 — Logarithmic Rule
+  // Q4 — Logarithmic Rule (harder: must recognise log rule despite disguise)
   () => {
-    const k = randInt(2,9);
+    const k = randInt(2,8), a = randInt(2,7);
+    // integral of k/(ax) = (k/a)*ln|x| + C
+    const g = gcd(k,a);
     return {
-      text: `Find $\\displaystyle\\int \\dfrac{${k}}{x}\\,dx$`,
-      topic: 'Logarithmic Rule',
+      text: `Find $\\displaystyle\\int \\dfrac{${k}}{${a}x}\\,dx$`,
+      topic: 'Logarithmic Rule — Disguised Form',
       options: shuffle([
-        { tex: `$${k}\\ln|x| + C$`, correct: true },
-        { tex: `$\\dfrac{${k}}{x^2} + C$`, correct: false },
-        { tex: `$\\ln(${k}x) + C$`, correct: false },
-        { tex: `$-\\dfrac{${k}}{x^2} + C$`, correct: false }
+        { tex: `$\\dfrac{${k/g}}{${a/g}}\\ln|x| + C$`, correct: true },
+        { tex: `$\\dfrac{${k}}{${a}}\\ln|${a}x| + C$`, correct: false },
+        { tex: `$\\dfrac{${k}}{${2*a}}x^{-2} + C$`, correct: false },
+        { tex: `$${k}\\ln|${a}x| + C$`, correct: false }
       ]),
-      explanation: `Logarithmic rule: $\\int\\dfrac{1}{x}\\,dx = \\ln|x|+C$. So $\\int\\dfrac{${k}}{x}\\,dx = ${k}\\ln|x|+C$.`
+      explanation: `Pull constants out: $\\int\\dfrac{${k}}{${a}x}\\,dx = \\dfrac{${k}}{${a}}\\int\\dfrac{1}{x}\\,dx = \\dfrac{${k}}{${a}}\\ln|x|+C = \\dfrac{${k/g}}{${a/g}}\\ln|x|+C$. Note that $\\dfrac{${k}}{${a}}\\ln|${a}x| = \\dfrac{${k}}{${a}}\\ln ${a} + \\dfrac{${k}}{${a}}\\ln|x|$, so option B is also an antiderivative — but written in a different (less simplified) form that hides the $\\ln|x|$ structure.`
     };
   },
 
-  // Q5 — Substitution (linear)
+  // Q5 — Substitution linear (harder: must also divide, result needs simplifying)
   () => {
-    const a = randInt(2,6), b = randInt(1,8), n = randInt(3,6);
+    const a = randInt(2,5), b = randInt(1,6), n = randInt(3,6);
+    const denom = a*(n+1);
+    const g = gcd(1, denom);
     return {
-      text: `Using substitution, find $\\displaystyle\\int (${a}x + ${b})^{${n}}\\,dx$`,
-      topic: 'Substitution — Linear',
+      text: `Find $\\displaystyle\\int (${a}x + ${b})^{${n}}\\,dx$. Which step comes immediately after letting $u = ${a}x+${b}$?`,
+      topic: 'Substitution — Identifying the Next Step',
       options: shuffle([
-        { tex: `$\\dfrac{(${a}x+${b})^{${n+1}}}{${a*(n+1)}} + C$`, correct: true },
-        { tex: `$\\dfrac{(${a}x+${b})^{${n+1}}}{${n+1}} + C$`, correct: false },
-        { tex: `$${n}(${a}x+${b})^{${n-1}} + C$`, correct: false },
-        { tex: `$${a}(${a}x+${b})^{${n+1}} + C$`, correct: false }
+        { tex: `Replace $dx = \\dfrac{du}{${a}}$ and integrate $\\dfrac{1}{${a}}\\int u^{${n}}\\,du$`, correct: true },
+        { tex: `Integrate directly: $\\dfrac{(${a}x+${b})^{${n+1}}}{${n+1}}+C$`, correct: false },
+        { tex: `Replace $dx = ${a}\\,du$ and integrate $${a}\\int u^{${n}}\\,du$`, correct: false },
+        { tex: `Expand $(${a}x+${b})^{${n}}$ using the binomial theorem`, correct: false }
       ]),
-      explanation: `Let $u=${a}x+${b}$, $du=${a}\\,dx$. Then $\\int u^{${n}}\\dfrac{du}{${a}} = \\dfrac{u^{${n+1}}}{${a}(${n+1})}+C = \\dfrac{(${a}x+${b})^{${n+1}}}{${a*(n+1)}}+C$`
+      explanation: `If $u=${a}x+${b}$ then $du=${a}\\,dx$, so $dx=\\dfrac{du}{${a}}$. The integral becomes $\\dfrac{1}{${a}}\\int u^{${n}}\\,du = \\dfrac{u^{${n+1}}}{${denom}}+C = \\dfrac{(${a}x+${b})^{${n+1}}}{${denom}}+C$. Forgetting to divide by $${a}$ is the most frequent substitution error.`
     };
   },
 
-  // Q6 — Substitution (quadratic)
+  // Q6 — Substitution quadratic (harder: coefficient mismatch, must adjust)
   () => {
-    const c = randInt(1,8), n = randInt(2,5);
+    const c = randInt(1,8), n = randInt(2,4), k = randInt(3,7);
+    // integral of k*x*(x^2+c)^n dx: pull k out, u=x^2+c, du=2x dx
+    // = k/2 * (x^2+c)^(n+1)/(n+1) + C
+    const numAns = k, denAns = 2*(n+1);
+    const g = gcd(numAns, denAns);
     return {
-      text: `Find $\\displaystyle\\int x(x^2 + ${c})^{${n}}\\,dx$`,
-      topic: 'Substitution — Quadratic',
+      text: `Find $\\displaystyle\\int ${k}x(x^2+${c})^{${n}}\\,dx$`,
+      topic: 'Substitution — Adjusting for the Coefficient',
       options: shuffle([
-        { tex: `$\\dfrac{(x^2+${c})^{${n+1}}}{${2*(n+1)}} + C$`, correct: true },
-        { tex: `$\\dfrac{(x^2+${c})^{${n+1}}}{${n+1}} + C$`, correct: false },
-        { tex: `$\\dfrac{x^2(x^2+${c})^{${n+1}}}{${n+1}} + C$`, correct: false },
-        { tex: `$\\dfrac{(x^2+${c})^{${n}}}{${2*n}} + C$`, correct: false }
+        { tex: `$\\dfrac{${numAns/g}}{${denAns/g}}(x^2+${c})^{${n+1}} + C$`, correct: true },
+        { tex: `$\\dfrac{${k}}{${n+1}}(x^2+${c})^{${n+1}} + C$`, correct: false },
+        { tex: `$\\dfrac{1}{${2*(n+1)}}(x^2+${c})^{${n+1}} + C$`, correct: false },
+        { tex: `$${k}(x^2+${c})^{${n+1}} + C$`, correct: false }
       ]),
-      explanation: `Let $u=x^2+${c}$, $du=2x\\,dx$, so $x\\,dx=\\dfrac{du}{2}$. Then $\\int u^{${n}}\\dfrac{du}{2}=\\dfrac{u^{${n+1}}}{${2*(n+1)}}+C=\\dfrac{(x^2+${c})^{${n+1}}}{${2*(n+1)}}+C$.`
+      explanation: `Let $u=x^2+${c}$, $du=2x\\,dx \\Rightarrow x\\,dx=\\dfrac{du}{2}$. So $\\int ${k}x(x^2+${c})^{${n}}\\,dx = ${k}\\int u^{${n}}\\dfrac{du}{2} = \\dfrac{${k}}{2}\\cdot\\dfrac{u^{${n+1}}}{${n+1}}+C = \\dfrac{${numAns/g}}{${denAns/g}}(x^2+${c})^{${n+1}}+C$.`
     };
   },
 
-  // Q7 — Definite Integral FTC
+  // Q7 — Definite Integral FTC (harder: negative lower limit, fractional answer)
   () => {
-    const a = randInt(0,2), b = randInt(3,6), n = randInt(2,4);
-    const num = Math.pow(b,n+1) - Math.pow(a,n+1);
-    const den = n+1;
+    const a = -(randInt(1,3)), b = randInt(2,5), n = randInt(2,4);
+    // only use even n to avoid complex numbers from negative base
+    const nEven = n % 2 === 0 ? n : n+1;
+    const numVal = Math.pow(b, nEven+1) - Math.pow(a, nEven+1);
+    const denVal = nEven+1;
+    const g = gcd(Math.abs(numVal), denVal);
     return {
-      text: `Evaluate $\\displaystyle\\int_{${a}}^{${b}} x^{${n}}\\,dx$`,
-      topic: 'Definite Integral — FTC',
+      text: `Evaluate $\\displaystyle\\int_{${a}}^{${b}} x^{${nEven}}\\,dx$`,
+      topic: 'Definite Integral — Negative Lower Limit',
       options: shuffle([
-        { tex: `$${frac(num,den)}$`, correct: true },
-        { tex: `$${num}$`, correct: false },
-        { tex: `$${frac(num,n)}$`, correct: false },
-        { tex: `$${Math.pow(b,n)-Math.pow(a,n)}$`, correct: false }
+        { tex: `$${frac(numVal, denVal)}$`, correct: true },
+        { tex: `$${frac(Math.pow(b,nEven+1), denVal)}$`, correct: false },
+        { tex: `$${frac(numVal, nEven)}$`, correct: false },
+        { tex: `$${frac(-numVal, denVal)}$`, correct: false }
       ]),
-      explanation: `FTC: $\\left[\\dfrac{x^{${n+1}}}{${n+1}}\\right]_{${a}}^{${b}} = \\dfrac{${Math.pow(b,n+1)}}{${n+1}} - \\dfrac{${Math.pow(a,n+1)}}{${n+1}} = ${frac(num,den)}$`
+      explanation: `$\\left[\\dfrac{x^{${nEven+1}}}{${nEven+1}}\\right]_{${a}}^{${b}} = \\dfrac{${b}^{${nEven+1}}}{${nEven+1}} - \\dfrac{(${a})^{${nEven+1}}}{${nEven+1}} = \\dfrac{${Math.pow(b,nEven+1)} - (${Math.pow(a,nEven+1)})}{${nEven+1}} = ${frac(numVal,denVal)}$. Be careful with the sign of $(${a})^{${nEven+1}} = ${Math.pow(a,nEven+1)}$.`
     };
   },
 
-  // Q8 — Definite Integral Exponential
+  // Q8 — Definite Exponential (harder: coefficient inside, limits non-zero)
   () => {
-    const b = randInt(1,3);
+    const k = randInt(2,4), a = 0, b = randInt(1,3);
+    // integral of e^(kx) from a to b = [e^(kx)/k] from a to b
     return {
-      text: `Evaluate $\\displaystyle\\int_{0}^{${b}} e^x\\,dx$`,
-      topic: 'Definite Integral — Exponential',
+      text: `Evaluate $\\displaystyle\\int_{${a}}^{${b}} e^{${k}x}\\,dx$`,
+      topic: 'Definite Integral — Exponential with Coefficient',
       options: shuffle([
-        { tex: `$e^{${b}} - 1$`, correct: true },
-        { tex: `$e^{${b}} + 1$`, correct: false },
-        { tex: `$e^{${b}}$`, correct: false },
-        { tex: `$${b}e^{${b}}$`, correct: false }
+        { tex: `$\\dfrac{e^{${k*b}}-1}{${k}}$`, correct: true },
+        { tex: `$e^{${k*b}}-1$`, correct: false },
+        { tex: `$\\dfrac{e^{${k*b}}}{${k}}$`, correct: false },
+        { tex: `$${k}(e^{${k*b}}-1)$`, correct: false }
       ]),
-      explanation: `$\\left[e^x\\right]_0^{${b}} = e^{${b}} - e^0 = e^{${b}} - 1$`
+      explanation: `$\\left[\\dfrac{e^{${k}x}}{${k}}\\right]_0^{${b}} = \\dfrac{e^{${k*b}}}{${k}} - \\dfrac{e^0}{${k}} = \\dfrac{e^{${k*b}}-1}{${k}}$. Forgetting to divide by the coefficient $${k}$ is the trap — that gives the second wrong option.`
     };
   },
 
-  // Q9 — Substitution in Definite Integral
+  // Q9 — Substitution in Definite Integral (harder: limits must change correctly)
   () => {
-    const c = randInt(1,6);
-    const lo = c, hi = c+1;
-    const ans = (Math.pow(hi,4) - Math.pow(lo,4)) / 4;
+    const a = randInt(1,4), k = randInt(2,4);
+    // integral from 0 to a of x/(x^2+k)^3 dx
+    // u=x^2+k, du=2x dx, x dx=du/2
+    // limits: x=0 -> u=k, x=a -> u=a^2+k
+    // = (1/2)*[u^(-2)/(-2)] from k to a^2+k = (-1/4)[1/(a^2+k)^2 - 1/k^2]
+    const lo = k, hi = a*a+k;
+    // answer = (1/4)*(1/lo^2 - 1/hi^2) as a fraction
+    // keep symbolic for display
     return {
-      text: `Evaluate $\\displaystyle\\int_0^1 2x(x^2+${c})^3\\,dx$`,
-      topic: 'Substitution in Definite Integral',
+      text: `Evaluate $\\displaystyle\\int_0^{${a}} \\dfrac{x}{(x^2+${k})^3}\\,dx$ using substitution $u=x^2+${k}$.`,
+      topic: 'Substitution — Definite, Rational Integrand',
       options: shuffle([
-        { tex: `$${ans}$`, correct: true },
-        { tex: `$${ans+1}$`, correct: false },
-        { tex: `$${ans*2}$`, correct: false },
-        { tex: `$${ans-1 < 0 ? ans+2 : ans-1}$`, correct: false }
+        { tex: `$\\dfrac{1}{4}\\!\\left(\\dfrac{1}{${lo}^2} - \\dfrac{1}{${hi}^2}\\right)$`, correct: true },
+        { tex: `$\\dfrac{1}{2}\\!\\left(\\dfrac{1}{${lo}^2} - \\dfrac{1}{${hi}^2}\\right)$`, correct: false },
+        { tex: `$\\dfrac{1}{4}\\!\\left(\\dfrac{1}{${hi}^2} - \\dfrac{1}{${lo}^2}\\right)$`, correct: false },
+        { tex: `$\\dfrac{-1}{4${hi}^2}$`, correct: false }
       ]),
-      explanation: `Let $u=x^2+${c}$, $du=2x\\,dx$. New limits: $x=0\\Rightarrow u=${c}$; $x=1\\Rightarrow u=${c+1}$. So $\\int_{${c}}^{${c+1}} u^3\\,du = \\left[\\dfrac{u^4}{4}\\right]_{${c}}^{${c+1}} = \\dfrac{${Math.pow(c+1,4)}-${Math.pow(c,4)}}{4} = ${ans}$`
+      explanation: `$u=x^2+${k}$, $x\\,dx=\\tfrac{du}{2}$. Limits: $x=0\\Rightarrow u=${lo}$, $x=${a}\\Rightarrow u=${hi}$. Integral $= \\tfrac{1}{2}\\int_{${lo}}^{${hi}} u^{-3}\\,du = \\tfrac{1}{2}\\left[\\dfrac{u^{-2}}{-2}\\right]_{${lo}}^{${hi}} = \\tfrac{-1}{4}\\!\\left(\\dfrac{1}{${hi}^2}-\\dfrac{1}{${lo}^2}\\right) = \\dfrac{1}{4}\\!\\left(\\dfrac{1}{${lo}^2}-\\dfrac{1}{${hi}^2}\\right)$.`
     };
   },
 
-  // Q10 — Initial Value Problem
+  // Q10 — Initial Value Problem (harder: C comes out negative, test substitution)
   () => {
-    const a = randInt(2,6), b = randInt(1,8), x0 = randInt(0,2), y0 = randInt(1,10);
-    const C = y0 - (a*x0*x0/2 + b*x0);
+    const a = randInt(2,5), b = randInt(2,7);
+    const x0 = randInt(1,3), y0 = randInt(1,8);
+    // f'(x) = a*x^2 + b => f(x) = a/3*x^3 + b*x + C
+    const C = y0 - (a*x0*x0*x0/3 + b*x0);
     const Cstr = C >= 0 ? `+${C}` : `${C}`;
+    const wrongC1 = y0;
+    const wrongC2 = C + 1;
     return {
-      text: `If $f'(x) = ${a}x + ${b}$ and $f(${x0}) = ${y0}$, find $f(x)$.`,
-      topic: 'Initial Value Problem',
+      text: `If $f'(x) = ${a}x^2 + ${b}$ and $f(${x0}) = ${y0}$, find $f(x)$.`,
+      topic: 'Initial Value Problem — Cubic',
       options: shuffle([
-        { tex: `$\\dfrac{${a}}{2}x^2 + ${b}x ${Cstr}$`, correct: true },
+        { tex: `$\\dfrac{${a}}{3}x^3 + ${b}x ${Cstr}$`, correct: true },
+        { tex: `$\\dfrac{${a}}{3}x^3 + ${b}x + ${wrongC1}$`, correct: false },
         { tex: `$${a}x^2 + ${b}x + ${y0}$`, correct: false },
-        { tex: `$\\dfrac{${a}}{2}x^2 + ${b}x + ${y0}$`, correct: false },
-        { tex: `$${a}x + ${b} + C$`, correct: false }
+        { tex: `$\\dfrac{${a}}{3}x^3 + ${b}x + ${wrongC2}$`, correct: false }
       ]),
-      explanation: `Integrate: $f(x)=\\dfrac{${a}}{2}x^2+${b}x+C$. Apply $f(${x0})=${y0}$: $C=${C}$. So $f(x)=\\dfrac{${a}}{2}x^2+${b}x${Cstr}$.`
+      explanation: `Integrate: $f(x)=\\dfrac{${a}}{3}x^3+${b}x+C$. Apply $f(${x0})=${y0}$: $\\dfrac{${a}}{3}(${x0})^3+${b}(${x0})+C=${y0}$, so $C=${C}$. The second option uses $C=y_0$ directly — a very common mistake of forgetting to substitute and solve.`
     };
   },
 
-  // Q11 — Area Under Curve
+  // Q11 — Area Under Curve (harder: area between curve and axis, curve dips below)
   () => {
-    const a = randInt(1,4), b = randInt(a+1,a+4);
-    const area = (b*b - a*a) / 2;
+    const k = randInt(2,4);
+    // f(x) = x^2 - k^2, zeros at x=-k and x=k, negative in between
+    // area between curve and x-axis from -k to k = 2*integral from 0 to k of (k^2-x^2) dx
+    // = 2*[k^2*x - x^3/3] from 0 to k = 2*(k^3 - k^3/3) = 4k^3/3
+    const area = 4*k*k*k/3;
+    const netIntegral = 0; // by symmetry, integral from -k to k of (x^2-k^2) dx = -(4k^3/3)
+    const negNet = -4*k*k*k/3;
     return {
-      text: `Find the area under $f(x) = x$ from $x = ${a}$ to $x = ${b}$.`,
-      topic: 'Area Under a Curve',
+      text: `The curve $f(x) = x^2 - ${k*k}$ lies below the $x$-axis on $[-${k}, ${k}]$. Which value represents the <em>total area</em> enclosed between the curve and the $x$-axis?`,
+      topic: 'Area — Curve Below Axis',
       options: shuffle([
-        { tex: `$${area}$`, correct: true },
-        { tex: `$${b*b - a*a}$`, correct: false },
-        { tex: `$${b - a}$`, correct: false },
-        { tex: `$${area + (b-a)}$`, correct: false }
+        { tex: `$\\dfrac{${4*k*k*k}}{3}$`, correct: true },
+        { tex: `$${negNet}$` , correct: false },
+        { tex: `$0$`, correct: false },
+        { tex: `$\\dfrac{${2*k*k*k}}{3}$`, correct: false }
       ]),
-      explanation: `$\\int_{${a}}^{${b}} x\\,dx = \\left[\\dfrac{x^2}{2}\\right]_{${a}}^{${b}} = \\dfrac{${b*b}}{2} - \\dfrac{${a*a}}{2} = ${area}$`
+      explanation: `Since $f(x)\\leq 0$ on $[-${k},${k}]$, the definite integral gives $\\int_{-${k}}^{${k}}(x^2-${k*k})\\,dx = \\dfrac{${negNet*3}}{3}$ (negative). Total area $= \\left|${negNet}\\right| = \\dfrac{${4*k*k*k}}{3}$. Area is always positive; the integral gives signed area.`
     };
   },
 
-  // Q12 — Net Change
+  // Q12 — Net Change (harder: velocity changes sign, must find zero first)
   () => {
-    const a = randInt(2,5), b = randInt(1,6), T = randInt(3,7);
-    const disp = a*T*T/2 - b*T;
+    const v0 = randInt(4,8), k = randInt(1,2);
+    // v(t) = v0 - k*t^2, zero at t = sqrt(v0/k)
+    // keep k=1 so zero is sqrt(v0) - irrational, use k=1, v0=perfect square
+    const sq = [4,9,16][randInt(0,2)];
+    const sqRoot = Math.sqrt(sq);
+    const T = sqRoot * 2;
+    // net displacement = integral of (sq - t^2) from 0 to T
+    // = [sq*t - t^3/3] from 0 to T = sq*T - T^3/3
+    const net = sq*T - T*T*T/3;
     return {
-      text: `A particle has velocity $v(t)=${a}t-${b}$ m/s. The net displacement from $t=0$ to $t=${T}$ is:`,
-      topic: 'Net Change',
+      text: `A particle moves with $v(t) = ${sq} - t^2$ m/s for $0 \\leq t \\leq ${T}$. The velocity is zero at $t = ${sqRoot}$. Find the net displacement over $[0, ${T}]$.`,
+      topic: 'Net Change — Velocity Changes Sign',
       options: shuffle([
-        { tex: `$${disp}$ m`, correct: true },
-        { tex: `$${disp+T}$ m`, correct: false },
-        { tex: `$${a*T-b}$ m`, correct: false },
-        { tex: `$${Math.abs(disp)+1}$ m`, correct: false }
+        { tex: `$${net}$ m`, correct: true },
+        { tex: `$${sq*T}$ m`, correct: false },
+        { tex: `$0$ m`, correct: false },
+        { tex: `$${Math.abs(net)+sq}$ m`, correct: false }
       ]),
-      explanation: `Net displacement $= \\int_0^{${T}}(${a}t-${b})\\,dt = \\left[\\dfrac{${a}t^2}{2}-${b}t\\right]_0^{${T}} = \\dfrac{${a}\\cdot${T*T}}{2}-${b}\\cdot${T} = ${disp}$ m.`
+      explanation: `Net displacement $=\\int_0^{${T}}(${sq}-t^2)\\,dt = \\left[${sq}t - \\dfrac{t^3}{3}\\right]_0^{${T}} = ${sq}\\cdot${T} - \\dfrac{${T}^3}{3} = ${sq*T} - \\dfrac{${T*T*T}}{3} = ${net}$ m. Net displacement can be negative — it means the particle ended up behind its start.`
     };
   },
 
-  // Q13 — Which Substitution?
+  // Q13 — Choosing Substitution (harder: two plausible options, only one works)
   () => {
-    const c = randInt(1,9);
+    const c = randInt(1,6), k = randInt(2,5);
+    // integral of x^2 * e^(x^3 + c) dx
+    // u = x^3 + c, du = 3x^2 dx, x^2 dx = du/3
     return {
-      text: `For $\\displaystyle\\int \\dfrac{x^2}{(x^3+${c})^4}\\,dx$, the best substitution is:`,
-      topic: 'Choosing the Substitution',
+      text: `For $\\displaystyle\\int x^2 e^{x^3 + ${c}}\\,dx$, a student considers two substitutions: (I) $u = x^3+${c}$ and (II) $u = x^2$. Which works and why?`,
+      topic: 'Choosing the Substitution — Reasoning',
       options: shuffle([
-        { tex: `$u = x^3 + ${c}$`, correct: true },
-        { tex: `$u = x^2$`, correct: false },
-        { tex: `$u = x^3$`, correct: false },
-        { tex: `$u = (x^3+${c})^4$`, correct: false }
+        { tex: `Only (I): because $du = 3x^2\\,dx$, so $x^2\\,dx = \\dfrac{du}{3}$ appears in the integrand`, correct: true },
+        { tex: `Only (II): because the $x^2$ factor is already written out`, correct: false },
+        { tex: `Both work equally well`, correct: false },
+        { tex: `Neither works; expand $e^{x^3+${c}}$ instead`, correct: false }
       ]),
-      explanation: `Choose $u=x^3+${c}$ because $du=3x^2\\,dx$ and $x^2\\,dx=\\dfrac{du}{3}$ appears in the integrand. The integral becomes $\\int u^{-4}\\dfrac{du}{3}$.`
+      explanation: `With $u=x^3+${c}$: $du=3x^2\\,dx \\Rightarrow x^2\\,dx=\\dfrac{du}{3}$. The integral becomes $\\dfrac{1}{3}\\int e^u\\,du = \\dfrac{e^u}{3}+C = \\dfrac{e^{x^3+${c}}}{3}+C$. Substitution (II) with $u=x^2$ gives $du=2x\\,dx$, but there is no lone $x$ factor left — it fails completely.`
     };
   },
 
-  // Q14 — Rule Identification
+  // Q14 — Rule Identification (harder: sum of three terms, each needs a different rule)
   () => {
-    const n = randInt(2,5), c = randInt(1,8);
+    const k = randInt(2,6), n = randInt(2,4), m = randInt(2,5);
     return {
-      text: `Which rule is used to evaluate $\\displaystyle\\int \\dfrac{${c}}{x^{${n}}}\\,dx$?`,
-      topic: 'Rule Identification',
+      text: `To evaluate $\\displaystyle\\int\\!\\left(${k}x^{${n}} + \\dfrac{1}{x} + e^{${m}x}\\right)dx$, which combination of rules is needed?`,
+      topic: 'Rule Identification — Mixed Integrand',
       options: shuffle([
-        { tex: `Power Rule (rewrite as $${c}x^{-${n}}$)`, correct: true },
-        { tex: 'Logarithmic Rule', correct: false },
-        { tex: 'Exponential Rule', correct: false },
-        { tex: 'Constant Rule', correct: false }
+        { tex: `Power rule, Logarithmic rule, Exponential rule`, correct: true },
+        { tex: `Power rule three times`, correct: false },
+        { tex: `Substitution rule for all three terms`, correct: false },
+        { tex: `Power rule, Power rule ($n=-1$), Exponential rule`, correct: false }
       ]),
-      explanation: `Write $\\dfrac{${c}}{x^{${n}}}=${c}x^{-${n}}$. Power rule with $n=-${n}$: $\\int ${c}x^{-${n}}\\,dx = \\dfrac{${c}}{${1-n}}x^{${1-n}}+C$.`
+      explanation: `Split by the sum rule. Term 1: $${k}x^{${n}}$ — power rule. Term 2: $\\dfrac{1}{x}$ — this is the $n=-1$ case where the power rule fails (gives division by zero); logarithmic rule applies: $\\int\\dfrac{1}{x}\\,dx=\\ln|x|$. Term 3: $e^{${m}x}$ — exponential rule giving $\\dfrac{e^{${m}x}}{${m}}$. Option D is a common trap — the power rule does NOT apply when $n=-1$.`
     };
   },
 
-
-  // QN1 — Same Limits Trap (looks scary, answer is trivially 0)
+  // Q15 — Same Limits Trap (looks scary, answer is trivially 0)
   () => {
     const a = randInt(2, 9);
     const p = randInt(3, 7);
@@ -886,7 +925,7 @@ const QUESTION_BANK = [
     };
   },
 
-  // QN2 — Same Limits Trap v2 (rational-looking expression)
+  // Q16 — Same Limits Trap v2 (rational-looking expression)
   () => {
     const a = randInt(3, 12);
     const k = randInt(2, 9);
@@ -904,16 +943,73 @@ const QUESTION_BANK = [
     };
   },
 
-  // QN3 — Graph: Net signed area (positive + negative regions)
+  // Q17 — Net signed area
   () => {
-    const posA  = randInt(3, 10);   // area of positive region [0, p]
-    const negA  = randInt(2, 8);    // area of negative region [p, q]
-    const p     = randInt(2, 5);
-    const q     = p + randInt(2, 4);
-    const net   = posA - negA;
+    const posA = randInt(3,10);
+    const negA = randInt(2,8);
+    const p    = randInt(2,5);
+    const q    = p + randInt(2,4);
+    const net  = posA - negA;
     const total = posA + negA;
+    // SVG coordinate helpers
+    const W=320, H=180, padL=38, padR=10, padT=12, padB=32;
+    const gW=W-padL-padR, gH=H-padT-padB;
+    const xMax=q+0.5, yMax=3.5;
+    function px(x){ return padL + (x/xMax)*gW; }
+    function py(y){ return padT + gH - ((y+2)/( yMax+2))*gH; }
+    const y0 = py(0); // pixel row of x-axis
+    // Curve: rises from 0 to p (positive hump), falls below 0 from p to q
+    // Use a simple bezier that crosses axis at x=p
+    const x0px = px(0), xppx = px(p), xqpx = px(q);
+    const peakY = py(1.8);   // positive hump peak
+    const troughY = py(-1.6); // negative trough
+    const svg = `
+  <svg width="100%" viewBox="0 0 ${W} ${H}"
+    style="display:block;margin:12px auto 4px;max-width:320px;
+           border-radius:8px;background:#fdf8f0;border:1px solid #e0d6c8;">
+    <!-- positive shaded region [0,p] -->
+    <path d="M${px(0)},${y0}
+             Q${px(p*0.5)},${peakY} ${px(p)},${y0}"
+      fill="rgba(26,107,107,0.18)" stroke="none"/>
+    <!-- negative shaded region [p,q] -->
+    <path d="M${px(p)},${y0}
+             Q${px((p+q)/2)},${troughY} ${px(q)},${y0}"
+      fill="rgba(192,57,43,0.18)" stroke="none"/>
+    <!-- x-axis -->
+    <line x1="${padL}" y1="${y0}" x2="${W-padR}" y2="${y0}"
+          stroke="#555" stroke-width="1.5"/>
+    <!-- y-axis -->
+    <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H-padB}"
+          stroke="#555" stroke-width="1.5"/>
+    <!-- curve: positive hump then negative dip -->
+    <path d="M${px(0)},${y0}
+             Q${px(p*0.5)},${peakY} ${px(p)},${y0}
+             Q${px((p+q)/2)},${troughY} ${px(q)},${y0}"
+      fill="none" stroke="#1a6b6b" stroke-width="2.2"/>
+    <!-- x-axis tick labels -->
+    <text x="${px(0)}"  y="${H-padB+14}" text-anchor="middle"
+          font-size="11" font-family="IBM Plex Mono,monospace" fill="#555">0</text>
+    <text x="${px(p)}"  y="${H-padB+14}" text-anchor="middle"
+          font-size="11" font-family="IBM Plex Mono,monospace" fill="#1a6b6b"
+          font-weight="700">${p}</text>
+    <text x="${px(q)}"  y="${H-padB+14}" text-anchor="middle"
+          font-size="11" font-family="IBM Plex Mono,monospace" fill="#c0392b"
+          font-weight="700">${q}</text>
+    <!-- area labels inside regions -->
+    <text x="${px(p*0.5)}" y="${py(0.7)}" text-anchor="middle"
+          font-size="11" font-family="IBM Plex Mono,monospace"
+          fill="#1a6b6b" font-weight="700">+${posA}</text>
+    <text x="${px((p+q)/2)}" y="${py(-0.7)}" text-anchor="middle"
+          font-size="11" font-family="IBM Plex Mono,monospace"
+          fill="#c0392b" font-weight="700">−${negA}</text>
+    <!-- f(x) label -->
+    <text x="${W-padR-4}" y="${padT+14}" text-anchor="end"
+          font-size="11" font-family="serif" font-style="italic"
+          fill="#1a6b6b">f(x)</text>
+  </svg>`;
     return {
-      text: `The graph of $f(x)$ is shown below. The shaded region from $x=0$ to $x=${p}$ lies <strong>above</strong> the $x$-axis with area $${posA}$. The shaded region from $x=${p}$ to $x=${q}$ lies <strong>below</strong> the $x$-axis with area $${negA}$. Find $\\displaystyle\\int_0^{${q}} f(x)\\,dx$.`,
+      text: `The graph of $f(x)$ is shown. The teal region $(0$ to $${p})$ is above the $x$-axis with signed area $+${posA}$. The red region $(${p}$ to $${q})$ is below with signed area $-${negA}$. Find $\\displaystyle\\int_0^{${q}} f(x)\\,dx$.
+  ${svg}`,
       topic: 'Graph — Net Signed Area',
       options: shuffle([
         { tex: `$${net}$`, correct: true },
@@ -921,34 +1017,109 @@ const QUESTION_BANK = [
         { tex: `$${-net}$`, correct: false },
         { tex: `$${posA}$`, correct: false }
       ]),
-      explanation: `The definite integral gives <em>signed</em> area. Area above the axis is positive, area below is negative. So $\\int_0^{${q}} f(x)\\,dx = ${posA} + (-${negA}) = ${net}$. The total (unsigned) area would be $${total}$, but the integral gives net signed area.`
+      explanation: `Signed area: above axis is positive, below is negative. $\\int_0^{${q}} f\\,dx = +${posA} + (-${negA}) = ${net}$. The total unsigned area $${total}$ is not what the definite integral gives.`
     };
   },
 
-  // QN4 — Graph: Total area vs net area distinction
+  // ─────────────────────────────────────────────────────────────
+  //  Q18 — NET vs TOTAL AREA  (3 alternating regions)
+  // ─────────────────────────────────────────────────────────────
   () => {
-    const a1 = randInt(4, 12);
-    const a2 = randInt(3, 9);
-    const a3 = randInt(2, 7);
-    const c1 = randInt(2, 4);
-    const c2 = c1 + randInt(2, 3);
-    const c3 = c2 + randInt(2, 3);
-    const net = a1 - a2 + a3;
-    const total = a1 + a2 + a3;
-    return {
-      text: `From the graph of $f(x)$: the region on $[0,${c1}]$ is above the axis with area $${a1}$; on $[${c1},${c2}]$ it is below the axis with area $${a2}$; on $[${c2},${c3}]$ it is above the axis with area $${a3}$. What is $\\displaystyle\\int_0^{${c3}} f(x)\\,dx$?`,
-      topic: 'Graph — Net vs Total Area',
-      options: shuffle([
-        { tex: `$${net}$`, correct: true },
-        { tex: `$${total}$`, correct: false },
-        { tex: `$${a1 - a2}$`, correct: false },
-        { tex: `$${a1 + a3}$`, correct: false }
-      ]),
-      explanation: `$\\int_0^{${c3}} f(x)\\,dx = (+${a1}) + (-${a2}) + (+${a3}) = ${net}$. The signed area adds the positive regions and subtracts the negative ones. The total (unsigned) area $${total}$ is what you'd get using $\\int|f(x)|\\,dx$, but the definite integral gives net signed area.`
-    };
-  },
+      const a1 = randInt(4, 10);
+      const a2 = randInt(3, 8);
+      const a3 = randInt(2, 6);
+      const c1 = randInt(2, 3);
+      const c2 = c1 + randInt(2, 3);
+      const c3 = c2 + randInt(2, 3);
+      const net   = a1 - a2 + a3;
+      const total = a1 + a2 + a3;
+      const W=320, H=180, pL=40, pR=12, pT=14, pB=30;
+      const gW=W-pL-pR, gH=H-pT-pB;
+      const xMax=c3+0.7, yMin=-2.2, yMax=2.5, yRng=yMax-yMin;
+      const px = x => (pL + (x/xMax)*gW).toFixed(1);
+      const py = y => (pT + gH - ((y-yMin)/yRng)*gH).toFixed(1);
+      const y0 = py(0);
+      // Three regions: hump [0,c1], dip [c1,c2], hump [c2,c3]
+      const mid1 = c1/2;
+      const mid2 = (c1+c2)/2;
+      const mid3 = (c2+c3)/2;
+      const h1=1.75, h2=-1.6, h3=1.6;
+      const curvePath =
+        `M${px(0)},${y0} ` +
+        `Q${px(mid1)},${py(h1)} ${px(c1)},${y0} ` +
+        `Q${px(mid2)},${py(h2)} ${px(c2)},${y0} ` +
+        `Q${px(mid3)},${py(h3)} ${px(c3)},${y0}`;
+      const shadeA1 = `M${px(0)},${y0} Q${px(mid1)},${py(h1)} ${px(c1)},${y0} Z`;
+      const shadeA2 = `M${px(c1)},${y0} Q${px(mid2)},${py(h2)} ${px(c2)},${y0} Z`;
+      const shadeA3 = `M${px(c2)},${y0} Q${px(mid3)},${py(h3)} ${px(c3)},${y0} Z`;
+      const svg = `<svg width="100%" viewBox="0 0 ${W} ${H}"
+    style="display:block;margin:10px auto 6px;max-width:320px;
+           border-radius:10px;background:#fdf8f0;border:1.5px solid #e0d6c8;">   
+    <!-- shaded regions -->
+    <path d="${shadeA1}" fill="rgba(26,107,107,0.20)"
+          stroke="rgba(26,107,107,0.5)" stroke-width="1"/>
+    <path d="${shadeA2}" fill="rgba(192,57,43,0.18)"
+          stroke="rgba(192,57,43,0.5)" stroke-width="1"/>
+    <path d="${shadeA3}" fill="rgba(26,107,107,0.20)"
+          stroke="rgba(26,107,107,0.5)" stroke-width="1"/>   
+    <!-- axes -->
+    <line x1="${pL}" y1="${pT}" x2="${pL}" y2="${H-pB+4}"
+          stroke="#888" stroke-width="1.5"/>
+    <line x1="${pL-4}" y1="${H-pB}" x2="${W-pR}" y2="${H-pB}"
+          stroke="#888" stroke-width="1.5"/>
+    <polygon points="${pL},${pT} ${pL-4},${pT+8} ${pL+4},${pT+8}" fill="#888"/>
+    <polygon points="${W-pR},${H-pB} ${W-pR-8},${H-pB-4} ${W-pR-8},${H-pB+4}" fill="#888"/>   
+    <!-- dashed y=0 guide -->
+    <line x1="${pL}" y1="${y0}" x2="${W-pR}" y2="${y0}"
+          stroke="#ccc" stroke-width="1" stroke-dasharray="3,3"/>   
+    <!-- curve -->
+    <path d="${curvePath}" fill="none" stroke="#1a6b6b"
+          stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>   
+    <!-- tick marks -->
+    <line x1="${px(0)}"  y1="${H-pB-4}" x2="${px(0)}"  y2="${H-pB+5}" stroke="#555" stroke-width="1.2"/>
+    <line x1="${px(c1)}" y1="${H-pB-4}" x2="${px(c1)}" y2="${H-pB+5}" stroke="#555" stroke-width="1.4"/>
+    <line x1="${px(c2)}" y1="${H-pB-4}" x2="${px(c2)}" y2="${H-pB+5}" stroke="#555" stroke-width="1.4"/>
+    <line x1="${px(c3)}" y1="${H-pB-4}" x2="${px(c3)}" y2="${H-pB+5}" stroke="#c0392b" stroke-width="1.5"/>   
+    <!-- x labels -->
+    <text x="${px(0)}"  y="${H-pB+16}" text-anchor="middle" font-size="11"
+          font-family="IBM Plex Mono,monospace" fill="#555">0</text>
+    <text x="${px(c1)}" y="${H-pB+16}" text-anchor="middle" font-size="11"
+          font-family="IBM Plex Mono,monospace" fill="#555">${c1}</text>
+    <text x="${px(c2)}" y="${H-pB+16}" text-anchor="middle" font-size="11"
+          font-family="IBM Plex Mono,monospace" fill="#555">${c2}</text>
+    <text x="${px(c3)}" y="${H-pB+16}" text-anchor="middle" font-size="11"
+          font-family="IBM Plex Mono,monospace" fill="#c0392b" font-weight="700">${c3}</text>   
+    <!-- area labels -->
+    <text x="${px(mid1)}" y="${py(h1/1.8)}" text-anchor="middle" font-size="11"
+          font-family="IBM Plex Mono,monospace" fill="#1a6b6b" font-weight="700">+${a1}</text>
+    <text x="${px(mid2)}" y="${py(h2/1.8)}" text-anchor="middle" font-size="11"
+          font-family="IBM Plex Mono,monospace" fill="#c0392b" font-weight="700">&#8722;${a2}</text>
+    <text x="${px(mid3)}" y="${py(h3/1.8)}" text-anchor="middle" font-size="11"
+          font-family="IBM Plex Mono,monospace" fill="#1a6b6b" font-weight="700">+${a3}</text>   
+    <!-- axis labels -->
+    <text x="${W-pR+2}" y="${H-pB+4}" font-size="11"
+          font-family="IBM Plex Mono,monospace" fill="#777">x</text>
+    <text x="${pL-6}"   y="${pT-2}"   font-size="11"
+          font-family="IBM Plex Mono,monospace" fill="#777">y</text>
+    <text x="${px(mid1)}" y="${py(h1)+2-20}" font-size="11"
+          font-family="serif" font-style="italic" fill="#1a6b6b"
+          text-anchor="middle">f(x)</text>
+  </svg>`;
+         return {
+        text: `The graph of $f(x)$ is shown with three shaded regions. What is $\\displaystyle\\int_0^{${c3}} f(x)\\,dx$?
+  ${svg}`,
+        topic: 'Graph — Net vs Total Area',
+        options: shuffle([
+          { tex: `$${net}$`, correct: true },
+          { tex: `$${total}$`, correct: false },
+          { tex: `$${a1 - a2}$`, correct: false },
+          { tex: `$${a1 + a3}$`, correct: false }
+        ]),
+        explanation: `Read the signed areas from the graph: $\\int_0^{${c3}} f\\,dx = (+${a1}) + (-${a2}) + (+${a3}) = ${net}$. Teal regions are positive, red is negative. The total unsigned area $${total}$ is what $\\int|f|\\,dx$ gives — but the definite integral gives net signed area.`
+      };
+    },
 
-  // QN5 — Graph: Given integral values, find on sub-interval (subdivision rule)
+  // Q19 — Graph: Given integral values, find on sub-interval (subdivision rule)
   () => {
     const a = 0;
     const c = randInt(2, 5);
@@ -969,7 +1140,7 @@ const QUESTION_BANK = [
     };
   },
 
-  // QN6 — Graph: Reversed limits (sign flip trap)
+  // Q20 — Graph: Reversed limits (sign flip trap)
   () => {
     const posA = randInt(3, 15);
     const a = randInt(1, 4);
@@ -987,7 +1158,7 @@ const QUESTION_BANK = [
     };
   },
 
-  // QN7 — Graph: Constant multiple on a known integral
+  // Q21 — Graph: Constant multiple on a known integral
   () => {
     const k = randInt(2, 8);
     const val = randInt(3, 12);
@@ -1007,7 +1178,7 @@ const QUESTION_BANK = [
     };
   },
 
-  // QN8 — Graph: Linear combination of two known integrals
+  // Q22 — Graph: Linear combination of two known integrals
   () => {
     const fVal = randInt(3, 10);
     const gVal = randInt(2, 8);
@@ -1029,7 +1200,7 @@ const QUESTION_BANK = [
     };
   },
 
-  // QN9 — Application: Marginal cost → total cost increase
+  // Q23 — Application: Marginal cost → total cost increase
   () => {
     const a  = randInt(1, 4);   // coefficient of x^2 term (×0.01)
     const b  = randInt(2, 8);   // coefficient of x
@@ -1056,7 +1227,7 @@ $= \\left(\\dfrac{${coeff}\\cdot${x2*x2}}{2}+${cons}\\cdot${x2}\\right) - \\left
     };
   },
 
-  // QN10 — Application: Net displacement vs total distance
+  // Q24 — Application: Net displacement vs total distance
   () => {
     const v0 = randInt(2, 6);   // v(t) = v0 - k*t, zero at t = v0/k
     const k  = randInt(1, 3);
@@ -1080,7 +1251,7 @@ $= \\left(\\dfrac{${coeff}\\cdot${x2*x2}}{2}+${cons}\\cdot${x2}\\right) - \\left
     };
   },
 
-  // QN11 — Conceptual: FTC — derivative of an accumulation function
+  // Q25 — Conceptual: FTC — derivative of an accumulation function
   () => {
     const a = randInt(0, 3);
     const p = randInt(2, 5);
@@ -1098,7 +1269,7 @@ $= \\left(\\dfrac{${coeff}\\cdot${x2*x2}}{2}+${cons}\\cdot${x2}\\right) - \\left
     };
   },
 
-  // QN12 — Conceptual: Which antiderivative is correct?
+  // Q26 — Conceptual: Which antiderivative is correct?
   () => {
     const a = randInt(2, 6);
     const b = randInt(1, 8);
@@ -1117,7 +1288,7 @@ $= \\left(\\dfrac{${coeff}\\cdot${x2*x2}}{2}+${cons}\\cdot${x2}\\right) - \\left
     };
   },
 
-  // QN13 — Conceptual: What does the +C mean?
+  // Q27 — Conceptual: What does the +C mean?
   () => {
     const a = randInt(2, 7);
     const n = randInt(2, 5);
@@ -1134,9 +1305,375 @@ $= \\left(\\dfrac{${coeff}\\cdot${x2*x2}}{2}+${cons}\\cdot${x2}\\right) - \\left
     };
   },
 
+  // QG5 — Graph: integral given over [a,b], find over [a,c] using reversed info
+  () => {
+    const a = 0, mid = randInt(2,5), b = mid + randInt(2,4);
+    const total = randInt(10,24);
+    const right = randInt(2, total-2);
+    const left  = total - right;
+    return {
+      text: `From a graph: $\\displaystyle\\int_{${a}}^{${b}} f(x)\\,dx = ${total}$ and $\\displaystyle\\int_{${mid}}^{${b}} f(x)\\,dx = ${right}$. Find $\\displaystyle\\int_{${a}}^{${mid}} f(x)\\,dx$.`,
+      topic: 'Graph — Reverse Subdivision',
+      options: shuffle([
+        { tex: `$${left}$`, correct: true },
+        { tex: `$${total + right}$`, correct: false },
+        { tex: `$${right}$`, correct: false },
+        { tex: `$${total - right + 1}$`, correct: false }
+      ]),
+      explanation: `Subdivision rule: $\\int_${a}^{${b}} f\\,dx = \\int_${a}^{${mid}} f\\,dx + \\int_{${mid}}^{${b}} f\\,dx$. Rearranging: $\\int_${a}^{${mid}} f\\,dx = ${total} - ${right} = ${left}$. This time the unknown piece is on the left — students must rearrange instead of subtracting from the right.`
+    };
+  },
 
+  // ─────────────────────────────────────────────────────────────
+  //  QG6 — THREE REGIONS + REVERSED LIMITS
+  // ─────────────────────────────────────────────────────────────
+  () => {
+    const a1 = randInt(3, 9);
+    const a2 = randInt(2, 7);
+    const a3 = randInt(2, 6);
+    const c1 = randInt(2, 3);
+    const c2 = c1 + randInt(2, 3);
+    const c3 = c2 + randInt(2, 3);
+    const net  = a1 - a2 + a3;
+    const total = a1 + a2 + a3;
+ 
+    const W=320, H=180, pL=40, pR=12, pT=14, pB=30;
+    const gW=W-pL-pR, gH=H-pT-pB;
+    const xMax=c3+0.7, yMin=-2.2, yMax=2.5, yRng=yMax-yMin;
+    const px = x => (pL + (x/xMax)*gW).toFixed(1);
+    const py = y => (pT + gH - ((y-yMin)/yRng)*gH).toFixed(1);
+    const y0 = py(0);
+ 
+    const mid1=(c1)/2, mid2=(c1+c2)/2, mid3=(c2+c3)/2;
+    const h1=1.75, h2=-1.55, h3=1.6;
+ 
+    const curvePath =
+      `M${px(0)},${y0} ` +
+      `Q${px(mid1)},${py(h1)} ${px(c1)},${y0} ` +
+      `Q${px(mid2)},${py(h2)} ${px(c2)},${y0} ` +
+      `Q${px(mid3)},${py(h3)} ${px(c3)},${y0}`;
+ 
+    const svg = `<svg width="100%" viewBox="0 0 ${W} ${H}"
+  style="display:block;margin:10px auto 6px;max-width:320px;
+         border-radius:10px;background:#fdf8f0;border:1.5px solid #e0d6c8;">
+ 
+  <!-- shaded regions -->
+  <path d="M${px(0)},${y0} Q${px(mid1)},${py(h1)} ${px(c1)},${y0} Z"
+        fill="rgba(26,107,107,0.20)" stroke="rgba(26,107,107,0.45)" stroke-width="1"/>
+  <path d="M${px(c1)},${y0} Q${px(mid2)},${py(h2)} ${px(c2)},${y0} Z"
+        fill="rgba(192,57,43,0.18)" stroke="rgba(192,57,43,0.45)" stroke-width="1"/>
+  <path d="M${px(c2)},${y0} Q${px(mid3)},${py(h3)} ${px(c3)},${y0} Z"
+        fill="rgba(26,107,107,0.20)" stroke="rgba(26,107,107,0.45)" stroke-width="1"/>
+ 
+  <!-- axes -->
+  <line x1="${pL}" y1="${pT}" x2="${pL}" y2="${H-pB+4}" stroke="#888" stroke-width="1.5"/>
+  <line x1="${pL-4}" y1="${H-pB}" x2="${W-pR}" y2="${H-pB}" stroke="#888" stroke-width="1.5"/>
+  <polygon points="${pL},${pT} ${pL-4},${pT+8} ${pL+4},${pT+8}" fill="#888"/>
+  <polygon points="${W-pR},${H-pB} ${W-pR-8},${H-pB-4} ${W-pR-8},${H-pB+4}" fill="#888"/>
+ 
+  <!-- dashed zero line -->
+  <line x1="${pL}" y1="${y0}" x2="${W-pR}" y2="${y0}"
+        stroke="#ccc" stroke-width="1" stroke-dasharray="3,3"/>
+ 
+  <!-- curve -->
+  <path d="${curvePath}" fill="none" stroke="#1a6b6b"
+        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+ 
+  <!-- tick marks -->
+  <line x1="${px(0)}"  y1="${H-pB-4}" x2="${px(0)}"  y2="${H-pB+5}" stroke="#555" stroke-width="1.2"/>
+  <line x1="${px(c1)}" y1="${H-pB-4}" x2="${px(c1)}" y2="${H-pB+5}" stroke="#555" stroke-width="1.4"/>
+  <line x1="${px(c2)}" y1="${H-pB-4}" x2="${px(c2)}" y2="${H-pB+5}" stroke="#555" stroke-width="1.4"/>
+  <line x1="${px(c3)}" y1="${H-pB-4}" x2="${px(c3)}" y2="${H-pB+5}" stroke="#555" stroke-width="1.4"/>
+ 
+  <!-- x labels -->
+  <text x="${px(0)}"  y="${H-pB+16}" text-anchor="middle" font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#555">0</text>
+  <text x="${px(c1)}" y="${H-pB+16}" text-anchor="middle" font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#555">${c1}</text>
+  <text x="${px(c2)}" y="${H-pB+16}" text-anchor="middle" font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#555">${c2}</text>
+  <text x="${px(c3)}" y="${H-pB+16}" text-anchor="middle" font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#555">${c3}</text>
+ 
+  <!-- area labels -->
+  <text x="${px(mid1)}" y="${py(h1/1.9)}" text-anchor="middle" font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#1a6b6b" font-weight="700">+${a1}</text>
+  <text x="${px(mid2)}" y="${py(h2/1.9)}" text-anchor="middle" font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#c0392b" font-weight="700">&#8722;${a2}</text>
+  <text x="${px(mid3)}" y="${py(h3/1.9)}" text-anchor="middle" font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#1a6b6b" font-weight="700">+${a3}</text>
+ 
+  <!-- axis labels -->
+  <text x="${W-pR+2}" y="${H-pB+4}" font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#777">x</text>
+  <text x="${pL-6}"   y="${pT-2}"   font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#777">y</text>
+  <text x="${px(mid1)}" y="${py(h1)-18}" font-size="11"
+        font-family="serif" font-style="italic" fill="#1a6b6b" text-anchor="middle">f(x)</text>
+</svg>`;
+ 
+    return {
+      text: `The graph of $f(x)$ is shown. Using the labelled areas, find $\\displaystyle\\int_{${c3}}^{0} f(x)\\,dx$.
+${svg}`,
+      topic: 'Graph — Net Area with Reversed Limits',
+      options: shuffle([
+        { tex: `$${-net}$`, correct: true },
+        { tex: `$${net}$`, correct: false },
+        { tex: `$${total}$`, correct: false },
+        { tex: `$0$`, correct: false }
+      ]),
+      explanation: `Two steps. First, read the net signed area left-to-right: $\\int_0^{${c3}} f\\,dx = (+${a1})+(-${a2})+(+${a3}) = ${net}$. Then apply the reversed-limits rule: $\\int_{${c3}}^{0} f\\,dx = -\\int_0^{${c3}} f\\,dx = -${net} = ${-net}$. Both signed area AND the sign-flip rule are tested here.`
+    };
+  },
   
-  // Q15 — Subdivision Rule
+  // ─────────────────────────────────────────────────────────────
+  //  QG7 — NET ZERO TRAP  (two equal regions that cancel)
+  // ─────────────────────────────────────────────────────────────
+  () => {
+    const area = randInt(4, 12);
+    const c    = randInt(2, 5);
+    const d    = c + randInt(2, 4);
+ 
+    const W=320, H=180, pL=40, pR=12, pT=14, pB=30;
+    const gW=W-pL-pR, gH=H-pT-pB;
+    const xMax=d+0.7, yMin=-2.2, yMax=2.5, yRng=yMax-yMin;
+    const px = x => (pL + (x/xMax)*gW).toFixed(1);
+    const py = y => (pT + gH - ((y-yMin)/yRng)*gH).toFixed(1);
+    const y0 = py(0);
+ 
+    const mid1 = c/2;
+    const mid2 = (c+d)/2;
+    const h1 =  1.75;
+    const h2 = -1.75;  // same height as hump to make areas visually equal
+ 
+    const curvePath =
+      `M${px(0)},${y0} ` +
+      `Q${px(mid1)},${py(h1)} ${px(c)},${y0} ` +
+      `Q${px(mid2)},${py(h2)} ${px(d)},${y0}`;
+ 
+    const svg = `<svg width="100%" viewBox="0 0 ${W} ${H}"
+  style="display:block;margin:10px auto 6px;max-width:320px;
+         border-radius:10px;background:#fdf8f0;border:1.5px solid #e0d6c8;">
+ 
+  <!-- shaded regions -->
+  <path d="M${px(0)},${y0} Q${px(mid1)},${py(h1)} ${px(c)},${y0} Z"
+        fill="rgba(26,107,107,0.22)" stroke="rgba(26,107,107,0.5)" stroke-width="1"/>
+  <path d="M${px(c)},${y0} Q${px(mid2)},${py(h2)} ${px(d)},${y0} Z"
+        fill="rgba(192,57,43,0.20)" stroke="rgba(192,57,43,0.5)" stroke-width="1"/>
+ 
+  <!-- axes -->
+  <line x1="${pL}" y1="${pT}" x2="${pL}" y2="${H-pB+4}" stroke="#888" stroke-width="1.5"/>
+  <line x1="${pL-4}" y1="${H-pB}" x2="${W-pR}" y2="${H-pB}" stroke="#888" stroke-width="1.5"/>
+  <polygon points="${pL},${pT} ${pL-4},${pT+8} ${pL+4},${pT+8}" fill="#888"/>
+  <polygon points="${W-pR},${H-pB} ${W-pR-8},${H-pB-4} ${W-pR-8},${H-pB+4}" fill="#888"/>
+ 
+  <!-- dashed zero line -->
+  <line x1="${pL}" y1="${y0}" x2="${W-pR}" y2="${y0}"
+        stroke="#ccc" stroke-width="1" stroke-dasharray="3,3"/>
+ 
+  <!-- curve -->
+  <path d="${curvePath}" fill="none" stroke="#1a6b6b"
+        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+ 
+  <!-- tick marks -->
+  <line x1="${px(0)}" y1="${H-pB-4}" x2="${px(0)}" y2="${H-pB+5}" stroke="#555" stroke-width="1.2"/>
+  <line x1="${px(c)}" y1="${H-pB-4}" x2="${px(c)}" y2="${H-pB+5}" stroke="#555" stroke-width="1.4"/>
+  <line x1="${px(d)}" y1="${H-pB-4}" x2="${px(d)}" y2="${H-pB+5}" stroke="#555" stroke-width="1.4"/>
+ 
+  <!-- x labels -->
+  <text x="${px(0)}" y="${H-pB+16}" text-anchor="middle" font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#555">0</text>
+  <text x="${px(c)}" y="${H-pB+16}" text-anchor="middle" font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#555">${c}</text>
+  <text x="${px(d)}" y="${H-pB+16}" text-anchor="middle" font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#555">${d}</text>
+ 
+  <!-- area labels — both show same value to highlight the trap -->
+  <text x="${px(mid1)}" y="${py(h1/2)}" text-anchor="middle" font-size="12"
+        font-family="IBM Plex Mono,monospace" fill="#1a6b6b" font-weight="700">+${area}</text>
+  <text x="${px(mid2)}" y="${py(h2/2)}" text-anchor="middle" font-size="12"
+        font-family="IBM Plex Mono,monospace" fill="#c0392b" font-weight="700">&#8722;${area}</text>
+ 
+  <!-- equal sign between the two area labels to reinforce they are equal -->
+  <text x="${px(c)}" y="${py(0)-12}" text-anchor="middle" font-size="10"
+        font-family="IBM Plex Mono,monospace" fill="#888">equal areas</text>
+ 
+  <!-- axis labels -->
+  <text x="${W-pR+2}" y="${H-pB+4}" font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#777">x</text>
+  <text x="${pL-6}"   y="${pT-2}"   font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#777">y</text>
+  <text x="${px(mid1)}" y="${py(h1)-18}" font-size="11"
+        font-family="serif" font-style="italic" fill="#1a6b6b" text-anchor="middle">f(x)</text>
+</svg>`;
+ 
+    return {
+      text: `The graph of $f(x)$ is shown. Both shaded regions have the same area $${area}$. A student says $\\displaystyle\\int_0^{${d}} f(x)\\,dx = ${2*area}$. Is the student correct?
+${svg}`,
+      topic: 'Graph — Net Zero Trap',
+      options: shuffle([
+        { tex: `No — the integral equals $0$ because the signed areas cancel`, correct: true },
+        { tex: `Yes — the integral sums all shaded areas regardless of sign`, correct: false },
+        { tex: `No — the integral equals $${area}$ (only the positive part counts)`, correct: false },
+        { tex: `Cannot be determined without the formula for $f(x)$`, correct: false }
+      ]),
+      explanation: `$\\int_0^{${d}} f\\,dx = (+${area}) + (-${area}) = 0$. The definite integral counts area above the axis as positive and area below as negative. Since both regions have equal size but opposite signs they cancel perfectly. The total unsigned area is $${2*area}$, but that is $\\int_0^{${d}}|f(x)|\\,dx$ — a different quantity.`
+    };
+  },
+
+  // QG8 — Graph: scale a known integral, then ask for value on double the interval
+  () => {
+    const val = randInt(4,12);
+    const a = 0, b = randInt(2,5);
+    const k = randInt(2,4);
+    const ans = k * val;
+    return {
+      text: `Suppose $\\displaystyle\\int_{${a}}^{${b}} f(x)\\,dx = ${val}$. A student claims $\\displaystyle\\int_{${a}}^{${b}} ${k}f(x)\\,dx = ${val}$ as well, because "the interval didn't change." Is the student right?`,
+      topic: 'Graph — Constant Multiple Misconception',
+      options: shuffle([
+        { tex: `No. $\\displaystyle\\int_{${a}}^{${b}} ${k}f(x)\\,dx = ${ans}$ by the constant multiple rule`, correct: true },
+        { tex: `Yes. The integral value depends only on the limits, not the coefficient`, correct: false },
+        { tex: `No. $\\displaystyle\\int_{${a}}^{${b}} ${k}f(x)\\,dx = ${val+k}$`, correct: false },
+        { tex: `Cannot be determined`, correct: false }
+      ]),
+      explanation: `The constant multiple rule says $\\int_a^b kf(x)\\,dx = k\\int_a^b f(x)\\,dx = ${k}\\times${val} = ${ans}$. Multiplying the integrand by $${k}$ scales every rectangle's height by $${k}$, so the total area scales too. The limits stay the same but the value changes.`
+    };
+  },
+
+  // QG9 — Graph: compare two integrals from graph description (dominance rule)
+  () => {
+    const a = randInt(1,3), b = randInt(a+2,a+5);
+    const fVal = randInt(6,20), gVal = randInt(1, fVal-2);
+    return {
+      text: `From a graph, $f(x) \\geq g(x) \\geq 0$ on $[${a},${b}]$, with $\\displaystyle\\int_{${a}}^{${b}} f(x)\\,dx = ${fVal}$ and $\\displaystyle\\int_{${a}}^{${b}} g(x)\\,dx = ${gVal}$. Which statement must be true?`,
+      topic: 'Graph — Dominance and Comparison',
+      options: shuffle([
+        { tex: `$\\displaystyle\\int_{${a}}^{${b}} [f(x)-g(x)]\\,dx = ${fVal-gVal} \\geq 0$`, correct: true },
+        { tex: `$\\displaystyle\\int_{${a}}^{${b}} [f(x)-g(x)]\\,dx = ${fVal+gVal}$`, correct: false },
+        { tex: `$\\displaystyle\\int_{${a}}^{${b}} f(x)\\,dx < \\displaystyle\\int_{${a}}^{${b}} g(x)\\,dx$`, correct: false },
+        { tex: `$\\displaystyle\\int_{${a}}^{${b}} [f(x)\\cdot g(x)]\\,dx = ${fVal*gVal}$`, correct: false }
+      ]),
+      explanation: `By linearity: $\\int[f-g]\\,dx = \\int f\\,dx - \\int g\\,dx = ${fVal}-${gVal} = ${fVal-gVal}$. Since $f\\geq g$ on $[${a},${b}]$, the difference $f-g\\geq 0$, so its integral is non-negative — confirmed. Option D is a common misconception: integrals do not multiply like that.`
+    };
+  },
+
+  / ─────────────────────────────────────────────────────────────
+  //  QG10 — ACCUMULATION FUNCTION  G(x) = ∫_{c1}^{x} f(t) dt
+  // ─────────────────────────────────────────────────────────────
+  () => {
+    const area1 = randInt(3, 8);
+    const area2 = randInt(2, 6);
+    const c1    = randInt(1, 2);
+    const c2    = c1 + randInt(2, 3);
+    const c3    = c2 + randInt(1, 3);
+    const Gc3   = area1 - area2;
+ 
+    const W=320, H=195, pL=40, pR=12, pT=14, pB=30;
+    const gW=W-pL-pR, gH=H-pT-pB;
+    const xMax=c3+0.8, yMin=-2.2, yMax=2.6, yRng=yMax-yMin;
+    const px = x => (pL + (x/xMax)*gW).toFixed(1);
+    const py = y => (pT + gH - ((y-yMin)/yRng)*gH).toFixed(1);
+    const y0 = py(0);
+ 
+    // Positive hump [c1,c2], negative dip [c2,c3]
+    const mid1 = (c1+c2)/2;
+    const mid2 = (c2+c3)/2;
+    const h1=1.8, h2=-1.6;
+ 
+    const curvePath =
+      `M${px(c1)},${y0} ` +
+      `Q${px(mid1)},${py(h1)} ${px(c2)},${y0} ` +
+      `Q${px(mid2)},${py(h2)} ${px(c3)},${y0}`;
+ 
+    // Shade both regions (G(c3) = area1 - area2)
+    const shadePos = `M${px(c1)},${y0} Q${px(mid1)},${py(h1)} ${px(c2)},${y0} Z`;
+    const shadeNeg = `M${px(c2)},${y0} Q${px(mid2)},${py(h2)} ${px(c3)},${y0} Z`;
+ 
+    // Brace/arrow showing G(c3) is being asked: vertical marker at c3
+    const markerX = px(c3);
+ 
+    const svg = `<svg width="100%" viewBox="0 0 ${W} ${H}"
+  style="display:block;margin:10px auto 6px;max-width:320px;
+         border-radius:10px;background:#fdf8f0;border:1.5px solid #e0d6c8;">
+ 
+  <!-- shaded regions -->
+  <path d="${shadePos}" fill="rgba(26,107,107,0.22)"
+        stroke="rgba(26,107,107,0.5)" stroke-width="1"/>
+  <path d="${shadeNeg}" fill="rgba(192,57,43,0.18)"
+        stroke="rgba(192,57,43,0.5)" stroke-width="1"/>
+ 
+  <!-- axes -->
+  <line x1="${pL}" y1="${pT}" x2="${pL}" y2="${H-pB+4}" stroke="#888" stroke-width="1.5"/>
+  <line x1="${pL-4}" y1="${H-pB}" x2="${W-pR}" y2="${H-pB}" stroke="#888" stroke-width="1.5"/>
+  <polygon points="${pL},${pT} ${pL-4},${pT+8} ${pL+4},${pT+8}" fill="#888"/>
+  <polygon points="${W-pR},${H-pB} ${W-pR-8},${H-pB-4} ${W-pR-8},${H-pB+4}" fill="#888"/>
+ 
+  <!-- dashed zero guide -->
+  <line x1="${pL}" y1="${y0}" x2="${W-pR}" y2="${y0}"
+        stroke="#ccc" stroke-width="1" stroke-dasharray="3,3"/>
+ 
+  <!-- curve — note starts at c1, not 0, because G is defined from c1 -->
+  <path d="${curvePath}" fill="none" stroke="#2980b9"
+        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+ 
+  <!-- vertical dashed line at x=c3 (the query point) -->
+  <line x1="${markerX}" y1="${pT+4}" x2="${markerX}" y2="${H-pB}"
+        stroke="#d4a017" stroke-width="1.5" stroke-dasharray="4,3"/>
+ 
+  <!-- G(c3) = ? label at top of marker -->
+  <rect x="${parseFloat(markerX)-24}" y="${pT+2}" width="50" height="16"
+        rx="4" fill="#fff8ec" stroke="#d4a017" stroke-width="1"/>
+  <text x="${parseFloat(markerX)+1}" y="${pT+13}" text-anchor="middle"
+        font-size="10" font-family="IBM Plex Mono,monospace"
+        fill="#d4a017" font-weight="700">G(${c3}) = ?</text>
+ 
+  <!-- tick marks -->
+  <line x1="${px(c1)}" y1="${H-pB-4}" x2="${px(c1)}" y2="${H-pB+5}" stroke="#555" stroke-width="1.4"/>
+  <line x1="${px(c2)}" y1="${H-pB-4}" x2="${px(c2)}" y2="${H-pB+5}" stroke="#555" stroke-width="1.4"/>
+  <line x1="${px(c3)}" y1="${H-pB-4}" x2="${px(c3)}" y2="${H-pB+5}" stroke="#d4a017" stroke-width="2"/>
+ 
+  <!-- x labels -->
+  <text x="${px(c1)}" y="${H-pB+16}" text-anchor="middle" font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#555">${c1}</text>
+  <text x="${px(c2)}" y="${H-pB+16}" text-anchor="middle" font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#555">${c2}</text>
+  <text x="${px(c3)}" y="${H-pB+16}" text-anchor="middle" font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#d4a017" font-weight="700">${c3}</text>
+ 
+  <!-- area labels -->
+  <text x="${px(mid1)}" y="${py(h1/1.9)}" text-anchor="middle" font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#1a6b6b" font-weight="700">+${area1}</text>
+  <text x="${px(mid2)}" y="${py(h2/1.9)}" text-anchor="middle" font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#c0392b" font-weight="700">&#8722;${area2}</text>
+ 
+  <!-- base point label -->
+  <text x="${px(c1)}" y="${py(0)+18}" text-anchor="middle" font-size="9"
+        font-family="IBM Plex Mono,monospace" fill="#2980b9">base</text>
+ 
+  <!-- axis labels -->
+  <text x="${W-pR+2}" y="${H-pB+4}" font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#777">t</text>
+  <text x="${pL-6}"   y="${pT-2}"   font-size="11"
+        font-family="IBM Plex Mono,monospace" fill="#777">y</text>
+  <text x="${px(mid1)}" y="${py(h1)-16}" font-size="11"
+        font-family="serif" font-style="italic" fill="#2980b9" text-anchor="middle">f(t)</text>
+</svg>`;
+ 
+    return {
+      text: `Define $G(x) = \\displaystyle\\int_{${c1}}^{x} f(t)\\,dt$. The graph of $f(t)$ is shown. The teal region has area $${area1}$ and the red region has area $${area2}$. Find $G(${c3})$.
+${svg}`,
+      topic: 'Graph — Accumulation Function Value',
+      options: shuffle([
+        { tex: `$${Gc3}$`, correct: true },
+        { tex: `$${area1 + area2}$`, correct: false },
+        { tex: `$${area1}$`, correct: false },
+        { tex: `$0$`, correct: false }
+      ]),
+      explanation: `$G(${c3}) = \\int_{${c1}}^{${c3}} f(t)\\,dt = \\int_{${c1}}^{${c2}} f\\,dt + \\int_{${c2}}^{${c3}} f\\,dt = +${area1} + (-${area2}) = ${Gc3}$. The accumulation function $G(x)$ records the running signed area from the base point $x=${c1}$. By FTC Part 1, $G'(x)=f(x)$ — so the graph of $f$ directly tells you how $G$ is growing or shrinking.`
+    };
+  },
+  
+  // Q28 — Subdivision Rule
   () => {
     const total = randInt(8,20), part1 = randInt(3, total-2);
     const val_total = randInt(10,30), val_part1 = randInt(3, val_total-1);
