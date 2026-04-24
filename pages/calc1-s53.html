@@ -745,88 +745,69 @@ select { font-family: var(--fm-lec); font-size: .8rem; background: #1f2937; colo
   <div class="card al">
     <h4 style="margin-top:0;color:var(--accent)">Example &mdash; Area Using the Limit</h4>
     <p>Find the area under $f(x) = 3x$ from $x = 0$ to $x = 2$ using the limit definition.</p>
-    <div style="display:flex;justify-content:center;margin:14px 0 10px;">
-  <canvas id="areaCanvas" width="220" height="160"
-    style="border-radius:10px;background:#fdf8f0;border:1.5px solid var(--border-lec);">
-  </canvas>
-</div>
-<script>
-(function(){
-  const cv = document.getElementById('areaCanvas');
-  const ctx = cv.getContext('2d');
-  const W = cv.width, H = cv.height;
-  const padL=34, padR=14, padT=12, padB=28;
-  const gW=W-padL-padR, gH=H-padT-padB;
-  const xMax=2.4, yMax=7.5;
-  function cx(x){ return padL + (x/xMax)*gW; }
-  function cy(y){ return padT + gH - (y/yMax)*gH; }
-
-  // Shaded triangle under f(x)=3x from 0 to 2
-  ctx.beginPath();
-  ctx.moveTo(cx(0), cy(0));
-  ctx.lineTo(cx(2), cy(0));
-  ctx.lineTo(cx(2), cy(6));
-  ctx.closePath();
-  ctx.fillStyle = 'rgba(192,57,43,0.13)';
-  ctx.fill();
-  ctx.strokeStyle = 'rgba(192,57,43,0.35)';
-  ctx.lineWidth = 1;
-  ctx.stroke();
-
-  // "Area = 6" label inside triangle
-  ctx.fillStyle = '#c0392b';
-  ctx.font = 'bold 10px IBM Plex Mono,monospace';
-  ctx.textAlign = 'center';
-  ctx.fillText('Area = 6', cx(1.1), cy(1.8));
-
-  // Axes
-  ctx.strokeStyle = '#888';
-  ctx.lineWidth = 1.3;
-  ctx.beginPath();
-  ctx.moveTo(cx(0), cy(0)); ctx.lineTo(cx(xMax), cy(0));
-  ctx.moveTo(cx(0), cy(0)); ctx.lineTo(cx(0), cy(yMax));
-  ctx.stroke();
-
-  // Axis arrows
-  ctx.fillStyle = '#888';
-  ctx.beginPath(); ctx.moveTo(cx(xMax),cy(0)); ctx.lineTo(cx(xMax)-6,cy(0)-3); ctx.lineTo(cx(xMax)-6,cy(0)+3); ctx.fill();
-  ctx.beginPath(); ctx.moveTo(cx(0),cy(yMax)); ctx.lineTo(cx(0)-3,cy(yMax)+6); ctx.lineTo(cx(0)+3,cy(yMax)+6); ctx.fill();
-
-  // x ticks: 1, 2
-  ctx.strokeStyle = '#aaa'; ctx.lineWidth = 1;
-  ctx.fillStyle = '#555'; ctx.font = '9px IBM Plex Mono,monospace'; ctx.textAlign = 'center';
-  [1,2].forEach(x => {
-    ctx.beginPath(); ctx.moveTo(cx(x),cy(0)); ctx.lineTo(cx(x),cy(0)+4); ctx.stroke();
-    ctx.fillText(x, cx(x), cy(0)+13);
-  });
-
-  // y ticks: 2, 4, 6
-  ctx.textAlign = 'right';
-  [2,4,6].forEach(y => {
-    ctx.beginPath(); ctx.moveTo(cx(0),cy(y)); ctx.lineTo(cx(0)-4,cy(y)); ctx.stroke();
-    ctx.fillText(y, cx(0)-6, cy(y)+3);
-  });
-
-  // f(x)=3x line
-  ctx.beginPath();
-  ctx.moveTo(cx(0), cy(0));
-  ctx.lineTo(cx(2.2), cy(6.6));
-  ctx.strokeStyle = '#c0392b';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-
-  // f(x) label
-  ctx.fillStyle = '#c0392b';
-  ctx.font = 'bold 9px IBM Plex Mono,monospace';
-  ctx.textAlign = 'left';
-  ctx.fillText('f(x)=3x', cx(1.65), cy(4.6));
-
-  // Axis name labels
-  ctx.fillStyle = '#777'; ctx.font = '9px IBM Plex Mono,monospace';
-  ctx.textAlign = 'center'; ctx.fillText('x', cx(xMax)+8, cy(0)+3);
-  ctx.fillText('y', cx(0), cy(yMax)-5);
-})();
-</script>
+    <div style="margin:10px 0 12px;">
+      <canvas id="areaCanvas" 
+        style="display:block;width:180px;height:130px;border-radius:8px;background:#fdf8f0;border:1.5px solid var(--border-lec);">
+      </canvas>
+    </div>
+    <script>
+    (function(){
+      const cv = document.getElementById('areaCanvas');
+      // Fix retina: match pixel buffer to CSS size exactly
+      cv.width = 180;
+      cv.height = 130;
+      const ctx = cv.getContext('2d');
+      const W=180, H=130;
+      const padL=28, padR=10, padT=10, padB=22;
+      const gW=W-padL-padR, gH=H-padT-padB;
+      const xMax=2.4, yMax=7.5;
+      function cx(x){ return padL+(x/xMax)*gW; }
+      function cy(y){ return padT+gH-(y/yMax)*gH; }
+    
+      // Shaded triangle
+      ctx.beginPath();
+      ctx.moveTo(cx(0),cy(0)); ctx.lineTo(cx(2),cy(0)); ctx.lineTo(cx(2),cy(6));
+      ctx.closePath();
+      ctx.fillStyle='rgba(192,57,43,0.12)'; ctx.fill();
+      ctx.strokeStyle='rgba(192,57,43,0.3)'; ctx.lineWidth=1; ctx.stroke();
+    
+      // Axes
+      ctx.strokeStyle='#999'; ctx.lineWidth=1.2;
+      ctx.beginPath();
+      ctx.moveTo(cx(0),cy(0)); ctx.lineTo(cx(xMax),cy(0));
+      ctx.moveTo(cx(0),cy(0)); ctx.lineTo(cx(0),cy(yMax));
+      ctx.stroke();
+    
+      // x ticks
+      ctx.fillStyle='#777'; ctx.font='8px IBM Plex Mono,monospace'; ctx.textAlign='center';
+      [1,2].forEach(x=>{
+        ctx.beginPath(); ctx.moveTo(cx(x),cy(0)); ctx.lineTo(cx(x),cy(0)+3); ctx.strokeStyle='#aaa'; ctx.lineWidth=1; ctx.stroke();
+        ctx.fillText(x, cx(x), cy(0)+11);
+      });
+    
+      // y ticks
+      ctx.textAlign='right';
+      [2,4,6].forEach(y=>{
+        ctx.beginPath(); ctx.moveTo(cx(0),cy(y)); ctx.lineTo(cx(0)-3,cy(y)); ctx.stroke();
+        ctx.fillText(y, cx(0)-5, cy(y)+3);
+      });
+    
+      // f(x)=3x line
+      ctx.beginPath();
+      ctx.moveTo(cx(0),cy(0)); ctx.lineTo(cx(2.2),cy(6.6));
+      ctx.strokeStyle='#c0392b'; ctx.lineWidth=1.8; ctx.stroke();
+    
+      // Labels
+      ctx.fillStyle='#c0392b'; ctx.font='bold 8px IBM Plex Mono,monospace';
+      ctx.textAlign='left'; ctx.fillText('f(x)=3x', cx(1.5), cy(4.2));
+      ctx.textAlign='center'; ctx.fillText('Area=6', cx(0.85), cy(1.2));
+    
+      // Axis letters
+      ctx.fillStyle='#999'; ctx.font='8px IBM Plex Mono,monospace';
+      ctx.textAlign='center'; ctx.fillText('x', cx(xMax)+6, cy(0)+3);
+      ctx.fillText('y', cx(0), cy(yMax)-4);
+    })();
+    </script>
     <button class="toggle-btn" onclick="toggleAnswer('lim1')">Show Full Solution</button>
     <div class="answer-box" id="lim1">
       <p>$\Delta x = \dfrac{2}{n}$, right endpoints: $x_i = \dfrac{2i}{n}$</p>
