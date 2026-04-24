@@ -12,321 +12,358 @@ MathJax = {
   options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
 };
 </script>
-<!-- jsPDF for result card -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&family=Source+Sans+3:wght@300;400;500;600&display=swap');
 
 :root {
-  --ink: #1a1a2e;
-  --paper: #fdf8f0;
-  --cream: #f5ede0;
-  --accent: #c0392b;
-  --gold: #d4a017;
-  --teal: #1a6b6b;
-  --sky: #2980b9;
-  --green: #27ae60;
-  --muted: #7f8c8d;
-  --border: #e0d6c8;
-  --shadow: 0 4px 24px rgba(26,26,46,.10);
+  --ink: #1a1a2e; --paper: #fdf8f0; --cream: #f5ede0;
+  --accent: #c0392b; --gold: #d4a017; --teal: #1a6b6b;
+  --sky: #2980b9; --green: #27ae60; --muted: #7f8c8d;
+  --border: #e0d6c8; --shadow: 0 4px 24px rgba(26,26,46,.10);
   --fh: 'Playfair Display', Georgia, serif;
   --fb: 'Source Sans 3', sans-serif;
   --fm: 'IBM Plex Mono', monospace;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body { background: var(--paper); color: var(--ink); font-family: var(--fb); min-height: 100vh; }
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--fb);min-height:100vh}
 
-/* ── PAGE HEADER ── */
-.quiz-header {
-  background: var(--ink);
-  color: var(--paper);
-  padding: 32px 24px 28px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+/* ── QUIZ PAGE SPECIFIC HEADER ── */
+.quiz-page-hero{
+  background:var(--ink);color:var(--paper);
+  padding:52px 24px 40px;text-align:center;
+  position:relative;overflow:hidden;
+  margin-top:0;
 }
-.quiz-header::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.025) 40px,rgba(255,255,255,.025) 41px);
+.quiz-page-hero::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.025) 40px,rgba(255,255,255,.025) 41px);
 }
-.quiz-header-tag {
-  font-family: var(--fm); font-size: .68rem; letter-spacing: .24em;
-  text-transform: uppercase; color: var(--gold); margin-bottom: 10px; position: relative;
+.quiz-page-hero-tag{
+  font-family:var(--fm);font-size:.68rem;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:10px;position:relative;
 }
-.quiz-header h1 {
-  font-family: var(--fh); font-size: clamp(1.6rem,4vw,2.6rem);
-  font-weight: 700; position: relative; margin-bottom: 6px;
+.quiz-page-hero h1{
+  font-family:var(--fh);font-size:clamp(1.6rem,4vw,2.6rem);
+  font-weight:700;position:relative;margin-bottom:6px;
 }
-.quiz-header h1 em { color: var(--gold); font-style: italic; }
-.quiz-header p { font-size: .95rem; color: #c9c2b8; position: relative; }
+.quiz-page-hero h1 em{color:var(--gold);font-style:italic}
+.quiz-page-hero p{font-size:.95rem;color:#c9c2b8;position:relative}
 
 /* ── STATS BAR ── */
-.stats-bar {
-  background: #fff;
-  border-bottom: 1px solid var(--border);
-  padding: 14px 24px;
-  display: flex;
-  justify-content: center;
-  gap: 48px;
-  flex-wrap: wrap;
+.stats-bar{
+  background:#fff;border-bottom:1px solid var(--border);
+  padding:14px 24px;display:flex;justify-content:center;
+  gap:36px;flex-wrap:wrap;
 }
-.stat-item { text-align: center; }
-.stat-num {
-  font-family: var(--fm); font-size: 1.4rem; font-weight: 700;
-  color: var(--teal); display: block;
-}
-.stat-lbl {
-  font-family: var(--fm); font-size: .62rem; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--muted);
-}
+.stat-item{text-align:center}
+.stat-num{font-family:var(--fm);font-size:1.3rem;font-weight:700;color:var(--teal);display:block}
+.stat-lbl{font-family:var(--fm);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 
 /* ── MAIN CONTAINER ── */
-.quiz-container {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 32px 24px 60px;
-}
+.quiz-container{max-width:720px;margin:0 auto;padding:32px 24px 60px}
 
 /* ── CARDS ── */
-.card {
-  background: #fff;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 32px 36px;
-  box-shadow: var(--shadow);
-  margin-bottom: 24px;
+.card{
+  background:#fff;border:1px solid var(--border);
+  border-radius:14px;padding:32px 36px;
+  box-shadow:var(--shadow);margin-bottom:24px;
 }
 
 /* ── FORM ── */
-.form-title {
-  font-family: var(--fh); font-size: 1.5rem; font-weight: 700;
-  color: var(--ink); margin-bottom: 6px;
+.form-title{font-family:var(--fh);font-size:1.5rem;font-weight:700;color:var(--ink);margin-bottom:6px}
+.form-sub{color:var(--muted);font-size:.92rem;margin-bottom:28px}
+.field{margin-bottom:20px}
+.field label{
+  display:block;font-family:var(--fm);font-size:.68rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;
 }
-.form-sub { color: var(--muted); font-size: .92rem; margin-bottom: 28px; }
+.field input{
+  width:100%;padding:11px 14px;border:1.5px solid var(--border);
+  border-radius:8px;font-family:var(--fb);font-size:1rem;
+  color:var(--ink);background:var(--paper);transition:border-color .2s;outline:none;
+}
+.field input:focus{border-color:var(--teal)}
+.field .opt{font-family:var(--fm);font-size:.64rem;color:#aaa;margin-left:6px}
+.start-btn{
+  width:100%;padding:14px;background:var(--teal);color:#fff;
+  border:none;border-radius:10px;font-family:var(--fm);font-size:.82rem;
+  letter-spacing:.12em;text-transform:uppercase;cursor:pointer;
+  transition:all .2s;margin-top:8px;
+}
+.start-btn:hover{background:#145555;transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,107,107,.3)}
 
-.field { margin-bottom: 20px; }
-.field label {
-  display: block; font-family: var(--fm); font-size: .68rem;
-  letter-spacing: .14em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 7px;
+/* ── QUIZ META ── */
+.quiz-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:14px;flex-wrap:wrap;gap:10px;
 }
-.field input {
-  width: 100%; padding: 11px 14px;
-  border: 1.5px solid var(--border); border-radius: 8px;
-  font-family: var(--fb); font-size: 1rem; color: var(--ink);
-  background: var(--paper); transition: border-color .2s;
-  outline: none;
-}
-.field input:focus { border-color: var(--teal); }
-.field .opt { font-family: var(--fm); font-size: .64rem; color: #aaa; margin-left: 6px; }
+.quiz-student-name{font-family:var(--fh);font-size:1.05rem;color:var(--ink)}
+.quiz-progress{font-family:var(--fm);font-size:.75rem;color:var(--muted)}
+.progress-bar-wrap{background:var(--cream);border-radius:99px;height:6px;margin-bottom:12px;overflow:hidden}
+.progress-bar-fill{height:100%;background:var(--teal);border-radius:99px;transition:width .4s ease}
 
-.start-btn {
-  width: 100%; padding: 14px;
-  background: var(--teal); color: #fff;
-  border: none; border-radius: 10px;
-  font-family: var(--fm); font-size: .82rem; letter-spacing: .12em;
-  text-transform: uppercase; cursor: pointer;
-  transition: all .2s; margin-top: 8px;
+/* ── TIMER BAR ── */
+.timer-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--cream);border-radius:10px;padding:8px 16px;
+  margin-bottom:16px;font-family:var(--fm);font-size:.78rem;
+  gap:12px;flex-wrap:wrap;
 }
-.start-btn:hover { background: #145555; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,107,107,.3); }
-
-/* ── QUIZ AREA ── */
-.quiz-meta {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 24px; flex-wrap: wrap; gap: 10px;
+.timer-display{
+  display:flex;align-items:center;gap:8px;
+  color:var(--teal);font-weight:700;font-size:.92rem;
 }
-.quiz-student-name {
-  font-family: var(--fh); font-size: 1.1rem; color: var(--ink);
+.timer-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--teal);
+  animation:pulse 1.2s infinite;
 }
-.quiz-progress {
-  font-family: var(--fm); font-size: .75rem; color: var(--muted);
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+.timer-dot.warn{background:var(--accent);animation:pulse .6s infinite}
+.withdraw-btn{
+  padding:6px 14px;background:transparent;
+  border:1.5px solid var(--accent);border-radius:7px;
+  color:var(--accent);font-family:var(--fm);font-size:.68rem;
+  letter-spacing:.08em;text-transform:uppercase;cursor:pointer;
+  transition:all .2s;
 }
-.progress-bar-wrap {
-  background: var(--cream); border-radius: 99px; height: 6px;
-  margin-bottom: 28px; overflow: hidden;
-}
-.progress-bar-fill {
-  height: 100%; background: var(--teal);
-  border-radius: 99px; transition: width .4s ease;
-}
+.withdraw-btn:hover{background:var(--accent);color:#fff}
 
 /* ── QUESTION CARD ── */
-.q-number {
-  font-family: var(--fm); font-size: .66rem; letter-spacing: .2em;
-  text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
-}
-.q-text {
-  font-family: var(--fh); font-size: 1.18rem; font-weight: 400;
-  color: var(--ink); margin-bottom: 22px; line-height: 1.6;
-}
-.q-marks {
-  font-family: var(--fm); font-size: .68rem; color: var(--muted);
-  margin-bottom: 18px;
-}
+.q-number{font-family:var(--fm);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.q-text{font-family:var(--fh);font-size:1.18rem;font-weight:400;color:var(--ink);margin-bottom:22px;line-height:1.6}
+.q-marks{font-family:var(--fm);font-size:.68rem;color:var(--muted);margin-bottom:18px}
 
 /* ── OPTIONS ── */
-.options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-.opt-btn {
-  padding: 13px 18px;
-  border: 1.5px solid var(--border); border-radius: 10px;
-  background: var(--paper); color: var(--ink);
-  font-family: var(--fb); font-size: .97rem;
-  cursor: pointer; text-align: left; transition: all .2s;
-  display: flex; align-items: center; gap: 12px;
+.options{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.opt-btn{
+  padding:13px 18px;border:1.5px solid var(--border);border-radius:10px;
+  background:var(--paper);color:var(--ink);font-family:var(--fb);font-size:.97rem;
+  cursor:pointer;text-align:left;transition:all .2s;
+  display:flex;align-items:center;gap:12px;
 }
-.opt-btn:hover:not(:disabled) { border-color: var(--teal); background: #eef7f7; }
-.opt-btn.selected { border-color: var(--teal); background: #eef7f7; }
-.opt-btn.correct { border-color: var(--green); background: #f0faf4; color: var(--green); }
-.opt-btn.wrong { border-color: var(--accent); background: #fff5f5; color: var(--accent); }
-.opt-btn:disabled { cursor: default; }
-.opt-letter {
-  width: 28px; height: 28px; border-radius: 50%;
-  background: var(--cream); display: flex; align-items: center; justify-content: center;
-  font-family: var(--fm); font-size: .75rem; font-weight: 600;
-  flex-shrink: 0; transition: all .2s;
+.opt-btn:hover:not(:disabled){border-color:var(--teal);background:#eef7f7}
+.opt-btn.correct{border-color:var(--green);background:#f0faf4;color:var(--green)}
+.opt-btn.wrong{border-color:var(--accent);background:#fff5f5;color:var(--accent)}
+.opt-btn:disabled{cursor:default}
+.opt-letter{
+  width:28px;height:28px;border-radius:50%;background:var(--cream);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--fm);font-size:.75rem;font-weight:600;
+  flex-shrink:0;transition:all .2s;
 }
-.opt-btn.selected .opt-letter { background: var(--teal); color: #fff; }
-.opt-btn.correct .opt-letter { background: var(--green); color: #fff; }
-.opt-btn.wrong .opt-letter { background: var(--accent); color: #fff; }
+.opt-btn.correct .opt-letter{background:var(--green);color:#fff}
+.opt-btn.wrong .opt-letter{background:var(--accent);color:#fff}
 
 /* ── FEEDBACK ── */
-.q-feedback {
-  padding: 12px 16px; border-radius: 8px;
-  font-size: .93rem; display: none; margin-bottom: 16px;
-}
-.q-feedback.correct { background: #f0faf4; border-left: 3px solid var(--green); color: #1a5c36; display: block; }
-.q-feedback.wrong { background: #fff5f5; border-left: 3px solid var(--accent); color: #7a1a1a; display: block; }
+.q-feedback{padding:12px 16px;border-radius:8px;font-size:.93rem;display:none;margin-bottom:16px}
+.q-feedback.correct{background:#f0faf4;border-left:3px solid var(--green);color:#1a5c36;display:block}
+.q-feedback.wrong{background:#fff5f5;border-left:3px solid var(--accent);color:#7a1a1a;display:block}
 
 /* ── NAV BUTTONS ── */
-.q-nav { display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px; }
-.nav-btn {
-  padding: 10px 24px; border-radius: 8px;
-  font-family: var(--fm); font-size: .76rem; letter-spacing: .1em;
-  text-transform: uppercase; cursor: pointer; transition: all .2s; border: none;
+.q-nav{display:flex;justify-content:flex-end;gap:12px;margin-top:8px}
+.nav-btn{
+  padding:10px 24px;border-radius:8px;font-family:var(--fm);
+  font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;
+  cursor:pointer;transition:all .2s;border:none;
 }
-.nav-btn.primary { background: var(--teal); color: #fff; }
-.nav-btn.primary:hover { background: #145555; }
-.nav-btn.secondary { background: var(--cream); color: var(--muted); border: 1px solid var(--border); }
-.nav-btn.secondary:hover { border-color: var(--teal); color: var(--teal); }
-.nav-btn:disabled { opacity: .4; cursor: default; }
+.nav-btn.primary{background:var(--teal);color:#fff}
+.nav-btn.primary:hover{background:#145555}
+.nav-btn:disabled{opacity:.4;cursor:default}
+
+/* ── TAB WARNING BANNER ── */
+.tab-warning-banner{
+  display:none;background:#fff3cd;border:1.5px solid #d4a017;
+  border-radius:10px;padding:12px 18px;margin-bottom:14px;
+  font-family:var(--fm);font-size:.78rem;color:#856404;
+  display:flex;align-items:center;gap:10px;
+}
+.tab-warning-banner.hidden{display:none!important}
 
 /* ── RESULT CARD ── */
-.result-header {
-  text-align: center; margin-bottom: 28px;
+.result-header{text-align:center;margin-bottom:28px}
+.result-score-circle{
+  width:120px;height:120px;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  margin:0 auto 16px;border:4px solid var(--teal);
 }
-.result-score-circle {
-  width: 120px; height: 120px; border-radius: 50%;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  margin: 0 auto 16px;
-  border: 4px solid var(--teal);
-}
-.result-score-num {
-  font-family: var(--fm); font-size: 2rem; font-weight: 700; color: var(--teal);
-  line-height: 1;
-}
-.result-score-denom {
-  font-family: var(--fm); font-size: .82rem; color: var(--muted);
-}
-.result-name {
-  font-family: var(--fh); font-size: 1.4rem; color: var(--ink); margin-bottom: 4px;
-}
-.result-grade {
-  font-family: var(--fm); font-size: .9rem; letter-spacing: .1em;
-  text-transform: uppercase;
-}
-.result-grade.A { color: var(--green); }
-.result-grade.B { color: var(--teal); }
-.result-grade.C { color: var(--gold); }
-.result-grade.F { color: var(--accent); }
+.result-score-num{font-family:var(--fm);font-size:2rem;font-weight:700;color:var(--teal);line-height:1}
+.result-score-denom{font-family:var(--fm);font-size:.82rem;color:var(--muted)}
+.result-name{font-family:var(--fh);font-size:1.4rem;color:var(--ink);margin-bottom:4px}
+.result-grade{font-family:var(--fm);font-size:.9rem;letter-spacing:.1em;text-transform:uppercase}
+.result-grade.A{color:var(--green)}
+.result-grade.B{color:var(--teal)}
+.result-grade.C{color:var(--gold)}
+.result-grade.F{color:var(--accent)}
+.result-grade.W{color:var(--muted)}
 
-.result-breakdown { margin: 20px 0; }
-.rb-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 10px 0; border-bottom: 1px solid var(--border);
-  font-size: .93rem;
+.result-breakdown{margin:20px 0}
+.rb-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;border-bottom:1px solid var(--border);font-size:.93rem;
 }
-.rb-row:last-child { border-bottom: none; }
-.rb-q { color: var(--muted); font-size: .85rem; }
-.rb-correct { color: var(--green); font-family: var(--fm); font-size: .8rem; }
-.rb-wrong { color: var(--accent); font-family: var(--fm); font-size: .8rem; }
+.rb-row:last-child{border-bottom:none}
+.rb-correct{color:var(--green);font-family:var(--fm);font-size:.8rem}
+.rb-wrong{color:var(--accent);font-family:var(--fm);font-size:.8rem}
 
-.result-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
-.action-btn {
-  flex: 1; min-width: 140px; padding: 12px 20px;
-  border-radius: 10px; font-family: var(--fm); font-size: .76rem;
-  letter-spacing: .1em; text-transform: uppercase;
-  cursor: pointer; transition: all .2s; border: none;
-  text-align: center;
+.result-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.action-btn{
+  flex:1;min-width:140px;padding:12px 20px;border-radius:10px;
+  font-family:var(--fm);font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;
+  cursor:pointer;transition:all .2s;border:none;text-align:center;
 }
-.action-btn.primary { background: var(--teal); color: #fff; }
-.action-btn.primary:hover { background: #145555; }
-.action-btn.secondary { background: var(--cream); color: var(--ink); border: 1px solid var(--border); }
-.action-btn.secondary:hover { border-color: var(--teal); }
+.action-btn.primary{background:var(--teal);color:#fff}
+.action-btn.primary:hover{background:#145555}
+.action-btn.secondary{background:var(--cream);color:var(--ink);border:1px solid var(--border)}
+.action-btn.secondary:hover{border-color:var(--teal)}
+
+/* ── WITHDRAWN CARD ── */
+.withdrawn-card{text-align:center;padding:40px 24px}
+.withdrawn-icon{font-size:3rem;margin-bottom:16px}
+.withdrawn-title{font-family:var(--fh);font-size:1.8rem;color:var(--muted);margin-bottom:8px}
+.withdrawn-sub{color:var(--muted);font-size:.95rem;margin-bottom:24px}
 
 /* ── SIGNATURE ── */
-.sig-area {
-  margin-top: 28px; padding-top: 20px;
-  border-top: 1px solid var(--border);
-  text-align: right;
-}
-.sig-name {
-  font-family: var(--fh); font-size: 1.3rem; font-style: italic; color: var(--ink);
-}
-.sig-title { font-family: var(--fm); font-size: .68rem; color: var(--muted); margin-top: 2px; }
+.sig-area{margin-top:28px;padding-top:20px;border-top:1px solid var(--border);text-align:right}
+.sig-name{font-family:var(--fh);font-size:1.3rem;font-style:italic;color:var(--ink)}
+.sig-title{font-family:var(--fm);font-size:.68rem;color:var(--muted);margin-top:2px}
 
 /* ── HIDDEN ── */
-.hidden { display: none !important; }
+.hidden{display:none!important}
 
-/* ── LOADER ── */
-.loader {
-  text-align: center; padding: 40px;
-  font-family: var(--fm); font-size: .82rem; color: var(--muted);
+/* ── MODAL (confirm withdraw) ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);
+  z-index:9999;align-items:center;justify-content:center;
 }
+.modal-overlay.show{display:flex}
+.modal-box{
+  background:#fff;border-radius:16px;padding:36px 40px;max-width:400px;width:90%;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center;
+}
+.modal-box h3{font-family:var(--fh);font-size:1.4rem;color:var(--ink);margin-bottom:10px}
+.modal-box p{color:var(--muted);font-size:.93rem;margin-bottom:24px}
+.modal-actions{display:flex;gap:12px;justify-content:center}
+.modal-btn{
+  padding:10px 28px;border-radius:8px;font-family:var(--fm);
+  font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;
+  cursor:pointer;border:none;transition:all .2s;
+}
+.modal-btn.danger{background:var(--accent);color:#fff}
+.modal-btn.danger:hover{background:#a93226}
+.modal-btn.cancel{background:var(--cream);color:var(--ink);border:1px solid var(--border)}
+.modal-btn.cancel:hover{border-color:var(--teal)}
 
 /* ── MOBILE ── */
-@media (max-width: 580px) {
-  .card { padding: 22px 18px; }
-  .stats-bar { gap: 24px; }
-  .quiz-container { padding: 20px 16px 40px; }
+@media(max-width:580px){
+  .card{padding:22px 18px}
+  .stats-bar{gap:18px}
+  .quiz-container{padding:20px 16px 40px}
+  .quiz-page-hero{padding:36px 16px 28px}
 }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="quiz-header">
-  <div class="quiz-header-tag">MATH-101 &middot; Calculus I &middot; LUMS</div>
+<!-- ══════════════════════════════════════════════
+     SITE NAV (matches rest of site)
+══════════════════════════════════════════════ -->
+<div id="sk-progress"><div id="sk-progress-bar"></div></div>
+<nav class="sk-nav">
+  <a href="../index.html" class="sk-nav-logo">Shoaib-K <span class="logo-badge">LUMS</span></a>
+  <div class="sk-nav-links" id="sk-nav-links">
+    <div class="sk-nav-item"><a href="../index.html" class="sk-nav-link">Home</a></div>
+    <div class="sk-nav-item"><a href="education.html" class="sk-nav-link">Education</a></div>
+    <div class="sk-nav-item">
+      <span class="sk-nav-link">Experience <span class="arrow">&#9662;</span></span>
+      <div class="sk-dropdown">
+        <a href="experience-instructor.html"><span class="dd-icon">&#127979;</span> As an Instructor</a>
+        <a href="experience-ta.html"><span class="dd-icon">&#128218;</span> As a TA</a>
+        <a href="math-circles.html"><span class="dd-icon">&#128309;</span> Math Circles</a>
+      </div>
+    </div>
+    <div class="sk-nav-item"><a href="courses.html" class="sk-nav-link active">Courses</a></div>
+    <div class="sk-nav-item"><a href="research.html" class="sk-nav-link">Research</a></div>
+    <div class="sk-nav-item"><a href="hobbies.html" class="sk-nav-link">Hobbies</a></div>
+    <div class="sk-nav-item"><a href="explore.html" class="sk-nav-link">Explore</a></div>
+    <div class="sk-nav-item"><a href="contact.html" class="sk-nav-link">Contact</a></div>
+  </div>
+  <div class="sk-hamburger" id="sk-hamburger" onclick="document.getElementById('sk-nav-links').classList.toggle('open');this.classList.toggle('active')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+     BREADCRUMB NAV
+══════════════════════════════════════════════ -->
+<div class="sk-breadcrumb">
+  <div class="sk-breadcrumb-inner">
+    <a href="../index.html">Home</a><span>&#8250;</span>
+    <a href="courses.html">Courses</a><span>&#8250;</span>
+    <a href="course-calc1.html">Calculus I</a><span>&#8250;</span>
+    <a href="calc1-s53.html">§5.3 The Definite Integral &amp; FTC</a><span>&#8250;</span>
+    <span class="current">Chapter 5 Quiz</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     QUIZ PAGE HERO
+══════════════════════════════════════════════ -->
+<div class="quiz-page-hero">
+  <div class="quiz-page-hero-tag">MATH-101 &middot; Calculus I &middot; LUMS</div>
   <h1>Integration Quiz &mdash; <em>Chapter 5</em></h1>
   <p>Indefinite Integration &middot; Substitution &middot; Definite Integrals &middot; Applications</p>
 </div>
 
-<!-- LIVE STATS BAR -->
+<!-- ══════════════════════════════════════════════
+     LIVE STATS BAR
+══════════════════════════════════════════════ -->
 <div class="stats-bar">
   <div class="stat-item">
     <span class="stat-num" id="totalAttempts">—</span>
     <span class="stat-lbl">Total Attempts</span>
   </div>
   <div class="stat-item">
-    <span class="stat-num" id="avgScore">—</span>
-    <span class="stat-lbl">Average Score</span>
+    <span class="stat-num" id="successfulTests">—</span>
+    <span class="stat-lbl">Completed</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num" id="withdrawnTests">—</span>
+    <span class="stat-lbl">Withdrawn</span>
   </div>
   <div class="stat-item">
     <span class="stat-num" id="avgPct">—%</span>
-    <span class="stat-lbl">Average %</span>
+    <span class="stat-lbl">Avg Score %</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num" id="avgTime">—</span>
+    <span class="stat-lbl">Avg Time</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     CONFIRM WITHDRAW MODAL
+══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="withdrawModal">
+  <div class="modal-box">
+    <h3>Withdraw from Quiz?</h3>
+    <p>Your progress will not be saved. This attempt will be recorded as <strong>Withdrawn</strong>. Are you sure?</p>
+    <div class="modal-actions">
+      <button class="modal-btn cancel" onclick="closeWithdrawModal()">Keep Going</button>
+      <button class="modal-btn danger" onclick="confirmWithdraw()">Yes, Withdraw</button>
+    </div>
   </div>
 </div>
 
 <div class="quiz-container">
 
-  <!-- SECTION 1: STUDENT INFO FORM -->
+  <!-- ── SECTION 1: STUDENT FORM ── -->
   <div id="sectionForm" class="card">
     <div class="form-title">Before You Begin</div>
     <div class="form-sub">Enter your details. Your name will appear on your result card.</div>
-
     <div class="field">
       <label>Full Name *</label>
       <input type="text" id="fName" placeholder="e.g. Muhammad Ali Khan" autocomplete="name">
@@ -343,51 +380,68 @@ body { background: var(--paper); color: var(--ink); font-family: var(--fb); min-
       <label>Campus ID <span class="opt">(optional)</span></label>
       <input type="text" id="fCampusId" placeholder="e.g. 24010001">
     </div>
-
     <button class="start-btn" onclick="startQuiz()">Start Quiz &#8594;</button>
     <div id="formError" style="color:var(--accent);font-family:var(--fm);font-size:.78rem;margin-top:12px;display:none;">
       Please fill in your name, class, and institute before starting.
     </div>
   </div>
 
-  <!-- SECTION 2: QUIZ -->
+  <!-- ── SECTION 2: QUIZ ── -->
   <div id="sectionQuiz" class="hidden">
     <div class="quiz-meta">
       <div class="quiz-student-name" id="quizStudentName"></div>
-      <div class="quiz-progress" id="quizProgress">Question 1 of 5</div>
+      <div class="quiz-progress" id="quizProgress">Question 1 of 10</div>
     </div>
     <div class="progress-bar-wrap">
       <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
     </div>
-    <div class="card" id="questionCard">
-      <!-- Filled dynamically -->
+
+    <!-- Tab warning banner -->
+    <div class="tab-warning-banner hidden" id="tabWarningBanner">
+      &#9888; <strong>Warning:</strong>&nbsp; Tab switching detected. If you switch tabs again, you will be automatically withdrawn.
     </div>
+
+    <!-- Timer + Withdraw -->
+    <div class="timer-bar">
+      <div class="timer-display">
+        <div class="timer-dot" id="timerDot"></div>
+        <span>Time: <span id="timerDisplay">00:00</span></span>
+      </div>
+      <button class="withdraw-btn" onclick="openWithdrawModal()">&#10005; Withdraw</button>
+    </div>
+
+    <div class="card" id="questionCard"></div>
   </div>
 
-  <!-- SECTION 3: RESULT -->
+  <!-- ── SECTION 3: RESULT ── -->
   <div id="sectionResult" class="hidden">
     <div class="card">
       <div class="result-header">
         <div class="result-score-circle" id="scoreCircle">
           <div class="result-score-num" id="scoreNum">0</div>
-          <div class="result-score-denom" id="scoreDenom">/ 5</div>
+          <div class="result-score-denom" id="scoreDenom">/ 10</div>
         </div>
         <div class="result-name" id="resultName"></div>
         <div class="result-grade" id="resultGrade"></div>
+        <div style="margin-top:8px;font-family:var(--fm);font-size:.78rem;color:var(--muted)" id="resultComment"></div>
       </div>
 
-      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px">
-        <div style="flex:1;min-width:140px;background:var(--cream);border-radius:10px;padding:14px 18px;text-align:center">
-          <div style="font-family:var(--fm);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Score</div>
-          <div style="font-family:var(--fm);font-size:1.1rem;font-weight:700;color:var(--teal)" id="rScore"></div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px">
+        <div style="flex:1;min-width:120px;background:var(--cream);border-radius:10px;padding:12px 16px;text-align:center">
+          <div style="font-family:var(--fm);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Score</div>
+          <div style="font-family:var(--fm);font-size:1rem;font-weight:700;color:var(--teal)" id="rScore"></div>
         </div>
-        <div style="flex:1;min-width:140px;background:var(--cream);border-radius:10px;padding:14px 18px;text-align:center">
-          <div style="font-family:var(--fm);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Percentage</div>
-          <div style="font-family:var(--fm);font-size:1.1rem;font-weight:700;color:var(--teal)" id="rPct"></div>
+        <div style="flex:1;min-width:120px;background:var(--cream);border-radius:10px;padding:12px 16px;text-align:center">
+          <div style="font-family:var(--fm);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Percentage</div>
+          <div style="font-family:var(--fm);font-size:1rem;font-weight:700;color:var(--teal)" id="rPct"></div>
         </div>
-        <div style="flex:1;min-width:140px;background:var(--cream);border-radius:10px;padding:14px 18px;text-align:center">
-          <div style="font-family:var(--fm);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Institute</div>
-          <div style="font-family:var(--fm);font-size:1.1rem;font-weight:700;color:var(--teal)" id="rInstitute"></div>
+        <div style="flex:1;min-width:120px;background:var(--cream);border-radius:10px;padding:12px 16px;text-align:center">
+          <div style="font-family:var(--fm);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Time Taken</div>
+          <div style="font-family:var(--fm);font-size:1rem;font-weight:700;color:var(--teal)" id="rTime"></div>
+        </div>
+        <div style="flex:1;min-width:120px;background:var(--cream);border-radius:10px;padding:12px 16px;text-align:center">
+          <div style="font-family:var(--fm);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Institute</div>
+          <div style="font-family:var(--fm);font-size:1rem;font-weight:700;color:var(--teal)" id="rInstitute"></div>
         </div>
       </div>
 
@@ -399,7 +453,7 @@ body { background: var(--paper); color: var(--ink); font-family: var(--fb); min-
         <div class="sig-title" id="resultDate" style="margin-top:4px"></div>
       </div>
 
-      <div class="result-actions">
+      <div class="result-actions" id="resultActions">
         <button class="action-btn primary" onclick="downloadPDF()">&#11015; Download Result Card (PDF)</button>
         <button class="action-btn secondary" onclick="retakeQuiz()">&#8635; Try Again</button>
       </div>
@@ -408,6 +462,41 @@ body { background: var(--paper); color: var(--ink); font-family: var(--fb); min-
 
 </div><!-- end quiz-container -->
 
+<!-- ══════════════════════════════════════════════
+     FOOTER (matches rest of site)
+══════════════════════════════════════════════ -->
+<footer class="sk-footer">
+  <div class="sk-footer-inner">
+    <div>
+      <div class="sk-footer-logo">Shoaib-K</div>
+      <p style="color:var(--text2);font-size:.875rem;margin-top:10px">Mathematician &middot; Educator &middot; Researcher<br>LUMS, Lahore, Pakistan</p>
+      <div style="display:flex;gap:14px;margin-top:14px">
+        <a href="https://www.facebook.com/shoaiib.k" target="_blank">Facebook</a>
+        <a href="https://twitter.com/msking_shoaib" target="_blank">Twitter</a>
+        <a href="https://instagram.com/msking.shoaib" target="_blank">Instagram</a>
+      </div>
+    </div>
+    <div>
+      <h5>Navigation</h5>
+      <a href="../index.html">Home</a>
+      <a href="education.html">Education</a>
+      <a href="courses.html">Courses</a>
+      <a href="research.html">Research</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div>
+      <h5>Contact</h5>
+      <a href="mailto:bssk.khan@gmail.com">bssk.khan@gmail.com</a>
+      <a href="https://lums.edu.pk" target="_blank">LUMS Website</a>
+    </div>
+  </div>
+  <div class="sk-footer-bottom">
+    <p>&copy; 2025 Muhammad Shoaib Khan &middot; LUMS &middot; Lahore, Pakistan</p>
+    <p>Built with HTML, CSS &amp; Mathematics</p>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
 <script>
 /* ═══════════════════════════════════════════════════
    SUPABASE CONFIG
@@ -430,11 +519,8 @@ async function sbInsert(data) {
 }
 
 async function sbGetStats() {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/quiz_attempts?select=score,percentage`, {
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`
-    }
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/quiz_attempts?select=score,percentage,status,time_seconds`, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
   });
   return res.ok ? await res.json() : [];
 }
@@ -442,123 +528,195 @@ async function sbGetStats() {
 async function loadStats() {
   try {
     const rows = await sbGetStats();
-    if (!rows.length) {
-      document.getElementById('totalAttempts').textContent = '0';
-      document.getElementById('avgScore').textContent = '—';
-      document.getElementById('avgPct').textContent = '—%';
-      return;
-    }
     const total = rows.length;
-    const avgScore = (rows.reduce((s, r) => s + r.score, 0) / total).toFixed(1);
-    const avgPct = (rows.reduce((s, r) => s + r.percentage, 0) / total).toFixed(1);
-    document.getElementById('totalAttempts').textContent = total;
-    document.getElementById('avgScore').textContent = avgScore + ' / 5';
-    document.getElementById('avgPct').textContent = avgPct + '%';
+    const completed = rows.filter(r => r.status === 'completed');
+    const withdrawn = rows.filter(r => r.status === 'withdrawn' || r.status === 'tab_cheat');
+
+    document.getElementById('totalAttempts').textContent = total || '0';
+    document.getElementById('successfulTests').textContent = completed.length || '0';
+    document.getElementById('withdrawnTests').textContent = withdrawn.length || '0';
+
+    if (completed.length) {
+      const avgPct = (completed.reduce((s,r) => s + (r.percentage||0), 0) / completed.length).toFixed(1);
+      document.getElementById('avgPct').textContent = avgPct + '%';
+
+      const timeSamples = completed.filter(r => r.time_seconds > 0);
+      if (timeSamples.length) {
+        const avgSec = Math.round(timeSamples.reduce((s,r) => s + r.time_seconds, 0) / timeSamples.length);
+        document.getElementById('avgTime').textContent = formatTime(avgSec);
+      } else {
+        document.getElementById('avgTime').textContent = '—';
+      }
+    } else {
+      document.getElementById('avgPct').textContent = '—%';
+      document.getElementById('avgTime').textContent = '—';
+    }
   } catch(e) {
     console.log('Stats load error:', e);
   }
 }
 
 /* ═══════════════════════════════════════════════════
-   QUESTION BANK
-   Each question is a function that returns a fresh
-   randomised version with different constants.
+   TIMER
+═══════════════════════════════════════════════════ */
+let timerInterval = null;
+let timerSeconds = 0;
+
+function startTimer() {
+  timerSeconds = 0;
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timerSeconds++;
+    document.getElementById('timerDisplay').textContent = formatTime(timerSeconds);
+    // Warn colour after 15 min
+    if (timerSeconds > 900) {
+      document.getElementById('timerDot').classList.add('warn');
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+}
+
+function formatTime(sec) {
+  const m = Math.floor(sec / 60).toString().padStart(2,'0');
+  const s = (sec % 60).toString().padStart(2,'0');
+  return `${m}:${s}`;
+}
+
+/* ═══════════════════════════════════════════════════
+   TAB VISIBILITY DETECTION
+═══════════════════════════════════════════════════ */
+let tabSwitchCount = 0;
+let quizActive = false;
+
+document.addEventListener('visibilitychange', () => {
+  if (!quizActive) return;
+  if (document.hidden) {
+    tabSwitchCount++;
+    if (tabSwitchCount === 1) {
+      // First offence — warn
+      const banner = document.getElementById('tabWarningBanner');
+      banner.classList.remove('hidden');
+      if (window.MathJax) MathJax.typesetPromise([banner]);
+    } else if (tabSwitchCount >= 2) {
+      // Second offence — auto withdraw
+      quizActive = false;
+      stopTimer();
+      autoWithdrawTabCheat();
+    }
+  }
+});
+
+function autoWithdrawTabCheat() {
+  showWithdrawnResult('tab_cheat', 'Automatically withdrawn — tab switching detected during the quiz.');
+}
+
+/* ═══════════════════════════════════════════════════
+   WITHDRAW MODAL
+═══════════════════════════════════════════════════ */
+function openWithdrawModal() {
+  document.getElementById('withdrawModal').classList.add('show');
+}
+function closeWithdrawModal() {
+  document.getElementById('withdrawModal').classList.remove('show');
+}
+function confirmWithdraw() {
+  closeWithdrawModal();
+  quizActive = false;
+  stopTimer();
+  showWithdrawnResult('withdrawn', 'Quiz withdrawn by student.');
+}
+
+/* ═══════════════════════════════════════════════════
+   QUESTION BANK (15 randomised generators)
 ═══════════════════════════════════════════════════ */
 const QUESTION_BANK = [
 
   // Q1 — Power Rule
   () => {
-    const n = randInt(2, 6);
-    const correct = `\\frac{x^{${n+1}}}{${n+1}} + C`;
+    const n = randInt(2,6);
     return {
       text: `Find $\\displaystyle\\int x^{${n}}\\,dx$`,
       topic: 'Power Rule',
       options: shuffle([
-        { tex: `$${correct}$`, correct: true },
-        { tex: `$\\frac{x^{${n+2}}}{${n+2}} + C$`, correct: false },
+        { tex: `$\\dfrac{x^{${n+1}}}{${n+1}} + C$`, correct: true },
+        { tex: `$\\dfrac{x^{${n+2}}}{${n+2}} + C$`, correct: false },
         { tex: `$${n}x^{${n-1}} + C$`, correct: false },
         { tex: `$x^{${n+1}} + C$`, correct: false }
       ]),
-      explanation: `Power rule: raise exponent by 1, divide by the new exponent. $\\int x^{${n}}\\,dx = \\frac{x^{${n+1}}}{${n+1}}+C$`
+      explanation: `Power rule: raise the exponent by 1 and divide by the new exponent. $\\int x^{${n}}\\,dx = \\dfrac{x^{${n+1}}}{${n+1}}+C$`
     };
   },
 
-  // Q2 — Constant multiple
+  // Q2 — Constant Multiple
   () => {
-    const k = randInt(2, 9);
-    const n = randInt(2, 5);
-    const num = k*(n-1); // wrong option helper
+    const k = randInt(2,9), n = randInt(2,5);
     return {
       text: `Find $\\displaystyle\\int ${k}x^{${n}}\\,dx$`,
       topic: 'Constant Multiple Rule',
       options: shuffle([
-        { tex: `$\\frac{${k}}{${n+1}}x^{${n+1}} + C$`, correct: true },
-        { tex: `$\\frac{${k}}{${n}}x^{${n}} + C$`, correct: false },
+        { tex: `$\\dfrac{${k}}{${n+1}}x^{${n+1}} + C$`, correct: true },
+        { tex: `$\\dfrac{${k}}{${n}}x^{${n}} + C$`, correct: false },
         { tex: `$${k*n}x^{${n-1}} + C$`, correct: false },
         { tex: `$${k}x^{${n+1}} + C$`, correct: false }
       ]),
-      explanation: `Pull the constant out: $${k}\\int x^{${n}}\\,dx = ${k}\\cdot\\frac{x^{${n+1}}}{${n+1}}+C = \\frac{${k}}{${n+1}}x^{${n+1}}+C$`
+      explanation: `Pull the constant out: $${k}\\int x^{${n}}\\,dx = ${k}\\cdot\\dfrac{x^{${n+1}}}{${n+1}}+C = \\dfrac{${k}}{${n+1}}x^{${n+1}}+C$`
     };
   },
 
-  // Q3 — Exponential rule
+  // Q3 — Exponential Rule
   () => {
-    const k = randInt(2, 7);
+    const k = randInt(2,7);
     return {
       text: `Find $\\displaystyle\\int e^{${k}x}\\,dx$`,
       topic: 'Exponential Rule',
       options: shuffle([
-        { tex: `$\\frac{e^{${k}x}}{${k}} + C$`, correct: true },
+        { tex: `$\\dfrac{e^{${k}x}}{${k}} + C$`, correct: true },
         { tex: `$${k}e^{${k}x} + C$`, correct: false },
         { tex: `$e^{${k}x} + C$`, correct: false },
-        { tex: `$\\frac{e^{${k+1}x}}{${k+1}} + C$`, correct: false }
+        { tex: `$\\dfrac{e^{${k+1}x}}{${k+1}} + C$`, correct: false }
       ]),
-      explanation: `Exponential rule: $\\int e^{kx}\\,dx = \\frac{e^{kx}}{k}+C$. Here $k=${k}$, so the answer is $\\frac{e^{${k}x}}{${k}}+C$.`
+      explanation: `Exponential rule: $\\int e^{kx}\\,dx = \\dfrac{e^{kx}}{k}+C$. Here $k=${k}$, so the answer is $\\dfrac{e^{${k}x}}{${k}}+C$.`
     };
   },
 
-  // Q4 — Logarithmic rule
+  // Q4 — Logarithmic Rule
   () => {
-    const k = randInt(2, 9);
+    const k = randInt(2,9);
     return {
-      text: `Find $\\displaystyle\\int \\frac{${k}}{x}\\,dx$`,
+      text: `Find $\\displaystyle\\int \\dfrac{${k}}{x}\\,dx$`,
       topic: 'Logarithmic Rule',
       options: shuffle([
         { tex: `$${k}\\ln|x| + C$`, correct: true },
-        { tex: `$\\frac{${k}}{x^2} + C$`, correct: false },
+        { tex: `$\\dfrac{${k}}{x^2} + C$`, correct: false },
         { tex: `$\\ln(${k}x) + C$`, correct: false },
-        { tex: `$-\\frac{${k}}{x^2} + C$`, correct: false }
+        { tex: `$-\\dfrac{${k}}{x^2} + C$`, correct: false }
       ]),
-      explanation: `Logarithmic rule: $\\int\\frac{1}{x}\\,dx = \\ln|x|+C$. So $\\int\\frac{${k}}{x}\\,dx = ${k}\\ln|x|+C$.`
+      explanation: `Logarithmic rule: $\\int\\dfrac{1}{x}\\,dx = \\ln|x|+C$. So $\\int\\dfrac{${k}}{x}\\,dx = ${k}\\ln|x|+C$.`
     };
   },
 
   // Q5 — Substitution (linear)
   () => {
-    const a = randInt(2, 6), b = randInt(1, 8), n = randInt(3, 6);
+    const a = randInt(2,6), b = randInt(1,8), n = randInt(3,6);
     return {
       text: `Using substitution, find $\\displaystyle\\int (${a}x + ${b})^{${n}}\\,dx$`,
       topic: 'Substitution — Linear',
       options: shuffle([
-        { tex: `$\\dfrac{(${a}x+${b})^{${n+1}}}{${a}(${n+1})} + C$`, correct: true },
+        { tex: `$\\dfrac{(${a}x+${b})^{${n+1}}}{${a*(n+1)}} + C$`, correct: true },
         { tex: `$\\dfrac{(${a}x+${b})^{${n+1}}}{${n+1}} + C$`, correct: false },
         { tex: `$${n}(${a}x+${b})^{${n-1}} + C$`, correct: false },
-        { tex: `$\\dfrac{(${a}x+${b})^{${n+1}}}{${a*(n+1)}} + C$`, correct: true  }
-      ].filter((v,i,arr) => {
-        // deduplicate — last option is same as first written differently
-        // keep only 4 unique
-        return i < 3 || (i===3 && false);
-      }).concat([
-        { tex: `$\\dfrac{${a}(${a}x+${b})^{${n+1}}}{${n+1}} + C$`, correct: false }
-      ])),
-      explanation: `Let $u=${a}x+${b}$, $du=${a}\\,dx$. Then $\\int u^{${n}}\\frac{du}{${a}} = \\frac{u^{${n+1}}}{${a}(${n+1})}+C = \\frac{(${a}x+${b})^{${n+1}}}{${a*(n+1)}}+C$`
+        { tex: `$${a}(${a}x+${b})^{${n+1}} + C$`, correct: false }
+      ]),
+      explanation: `Let $u=${a}x+${b}$, $du=${a}\\,dx$. Then $\\int u^{${n}}\\dfrac{du}{${a}} = \\dfrac{u^{${n+1}}}{${a}(${n+1})}+C = \\dfrac{(${a}x+${b})^{${n+1}}}{${a*(n+1)}}+C$`
     };
   },
 
   // Q6 — Substitution (quadratic)
   () => {
-    const c = randInt(1, 8);
-    const n = randInt(2, 5);
+    const c = randInt(1,8), n = randInt(2,5);
     return {
       text: `Find $\\displaystyle\\int x(x^2 + ${c})^{${n}}\\,dx$`,
       topic: 'Substitution — Quadratic',
@@ -568,36 +726,33 @@ const QUESTION_BANK = [
         { tex: `$\\dfrac{x^2(x^2+${c})^{${n+1}}}{${n+1}} + C$`, correct: false },
         { tex: `$\\dfrac{(x^2+${c})^{${n}}}{${2*n}} + C$`, correct: false }
       ]),
-      explanation: `Let $u=x^2+${c}$, $du=2x\\,dx$, so $x\\,dx=\\frac{du}{2}$. Then $\\int u^{${n}}\\frac{du}{2}=\\frac{u^{${n+1}}}{${2*(n+1)}}+C=\\frac{(x^2+${c})^{${n+1}}}{${2*(n+1)}}+C$.`
+      explanation: `Let $u=x^2+${c}$, $du=2x\\,dx$, so $x\\,dx=\\dfrac{du}{2}$. Then $\\int u^{${n}}\\dfrac{du}{2}=\\dfrac{u^{${n+1}}}{${2*(n+1)}}+C=\\dfrac{(x^2+${c})^{${n+1}}}{${2*(n+1)}}+C$.`
     };
   },
 
-  // Q7 — Definite integral basic
+  // Q7 — Definite Integral FTC
   () => {
-    const a = randInt(0, 2), b = randInt(3, 6), n = randInt(2, 4);
-    const exact = (Math.pow(b, n+1) - Math.pow(a, n+1)) / (n+1);
-    const wrong1 = (Math.pow(b, n+1) - Math.pow(a, n+1));
-    const wrong2 = exact + 1;
-    const wrong3 = Math.pow(b, n) - Math.pow(a, n);
+    const a = randInt(0,2), b = randInt(3,6), n = randInt(2,4);
+    const num = Math.pow(b,n+1) - Math.pow(a,n+1);
+    const den = n+1;
     return {
       text: `Evaluate $\\displaystyle\\int_{${a}}^{${b}} x^{${n}}\\,dx$`,
       topic: 'Definite Integral — FTC',
       options: shuffle([
-        { tex: `$${frac(Math.pow(b,n+1)-Math.pow(a,n+1), n+1)}$`, correct: true },
-        { tex: `$${wrong1}$`, correct: false },
-        { tex: `$${frac(Math.pow(b,n+1)-Math.pow(a,n+1), n)}$`, correct: false },
-        { tex: `$${Math.pow(b,n) - Math.pow(a,n)}$`, correct: false }
+        { tex: `$${frac(num,den)}$`, correct: true },
+        { tex: `$${num}$`, correct: false },
+        { tex: `$${frac(num,n)}$`, correct: false },
+        { tex: `$${Math.pow(b,n)-Math.pow(a,n)}$`, correct: false }
       ]),
-      explanation: `FTC: $\\left[\\frac{x^{${n+1}}}{${n+1}}\\right]_{${a}}^{${b}} = \\frac{${Math.pow(b,n+1)}}{${n+1}} - \\frac{${Math.pow(a,n+1)}}{${n+1}} = ${frac(Math.pow(b,n+1)-Math.pow(a,n+1),n+1)}$`
+      explanation: `FTC: $\\left[\\dfrac{x^{${n+1}}}{${n+1}}\\right]_{${a}}^{${b}} = \\dfrac{${Math.pow(b,n+1)}}{${n+1}} - \\dfrac{${Math.pow(a,n+1)}}{${n+1}} = ${frac(num,den)}$`
     };
   },
 
-  // Q8 — Definite with exponential
+  // Q8 — Definite Integral Exponential
   () => {
-    const a = 0, b = randInt(1, 3);
-    const ea = Math.exp(a), eb = Math.exp(b);
+    const b = randInt(1,3);
     return {
-      text: `Evaluate $\\displaystyle\\int_{${a}}^{${b}} e^x\\,dx$`,
+      text: `Evaluate $\\displaystyle\\int_{0}^{${b}} e^x\\,dx$`,
       topic: 'Definite Integral — Exponential',
       options: shuffle([
         { tex: `$e^{${b}} - 1$`, correct: true },
@@ -609,10 +764,9 @@ const QUESTION_BANK = [
     };
   },
 
-  // Q9 — Substitution in definite integral
+  // Q9 — Substitution in Definite Integral
   () => {
-    const c = randInt(1, 6);
-    // int_0^1 2x(x^2+c)^3 dx, u=x^2+c, limits c to c+1
+    const c = randInt(1,6);
     const lo = c, hi = c+1;
     const ans = (Math.pow(hi,4) - Math.pow(lo,4)) / 4;
     return {
@@ -620,37 +774,35 @@ const QUESTION_BANK = [
       topic: 'Substitution in Definite Integral',
       options: shuffle([
         { tex: `$${ans}$`, correct: true },
-        { tex: `$${ans + 1}$`, correct: false },
-        { tex: `$\\frac{(x^2+${c})^4}{4}$`, correct: false },
-        { tex: `$${ans * 2}$`, correct: false }
+        { tex: `$${ans+1}$`, correct: false },
+        { tex: `$${ans*2}$`, correct: false },
+        { tex: `$${ans-1 < 0 ? ans+2 : ans-1}$`, correct: false }
       ]),
-      explanation: `Let $u=x^2+${c}$, $du=2x\\,dx$. New limits: $x=0\\Rightarrow u=${c}$; $x=1\\Rightarrow u=${c+1}$. So $\\int_{${c}}^{${c+1}} u^3\\,du = \\left[\\frac{u^4}{4}\\right]_{${c}}^{${c+1}} = \\frac{${Math.pow(c+1,4)}-${Math.pow(c,4)}}{4} = ${ans}$`
+      explanation: `Let $u=x^2+${c}$, $du=2x\\,dx$. New limits: $x=0\\Rightarrow u=${c}$; $x=1\\Rightarrow u=${c+1}$. So $\\int_{${c}}^{${c+1}} u^3\\,du = \\left[\\dfrac{u^4}{4}\\right]_{${c}}^{${c+1}} = \\dfrac{${Math.pow(c+1,4)}-${Math.pow(c,4)}}{4} = ${ans}$`
     };
   },
 
   // Q10 — Initial Value Problem
   () => {
-    const a = randInt(2, 6), b = randInt(1, 8), x0 = randInt(0, 2), y0 = randInt(1, 10);
-    // f'(x)=ax+b, f(x0)=y0 => f(x)=ax^2/2+bx+C
+    const a = randInt(2,6), b = randInt(1,8), x0 = randInt(0,2), y0 = randInt(1,10);
     const C = y0 - (a*x0*x0/2 + b*x0);
     const Cstr = C >= 0 ? `+${C}` : `${C}`;
     return {
       text: `If $f'(x) = ${a}x + ${b}$ and $f(${x0}) = ${y0}$, find $f(x)$.`,
       topic: 'Initial Value Problem',
       options: shuffle([
-        { tex: `$\\frac{${a}}{2}x^2 + ${b}x ${Cstr}$`, correct: true },
+        { tex: `$\\dfrac{${a}}{2}x^2 + ${b}x ${Cstr}$`, correct: true },
         { tex: `$${a}x^2 + ${b}x + ${y0}$`, correct: false },
-        { tex: `$\\frac{${a}}{2}x^2 + ${b}x + ${y0}$`, correct: false },
-        { tex: `$${a} + 0$`, correct: false }
+        { tex: `$\\dfrac{${a}}{2}x^2 + ${b}x + ${y0}$`, correct: false },
+        { tex: `$${a}x + ${b} + C$`, correct: false }
       ]),
-      explanation: `Integrate: $f(x)=\\frac{${a}}{2}x^2+${b}x+C$. Apply $f(${x0})=${y0}$: $C=${C}$. So $f(x)=\\frac{${a}}{2}x^2+${b}x${Cstr}$.`
+      explanation: `Integrate: $f(x)=\\dfrac{${a}}{2}x^2+${b}x+C$. Apply $f(${x0})=${y0}$: $C=${C}$. So $f(x)=\\dfrac{${a}}{2}x^2+${b}x${Cstr}$.`
     };
   },
 
-  // Q11 — Area under curve
+  // Q11 — Area Under Curve
   () => {
-    const a = randInt(1, 4), b = randInt(a+1, a+4);
-    // area under f(x)=x from a to b
+    const a = randInt(1,4), b = randInt(a+1,a+4);
     const area = (b*b - a*a) / 2;
     return {
       text: `Find the area under $f(x) = x$ from $x = ${a}$ to $x = ${b}$.`,
@@ -661,52 +813,32 @@ const QUESTION_BANK = [
         { tex: `$${b - a}$`, correct: false },
         { tex: `$${area + (b-a)}$`, correct: false }
       ]),
-      explanation: `$\\int_{${a}}^{${b}} x\\,dx = \\left[\\frac{x^2}{2}\\right]_{${a}}^{${b}} = \\frac{${b*b}}{2} - \\frac{${a*a}}{2} = ${area}$`
+      explanation: `$\\int_{${a}}^{${b}} x\\,dx = \\left[\\dfrac{x^2}{2}\\right]_{${a}}^{${b}} = \\dfrac{${b*b}}{2} - \\dfrac{${a*a}}{2} = ${area}$`
     };
   },
 
-  // Q12 — Continuous compounding
+  // Q12 — Net Change
   () => {
-    const P = [1000, 2000, 5000][randInt(0,2)];
-    const r = [4, 6, 8][randInt(0,2)];
-    const t = randInt(5, 15);
-    return {
-      text: `Using continuous compounding, the balance after $${t}$ years on PKR $${P.toLocaleString()}$ at $${r}\\%$ per year is:`,
-      topic: 'Continuous Compounding',
-      options: shuffle([
-        { tex: `$${P}e^{${r/100}\\times ${t}}$`, correct: true },
-        { tex: `$${P}(1+${r/100})^{${t}}$`, correct: false },
-        { tex: `$${P}e^{${r}\\times ${t}}$`, correct: false },
-        { tex: `$${P}e^{${r/100}}$`, correct: false }
-      ]),
-      explanation: `Continuous compounding formula: $B(t)=Pe^{rt}$. Here $P=${P}$, $r=${r/100}$, $t=${t}$. Answer: $${P}e^{${r/100}\\times${t}}$.`
-    };
-  },
-
-  // Q13 — Net change
-  () => {
-    const a = randInt(2, 5), b = randInt(1, 6);
-    // v(t)=at-b, displacement from 0 to T
-    const T = randInt(3, 7);
+    const a = randInt(2,5), b = randInt(1,6), T = randInt(3,7);
     const disp = a*T*T/2 - b*T;
     return {
       text: `A particle has velocity $v(t)=${a}t-${b}$ m/s. The net displacement from $t=0$ to $t=${T}$ is:`,
       topic: 'Net Change',
       options: shuffle([
         { tex: `$${disp}$ m`, correct: true },
-        { tex: `$${disp + T}$ m`, correct: false },
-        { tex: `$${a*T - b}$ m`, correct: false },
-        { tex: `$${Math.abs(disp)}$ m`, correct: false }
+        { tex: `$${disp+T}$ m`, correct: false },
+        { tex: `$${a*T-b}$ m`, correct: false },
+        { tex: `$${Math.abs(disp)+1}$ m`, correct: false }
       ]),
-      explanation: `Net displacement $= \\int_0^{${T}}(${a}t-${b})\\,dt = \\left[\\frac{${a}t^2}{2}-${b}t\\right]_0^{${T}} = \\frac{${a}(${T})^2}{2}-${b}(${T}) = ${disp}$ m.`
+      explanation: `Net displacement $= \\int_0^{${T}}(${a}t-${b})\\,dt = \\left[\\dfrac{${a}t^2}{2}-${b}t\\right]_0^{${T}} = \\dfrac{${a}\\cdot${T*T}}{2}-${b}\\cdot${T} = ${disp}$ m.`
     };
   },
 
-  // Q14 — Which substitution?
+  // Q13 — Which Substitution?
   () => {
-    const c = randInt(1, 9);
+    const c = randInt(1,9);
     return {
-      text: `For $\\displaystyle\\int \\frac{x^2}{(x^3+${c})^4}\\,dx$, the best substitution is:`,
+      text: `For $\\displaystyle\\int \\dfrac{x^2}{(x^3+${c})^4}\\,dx$, the best substitution is:`,
       topic: 'Choosing the Substitution',
       options: shuffle([
         { tex: `$u = x^3 + ${c}$`, correct: true },
@@ -714,27 +846,44 @@ const QUESTION_BANK = [
         { tex: `$u = x^3$`, correct: false },
         { tex: `$u = (x^3+${c})^4$`, correct: false }
       ]),
-      explanation: `Choose $u=x^3+${c}$ because $du=3x^2\\,dx$ and $x^2\\,dx=\\frac{du}{3}$ is present in the integrand. The integral becomes $\\int u^{-4}\\frac{du}{3}$.`
+      explanation: `Choose $u=x^3+${c}$ because $du=3x^2\\,dx$ and $x^2\\,dx=\\dfrac{du}{3}$ appears in the integrand. The integral becomes $\\int u^{-4}\\dfrac{du}{3}$.`
     };
   },
 
-  // Q15 — Rule identification
+  // Q14 — Rule Identification
   () => {
-    const n = randInt(2, 5);
-    const c = randInt(1, 8);
+    const n = randInt(2,5), c = randInt(1,8);
     return {
-      text: `Which rule is used to evaluate $\\displaystyle\\int \\frac{${c}}{x^{${n}}}\\,dx$?`,
+      text: `Which rule is used to evaluate $\\displaystyle\\int \\dfrac{${c}}{x^{${n}}}\\,dx$?`,
       topic: 'Rule Identification',
       options: shuffle([
-        { tex: 'Power Rule (with $n = -' + n + '$)', correct: true },
+        { tex: `Power Rule (rewrite as $${c}x^{-${n}}$)`, correct: true },
         { tex: 'Logarithmic Rule', correct: false },
         { tex: 'Exponential Rule', correct: false },
         { tex: 'Constant Rule', correct: false }
       ]),
-      explanation: `Write $\\frac{${c}}{x^{${n}}}=${c}x^{-${n}}$. Apply the power rule with $n=-${n}$: $\\int ${c}x^{-${n}}\\,dx = ${c}\\cdot\\frac{x^{-${n}+1}}{-${n}+1}+C = \\frac{${c}}{${-(n-1)}}x^{-${n-1}}+C$.`
+      explanation: `Write $\\dfrac{${c}}{x^{${n}}}=${c}x^{-${n}}$. Power rule with $n=-${n}$: $\\int ${c}x^{-${n}}\\,dx = \\dfrac{${c}}{${1-n}}x^{${1-n}}+C$.`
+    };
+  },
+
+  // Q15 — Subdivision Rule
+  () => {
+    const total = randInt(8,20), part1 = randInt(3, total-2);
+    const val_total = randInt(10,30), val_part1 = randInt(3, val_total-1);
+    const val_part2 = val_total - val_part1;
+    const part2 = total - part1;
+    return {
+      text: `Given $\\displaystyle\\int_0^{${total}} f(x)\\,dx = ${val_total}$ and $\\displaystyle\\int_0^{${part1}} f(x)\\,dx = ${val_part1}$, find $\\displaystyle\\int_{${part1}}^{${total}} f(x)\\,dx$.`,
+      topic: 'Subdivision Rule',
+      options: shuffle([
+        { tex: `$${val_part2}$`, correct: true },
+        { tex: `$${val_total + val_part1}$`, correct: false },
+        { tex: `$${val_part2 + 1}$`, correct: false },
+        { tex: `$${val_part1}$`, correct: false }
+      ]),
+      explanation: `By the subdivision rule: $\\int_0^{${total}} f\\,dx = \\int_0^{${part1}} f\\,dx + \\int_{${part1}}^{${total}} f\\,dx$. So $\\int_{${part1}}^{${total}} f\\,dx = ${val_total} - ${val_part1} = ${val_part2}$.`
     };
   }
-
 ];
 
 /* ═══════════════════════════════════════════════════
@@ -743,24 +892,22 @@ const QUESTION_BANK = [
 function randInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
 function shuffle(arr) {
   const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
   }
   return a;
 }
-
 function frac(num, den) {
-  if (num % den === 0) return String(num / den);
+  if (den === 0) return '∞';
+  if (num % den === 0) return String(num/den);
   const g = gcd(Math.abs(num), Math.abs(den));
+  if (den/g < 0) return `\\frac{${-num/g}}{${-den/g}}`;
   return `\\frac{${num/g}}{${den/g}}`;
 }
-
-function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
-
+function gcd(a,b) { return b === 0 ? a : gcd(b, a%b); }
 function gradeLabel(pct) {
   if (pct >= 90) return { label: 'Excellent — A', cls: 'A' };
   if (pct >= 75) return { label: 'Good — B', cls: 'B' };
@@ -771,11 +918,11 @@ function gradeLabel(pct) {
 /* ═══════════════════════════════════════════════════
    QUIZ STATE
 ═══════════════════════════════════════════════════ */
+const TOTAL_Q = 10;
 let studentInfo = {};
 let questions = [];
 let currentQ = 0;
-let answers = []; // {chosen, correct, topic, qtext}
-const TOTAL_Q = 5;
+let answers = [];
 
 function pickQuestions() {
   const pool = shuffle([...QUESTION_BANK]);
@@ -801,11 +948,15 @@ function startQuiz() {
   questions = pickQuestions();
   answers = [];
   currentQ = 0;
+  tabSwitchCount = 0;
+  quizActive = true;
 
+  document.getElementById('tabWarningBanner').classList.add('hidden');
   document.getElementById('sectionForm').classList.add('hidden');
   document.getElementById('sectionQuiz').classList.remove('hidden');
   document.getElementById('quizStudentName').textContent = `Good luck, ${name}!`;
 
+  startTimer();
   renderQuestion();
 }
 
@@ -816,37 +967,31 @@ function renderQuestion() {
   document.getElementById('progressFill').style.width = `${(currentQ / TOTAL_Q) * 100}%`;
 
   const optLetters = ['A','B','C','D'];
-
   let html = `
     <div class="q-number">Question ${progress} of ${TOTAL_Q} &nbsp;&middot;&nbsp; ${q.topic}</div>
-    <div class="q-text" id="qText">${q.text}</div>
+    <div class="q-text">${q.text}</div>
     <div class="q-marks">1 mark</div>
     <div class="options" id="optionsContainer">
   `;
-
   q.options.forEach((opt, i) => {
     html += `
       <button class="opt-btn" id="opt${i}" onclick="selectOption(${i})">
         <span class="opt-letter">${optLetters[i]}</span>
-        <span id="optText${i}">${opt.tex}</span>
+        <span>${opt.tex}</span>
       </button>
     `;
   });
-
   html += `</div>
     <div class="q-feedback" id="qFeedback"></div>
     <div class="q-nav">
       <button class="nav-btn primary hidden" id="nextBtn" onclick="nextQuestion()">
-        ${currentQ === TOTAL_Q - 1 ? 'See Results &#8594;' : 'Next Question &#8594;'}
+        ${currentQ === TOTAL_Q-1 ? 'See Results &#8594;' : 'Next Question &#8594;'}
       </button>
     </div>
   `;
 
   document.getElementById('questionCard').innerHTML = html;
-
-  if (window.MathJax) {
-    MathJax.typesetPromise([document.getElementById('questionCard')]);
-  }
+  if (window.MathJax) MathJax.typesetPromise([document.getElementById('questionCard')]);
 }
 
 function selectOption(chosen) {
@@ -854,47 +999,29 @@ function selectOption(chosen) {
   const opts = document.querySelectorAll('.opt-btn');
   const isCorrect = q.options[chosen].correct;
 
-  // Disable all options and highlight correct/wrong
   opts.forEach((btn, i) => {
     btn.disabled = true;
-    if (q.options[i].correct) {
-      btn.classList.add('correct');
-    }
+    if (q.options[i].correct) btn.classList.add('correct');
   });
-  if (!isCorrect) {
-    opts[chosen].classList.add('wrong');
-  }
+  if (!isCorrect) opts[chosen].classList.add('wrong');
 
-  // Show feedback
   const fb = document.getElementById('qFeedback');
-  fb.className = '';
-  fb.classList.add('q-feedback');
-  fb.classList.add(isCorrect ? 'correct' : 'wrong');
+  fb.className = 'q-feedback ' + (isCorrect ? 'correct' : 'wrong');
   fb.innerHTML = isCorrect
     ? `&#10003; Correct! ${q.explanation}`
     : `&#10007; Incorrect. ${q.explanation}`;
-
   if (window.MathJax) MathJax.typesetPromise([fb]);
 
-  // Record answer
-  answers.push({
-    chosen,
-    correct: isCorrect,
-    topic: q.topic,
-    qtext: q.text
-  });
-
-  // Show next button — works for both correct and wrong
-  const nextBtn = document.getElementById('nextBtn');
-  if (nextBtn) {
-    nextBtn.classList.remove('hidden');
-  }
+  answers.push({ chosen, correct: isCorrect, topic: q.topic });
+  document.getElementById('nextBtn').classList.remove('hidden');
 }
 
 function nextQuestion() {
   currentQ++;
   if (currentQ >= TOTAL_Q) {
-    showResults();
+    quizActive = false;
+    stopTimer();
+    showResults('completed');
   } else {
     renderQuestion();
   }
@@ -903,17 +1030,17 @@ function nextQuestion() {
 /* ═══════════════════════════════════════════════════
    RESULTS
 ═══════════════════════════════════════════════════ */
-async function showResults() {
+async function showResults(status) {
   const score = answers.filter(a => a.correct).length;
   const pct = Math.round(score / TOTAL_Q * 100);
   const grade = gradeLabel(pct);
   const now = new Date();
   const dateStr = now.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+  const timeTaken = timerSeconds;
 
   document.getElementById('sectionQuiz').classList.add('hidden');
   document.getElementById('sectionResult').classList.remove('hidden');
 
-  // Fill result card
   document.getElementById('scoreNum').textContent = score;
   document.getElementById('scoreDenom').textContent = `/ ${TOTAL_Q}`;
   document.getElementById('resultName').textContent = studentInfo.name;
@@ -922,23 +1049,20 @@ async function showResults() {
   gradeEl.className = `result-grade ${grade.cls}`;
   document.getElementById('rScore').textContent = `${score} / ${TOTAL_Q}`;
   document.getElementById('rPct').textContent = `${pct}%`;
+  document.getElementById('rTime').textContent = formatTime(timeTaken);
   document.getElementById('rInstitute').textContent = studentInfo.inst;
   document.getElementById('resultDate').textContent = dateStr;
 
-  // Colour the score circle
   const circle = document.getElementById('scoreCircle');
-  const colours = { A: '#27ae60', B: '#1a6b6b', C: '#d4a017', F: '#c0392b' };
+  const colours = { A:'#27ae60', B:'#1a6b6b', C:'#d4a017', F:'#c0392b' };
   circle.style.borderColor = colours[grade.cls];
   document.getElementById('scoreNum').style.color = colours[grade.cls];
 
-  // Breakdown
   let bdHtml = '';
   answers.forEach((a, i) => {
     bdHtml += `
       <div class="rb-row">
-        <div>
-          <div style="font-weight:600">Q${i+1}: ${a.topic}</div>
-        </div>
+        <div><div style="font-weight:600">Q${i+1}: ${a.topic}</div></div>
         <div class="${a.correct ? 'rb-correct' : 'rb-wrong'}">
           ${a.correct ? '&#10003; Correct' : '&#10007; Wrong'}
         </div>
@@ -947,7 +1071,13 @@ async function showResults() {
   });
   document.getElementById('resultBreakdown').innerHTML = bdHtml;
 
-  // Save to Supabase
+  // Hide PDF download for withdrawn
+  if (status !== 'completed') {
+    document.getElementById('resultActions').innerHTML = `
+      <button class="action-btn secondary" onclick="retakeQuiz()">&#8635; Try Again</button>
+    `;
+  }
+
   try {
     await sbInsert({
       student_name: studentInfo.name,
@@ -956,14 +1086,75 @@ async function showResults() {
       campus_id: studentInfo.id || null,
       score,
       total: TOTAL_Q,
-      percentage: pct
+      percentage: pct,
+      status: status,
+      time_seconds: timeTaken
     });
-    loadStats(); // refresh live stats
-  } catch(e) {
-    console.log('Save error:', e);
-  }
+    loadStats();
+  } catch(e) { console.log('Save error:', e); }
 
   document.getElementById('progressFill').style.width = '100%';
+}
+
+function showWithdrawnResult(status, comment) {
+  const score = answers.filter(a => a.correct).length;
+  const pct = answers.length ? Math.round(score / answers.length * 100) : 0;
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+  const timeTaken = timerSeconds;
+
+  document.getElementById('sectionQuiz').classList.add('hidden');
+  document.getElementById('sectionResult').classList.remove('hidden');
+
+  document.getElementById('scoreNum').textContent = '—';
+  document.getElementById('scoreDenom').textContent = '';
+  document.getElementById('resultName').textContent = studentInfo.name;
+  const gradeEl = document.getElementById('resultGrade');
+  gradeEl.textContent = status === 'tab_cheat' ? 'Disqualified' : 'Withdrawn';
+  gradeEl.className = 'result-grade W';
+  document.getElementById('resultComment').textContent = comment;
+  document.getElementById('rScore').textContent = `${score} answered`;
+  document.getElementById('rPct').textContent = '—';
+  document.getElementById('rTime').textContent = formatTime(timeTaken);
+  document.getElementById('rInstitute').textContent = studentInfo.inst;
+  document.getElementById('resultDate').textContent = dateStr;
+
+  const circle = document.getElementById('scoreCircle');
+  circle.style.borderColor = '#7f8c8d';
+  document.getElementById('scoreNum').style.color = '#7f8c8d';
+
+  let bdHtml = '';
+  answers.forEach((a, i) => {
+    bdHtml += `
+      <div class="rb-row">
+        <div><div style="font-weight:600">Q${i+1}: ${a.topic}</div></div>
+        <div class="${a.correct ? 'rb-correct' : 'rb-wrong'}">
+          ${a.correct ? '&#10003; Correct' : '&#10007; Wrong'}
+        </div>
+      </div>
+    `;
+  });
+  if (bdHtml) document.getElementById('resultBreakdown').innerHTML = bdHtml;
+  else document.getElementById('resultBreakdown').innerHTML = '<p style="color:var(--muted);font-size:.9rem;padding:12px 0">No questions answered.</p>';
+
+  document.getElementById('resultActions').innerHTML = `
+    <button class="action-btn secondary" onclick="retakeQuiz()">&#8635; Try Again</button>
+  `;
+
+  try {
+    sbInsert({
+      student_name: studentInfo.name,
+      student_class: studentInfo.cls,
+      institute: studentInfo.inst,
+      campus_id: studentInfo.id || null,
+      score: score,
+      total: TOTAL_Q,
+      percentage: pct,
+      status: status,
+      time_seconds: timeTaken
+    });
+    loadStats();
+  } catch(e) { console.log('Save error:', e); }
 }
 
 /* ═══════════════════════════════════════════════════
@@ -971,7 +1162,7 @@ async function showResults() {
 ═══════════════════════════════════════════════════ */
 function downloadPDF() {
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
   const score = answers.filter(a => a.correct).length;
   const pct = Math.round(score / TOTAL_Q * 100);
   const grade = gradeLabel(pct);
@@ -979,133 +1170,129 @@ function downloadPDF() {
   const dateStr = now.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
   const W = 210, pad = 20;
 
-  // Background
-  doc.setFillColor(26, 26, 46);
-  doc.rect(0, 0, W, 60, 'F');
+  // Header background
+  doc.setFillColor(26,26,46);
+  doc.rect(0,0,W,60,'F');
 
-  // Header text
-  doc.setFont('helvetica', 'bold');
+  doc.setFont('helvetica','bold');
   doc.setFontSize(9);
-  doc.setTextColor(212, 160, 23);
-  doc.text('MATH-101 · CALCULUS I · LUMS', W/2, 18, { align: 'center' });
+  doc.setTextColor(212,160,23);
+  doc.text('MATH-101 · CALCULUS I · LUMS', W/2, 18, {align:'center'});
 
-  doc.setFont('helvetica', 'bold');
   doc.setFontSize(22);
-  doc.setTextColor(253, 248, 240);
-  doc.text('Integration Quiz — Chapter 5', W/2, 32, { align: 'center' });
+  doc.setTextColor(253,248,240);
+  doc.text('Integration Quiz — Chapter 5', W/2, 32, {align:'center'});
 
-  doc.setFont('helvetica', 'normal');
+  doc.setFont('helvetica','normal');
   doc.setFontSize(10);
-  doc.setTextColor(200, 190, 180);
-  doc.text('Official Result Card', W/2, 42, { align: 'center' });
-  doc.text(dateStr, W/2, 50, { align: 'center' });
+  doc.setTextColor(200,190,180);
+  doc.text('Official Result Card', W/2, 42, {align:'center'});
+  doc.text(dateStr, W/2, 50, {align:'center'});
 
   // Score circle
-  const gradeColors = { A: [39,174,96], B: [26,107,107], C: [212,160,23], F: [192,57,43] };
+  const gradeColors = {A:[39,174,96], B:[26,107,107], C:[212,160,23], F:[192,57,43]};
   const gc = gradeColors[grade.cls];
   doc.setDrawColor(...gc);
   doc.setLineWidth(2);
   doc.circle(W/2, 82, 18);
-  doc.setFont('helvetica', 'bold');
+  doc.setFont('helvetica','bold');
   doc.setFontSize(22);
   doc.setTextColor(...gc);
-  doc.text(String(score), W/2, 87, { align: 'center' });
+  doc.text(String(score), W/2, 87, {align:'center'});
   doc.setFontSize(9);
-  doc.setTextColor(127, 140, 141);
-  doc.text(`/ ${TOTAL_Q}`, W/2, 94, { align: 'center' });
+  doc.setTextColor(127,140,141);
+  doc.text(`/ ${TOTAL_Q}`, W/2, 94, {align:'center'});
 
   // Student info
-  doc.setFont('helvetica', 'bold');
+  doc.setFont('helvetica','bold');
   doc.setFontSize(16);
-  doc.setTextColor(26, 26, 46);
-  doc.text(studentInfo.name, W/2, 112, { align: 'center' });
+  doc.setTextColor(26,26,46);
+  doc.text(studentInfo.name, W/2, 112, {align:'center'});
 
-  doc.setFont('helvetica', 'normal');
+  doc.setFont('helvetica','normal');
   doc.setFontSize(10);
   doc.setTextColor(127,140,141);
-  doc.text(`${studentInfo.cls}  ·  ${studentInfo.inst}`, W/2, 119, { align: 'center' });
-  if (studentInfo.id) {
-    doc.text(`Campus ID: ${studentInfo.id}`, W/2, 125, { align: 'center' });
-  }
+  doc.text(`${studentInfo.cls}  ·  ${studentInfo.inst}`, W/2, 119, {align:'center'});
+  if (studentInfo.id) doc.text(`Campus ID: ${studentInfo.id}`, W/2, 125, {align:'center'});
 
   // Grade badge
   doc.setFillColor(...gc);
-  doc.roundedRect(W/2 - 30, 130, 60, 10, 3, 3, 'F');
-  doc.setFont('helvetica', 'bold');
+  doc.roundedRect(W/2-30, 130, 60, 10, 3, 3, 'F');
+  doc.setFont('helvetica','bold');
   doc.setFontSize(9);
   doc.setTextColor(255,255,255);
-  doc.text(grade.label.toUpperCase(), W/2, 136.5, { align: 'center' });
+  doc.text(grade.label.toUpperCase(), W/2, 136.5, {align:'center'});
 
   // Stats boxes
   const boxes = [
-    { label: 'Score', value: `${score} / ${TOTAL_Q}` },
-    { label: 'Percentage', value: `${pct}%` },
-    { label: 'Institute', value: studentInfo.inst }
+    {label:'Score', value:`${score} / ${TOTAL_Q}`},
+    {label:'Percentage', value:`${pct}%`},
+    {label:'Time Taken', value:formatTime(timerSeconds)},
+    {label:'Institute', value:studentInfo.inst}
   ];
-  const bw = (W - pad*2 - 10) / 3;
+  const bw = (W - pad*2 - 15) / 4;
   boxes.forEach((b, i) => {
     const bx = pad + i*(bw+5);
-    doc.setFillColor(245, 237, 224);
+    doc.setFillColor(245,237,224);
     doc.roundedRect(bx, 148, bw, 18, 3, 3, 'F');
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(7);
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(6.5);
     doc.setTextColor(127,140,141);
-    doc.text(b.label.toUpperCase(), bx + bw/2, 154, { align: 'center' });
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(11);
+    doc.text(b.label.toUpperCase(), bx+bw/2, 154, {align:'center'});
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(10);
     doc.setTextColor(26,107,107);
-    doc.text(b.value, bx + bw/2, 161, { align: 'center' });
+    doc.text(b.value, bx+bw/2, 161, {align:'center'});
   });
 
-  // Breakdown table
-  doc.setFont('helvetica', 'bold');
+  // Breakdown
+  doc.setFont('helvetica','bold');
   doc.setFontSize(10);
   doc.setTextColor(26,26,46);
   doc.text('Question Breakdown', pad, 178);
 
   doc.setLineWidth(0.3);
-  doc.setDrawColor(224, 214, 200);
-  doc.line(pad, 180, W - pad, 180);
+  doc.setDrawColor(224,214,200);
+  doc.line(pad, 180, W-pad, 180);
 
   answers.forEach((a, i) => {
-    const y = 186 + i * 8;
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9);
+    const y = 186 + i*7;
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(8.5);
     doc.setTextColor(26,26,46);
     doc.text(`Q${i+1}: ${a.topic}`, pad, y);
     const col = a.correct ? [39,174,96] : [192,57,43];
-    doc.setFont('helvetica', 'bold');
+    doc.setFont('helvetica','bold');
     doc.setTextColor(...col);
-    doc.text(a.correct ? '✓ Correct' : '✗ Wrong', W - pad, y, { align: 'right' });
+    doc.text(a.correct ? '✓ Correct' : '✗ Wrong', W-pad, y, {align:'right'});
     doc.setDrawColor(224,214,200);
     doc.setLineWidth(0.2);
-    doc.line(pad, y+2, W-pad, y+2);
+    doc.line(pad, y+1.5, W-pad, y+1.5);
   });
 
   // Signature
-  const sigY = 240;
+  const sigY = 262;
   doc.setDrawColor(224,214,200);
   doc.setLineWidth(0.5);
-  doc.line(W - pad - 60, sigY, W - pad, sigY);
-
-  doc.setFont('helvetica', 'bolditalic');
+  doc.line(W-pad-60, sigY, W-pad, sigY);
+  doc.setFont('helvetica','bolditalic');
   doc.setFontSize(13);
   doc.setTextColor(26,26,46);
-  doc.text('Muhammad Shoaib Khan', W - pad, sigY - 3, { align: 'right' });
-  doc.setFont('helvetica', 'normal');
+  doc.text('Muhammad Shoaib Khan', W-pad, sigY-3, {align:'right'});
+  doc.setFont('helvetica','normal');
   doc.setFontSize(8);
   doc.setTextColor(127,140,141);
-  doc.text('Teaching Fellow · Calculus I · LUMS', W - pad, sigY + 5, { align: 'right' });
+  doc.text('Teaching Fellow · Calculus I · LUMS', W-pad, sigY+5, {align:'right'});
 
   // Footer
-  doc.setFillColor(26, 26, 46);
-  doc.rect(0, 275, W, 22, 'F');
-  doc.setFont('helvetica', 'normal');
+  doc.setFillColor(26,26,46);
+  doc.rect(0,275,W,22,'F');
+  doc.setFont('helvetica','normal');
   doc.setFontSize(8);
   doc.setTextColor(200,190,180);
-  doc.text('mathwithshoaib.github.io  ·  bssk.khan@gmail.com  ·  LUMS, Lahore, Pakistan', W/2, 283, { align: 'center' });
+  doc.text('mathwithshoaib.github.io  ·  bssk.khan@gmail.com  ·  LUMS, Lahore, Pakistan', W/2, 283, {align:'center'});
   doc.setTextColor(212,160,23);
-  doc.text(`Generated ${dateStr}`, W/2, 289, { align: 'center' });
+  doc.text(`Generated ${dateStr}`, W/2, 289, {align:'center'});
 
   doc.save(`Calculus_Quiz_${studentInfo.name.replace(/\s+/g,'_')}.pdf`);
 }
@@ -1114,11 +1301,19 @@ function downloadPDF() {
    RETAKE
 ═══════════════════════════════════════════════════ */
 function retakeQuiz() {
+  quizActive = false;
+  stopTimer();
+  tabSwitchCount = 0;
   document.getElementById('sectionResult').classList.add('hidden');
   document.getElementById('sectionForm').classList.remove('hidden');
   document.getElementById('fName').value = '';
   document.getElementById('fClass').value = '';
   document.getElementById('fCampusId').value = '';
+  // Restore PDF button for next attempt
+  document.getElementById('resultActions').innerHTML = `
+    <button class="action-btn primary" onclick="downloadPDF()">&#11015; Download Result Card (PDF)</button>
+    <button class="action-btn secondary" onclick="retakeQuiz()">&#8635; Try Again</button>
+  `;
 }
 
 /* ═══════════════════════════════════════════════════
