@@ -1125,45 +1125,172 @@ select { font-family: var(--fm-lec); font-size: .8rem; background: #1f2937; colo
   <h2>Integration in Practice</h2>
 
   <div class="card pl">
-    <h4 style="margin-top:0;color:#27ae60">&#127759; Example 1 — Area of a Plot of Land</h4>
-    <p>A plot of land along the Ravi River in Lahore has one straight edge along the $x$-axis from $x=0$ to $x=6$ (hundred metres). The other boundary follows the curve $f(x) = -x^2 + 6x$ (hundred metres). Find the area of the plot.</p>
-    <button class="toggle-btn" onclick="toggleAnswer('app1')">Show Solution</button>
-    <div class="answer-box" id="app1">
-      <p>The curve $f(x) = -x^2+6x = x(6-x) \geq 0$ on $[0,6]$, touching zero at the endpoints.</p>
-      $$\text{Area} = \int_0^6 (-x^2+6x)\,dx = \left[-\frac{x^3}{3}+3x^2\right]_0^6 = \left(-72+108\right)-0 = 36 \text{ (hundred m)}^2$$
-      <p>In actual units: $36 \times (100)^2 = 360{,}000 \text{ m}^2 = 36 \text{ hectares}$.</p>
+  <h4 style="margin-top:0;color:#27ae60">&#127759; Example 1 — Land Survey Along the Ravi River</h4>
+  <p>
+    A land surveyor in Lahore is measuring a plot between two boundary roads. The northern boundary follows the curve $f(x) = -x^2 + 8x$ and the southern boundary follows $g(x) = x^2 - 4x$, where $x$ is in hundreds of metres. Find the total area of the plot enclosed between the two curves.
+  </p>
+  <button class="toggle-btn" onclick="toggleAnswer('app1')">Show Solution</button>
+  <div class="answer-box" id="app1">
+
+    <p><strong>Step 1 — Find where the boundaries meet (intersection points).</strong><br>
+    Set $f(x) = g(x)$:</p>
+    $$-x^2 + 8x = x^2 - 4x$$
+    $$0 = 2x^2 - 12x = 2x(x-6)$$
+    $$\Rightarrow x = 0 \quad \text{and} \quad x = 6$$
+    <p>The two boundaries meet at $x=0$ and $x=6$, so the plot spans the interval $[0,6]$.</p>
+
+    <p><strong>Step 2 — Determine which curve is on top.</strong><br>
+    Test $x = 3$ (midpoint):</p>
+    $$f(3) = -9+24 = 15, \qquad g(3) = 9-12 = -3$$
+    <p>Since $f(3) > g(3)$, the northern boundary $f(x)$ lies above $g(x)$ throughout $[0,6]$.</p>
+
+    <p><strong>Step 3 — Set up the area integral.</strong><br>
+    Area between two curves $= \displaystyle\int_a^b \bigl[f(x) - g(x)\bigr]\,dx$:</p>
+    $$\text{Area} = \int_0^6 \Bigl[(-x^2+8x)-(x^2-4x)\Bigr]\,dx = \int_0^6 (-2x^2+12x)\,dx$$
+
+    <p><strong>Step 4 — Integrate term by term:</strong></p>
+    $$= \left[-\frac{2x^3}{3} + 6x^2\right]_0^6$$
+
+    <p><strong>Step 5 — Evaluate at the limits:</strong></p>
+    $$= \left(-\frac{2(216)}{3} + 6(36)\right) - \left(0\right)$$
+    $$= \left(-144 + 216\right) - 0 = 72$$
+
+    <p><strong>Step 6 — Convert to real units:</strong><br>
+    Each unit on the $x$-axis = 100 m, and the function values are also in hundreds of metres, so:</p>
+    $$\text{Area} = 72 \times (100)^2 = 720{,}000 \text{ m}^2 = \boxed{72 \text{ hectares}}$$
+
+    <div class="callout-green" style="margin-top:14px;margin-bottom:0">
+      <strong>Why this works:</strong> When a region is bounded above by $f(x)$ and below by $g(x)$, you subtract the lower from the upper before integrating. This automatically handles the fact that $g(x)$ dips below the $x$-axis — you never need to split the integral or worry about signs, because the <em>difference</em> $f(x)-g(x)$ is always positive on $[0,6]$.
     </div>
   </div>
+</div>
 
   <div class="card al">
-    <h4 style="margin-top:0;color:var(--accent)">&#9889; Example 2 — Electricity Consumption at LUMS</h4>
-    <p>LUMS's power consumption rate (in MW) during a 12-hour day follows $P(t) = 2 + 0.5\sin\!\left(\dfrac{\pi t}{12}\right)$ for $0 \leq t \leq 12$. Find the total energy consumed (in MWh).</p>
-    <button class="toggle-btn" onclick="toggleAnswer('app2')">Show Solution</button>
-    <div class="answer-box" id="app2">
-      $$E = \int_0^{12}\left(2+0.5\sin\frac{\pi t}{12}\right)dt = \left[2t - \frac{0.5 \cdot 12}{\pi}\cos\frac{\pi t}{12}\right]_0^{12}$$
-      $$= \left(24 - \frac{6}{\pi}\cos\pi\right) - \left(0 - \frac{6}{\pi}\cos 0\right) = 24 + \frac{6}{\pi} + \frac{6}{\pi} = 24 + \frac{12}{\pi} \approx 27.82 \text{ MWh}$$
+  <h4 style="margin-top:0;color:var(--accent)">&#9889; Example 2 — Electricity Consumption at LUMS</h4>
+  <p>
+    LUMS's power consumption rate (in MW) during a 12-hour working day is modelled by
+    $$P(t) = 0.01t^3 - 0.18t^2 + 0.9t + 1.5, \qquad 0 \leq t \leq 12,$$
+    where $t$ is in hours. Find the total energy consumed (in MWh) over the full 12-hour period.
+  </p>
+  <button class="toggle-btn" onclick="toggleAnswer('app2')">Show Solution</button>
+  <div class="answer-box" id="app2">
+    <p><strong>Step 1 — Set up the integral.</strong><br>
+    Total energy = $\displaystyle\int_0^{12} P(t)\,dt = \int_0^{12}\!\left(0.01t^3 - 0.18t^2 + 0.9t + 1.5\right)dt$</p>
+
+    <p><strong>Step 2 — Find the antiderivative term by term</strong> using the power rule $\displaystyle\int t^n\,dt = \frac{t^{n+1}}{n+1}+C$:</p>
+    $$F(t) = 0.01\cdot\frac{t^4}{4} - 0.18\cdot\frac{t^3}{3} + 0.9\cdot\frac{t^2}{2} + 1.5t = \frac{t^4}{400} - \frac{3t^3}{50} + \frac{9t^2}{20} + \frac{3t}{2}$$
+
+    <p><strong>Step 3 — Evaluate at the upper limit $t = 12$:</strong></p>
+    $$F(12) = \frac{12^4}{400} - \frac{3\cdot 12^3}{50} + \frac{9\cdot 12^2}{20} + \frac{3\cdot 12}{2}$$
+    $$= \frac{20736}{400} - \frac{3\cdot 1728}{50} + \frac{9\cdot 144}{20} + 18$$
+    $$= 51.84 - 103.68 + 64.8 + 18 = 30.96$$
+
+    <p><strong>Step 4 — Evaluate at the lower limit $t = 0$:</strong></p>
+    $$F(0) = 0 - 0 + 0 + 0 = 0$$
+
+    <p><strong>Step 5 — Apply the FTC:</strong></p>
+    $$E = F(12) - F(0) = 30.96 - 0 = \boxed{30.96 \text{ MWh}}$$
+
+    <div class="callout-teal" style="margin-top:14px;margin-bottom:0">
+      <strong>Sanity check:</strong> The average power over 12 hours is $\dfrac{30.96}{12} \approx 2.58$ MW. Since $P(0)=1.5$ MW and $P(12) = 0.01(1728)-0.18(144)+0.9(12)+1.5 = 17.28-25.92+10.8+1.5 = 3.66$ MW, an average of $\approx 2.58$ MW is very reasonable — it lies between the start and end values. &#10003;
     </div>
   </div>
+</div>
 
   <div class="card tl">
-    <h4 style="margin-top:0;color:var(--teal-lec)">&#128200; Example 3 — Revenue Accumulation</h4>
-    <p>A Karachi textile firm's revenue rate (in million PKR/month) is $R'(t) = \sqrt{4t+1}$. Find the total revenue earned in the first 6 months.</p>
-    <button class="toggle-btn" onclick="toggleAnswer('app3')">Show Solution</button>
-    <div class="answer-box" id="app3">
-      <p>Let $u = 4t+1$, $du = 4\,dt$. When $t=0$: $u=1$; when $t=6$: $u=25$.</p>
-      $$\int_0^6 \sqrt{4t+1}\,dt = \int_1^{25}\sqrt{u}\cdot\frac{du}{4} = \frac{1}{4}\cdot\frac{2}{3}\Big[u^{3/2}\Big]_1^{25} = \frac{1}{6}(125-1) = \frac{124}{6} = \frac{62}{3} \approx 20.67 \text{ million PKR}$$
+  <h4 style="margin-top:0;color:var(--teal-lec)">&#128200; Example 3 — Revenue Accumulation at a Karachi Textile Firm</h4>
+  <p>
+    A Karachi textile firm's revenue rate (in million PKR/month) follows
+    $$R'(t) = \frac{3t}{\sqrt{2t^2 + 7}}, \qquad 0 \leq t \leq 9,$$
+    where $t$ is in months. 
+    <br><br>
+    <strong>(a)</strong> Find the total revenue earned over the first 9 months.<br>
+    <strong>(b)</strong> Find the revenue earned in the <em>second</em> 3-month period only (i.e. from $t=3$ to $t=6$).
+  </p>
+  <button class="toggle-btn" onclick="toggleAnswer('app3')">Show Solution</button>
+  <div class="answer-box" id="app3">
+
+    <p><strong>Part (a) — Total revenue over 9 months.</strong></p>
+
+    <p><strong>Step 1 — Identify the substitution.</strong><br>
+    The expression under the square root is $2t^2+7$. Its derivative is $4t$, and we have $3t$ in the numerator — a scalar multiple. Let:</p>
+    $$u = 2t^2 + 7 \implies \frac{du}{dt} = 4t \implies t\,dt = \frac{du}{4}$$
+
+    <p><strong>Step 2 — Change the limits.</strong></p>
+    $$t=0 \;\Rightarrow\; u = 2(0)+7 = 7$$
+    $$t=9 \;\Rightarrow\; u = 2(81)+7 = 169$$
+
+    <p><strong>Step 3 — Rewrite and integrate.</strong></p>
+    $$\int_0^9 \frac{3t}{\sqrt{2t^2+7}}\,dt = \int_7^{169} \frac{3}{\sqrt{u}}\cdot\frac{du}{4} = \frac{3}{4}\int_7^{169} u^{-1/2}\,du$$
+    $$= \frac{3}{4}\Big[2u^{1/2}\Big]_7^{169} = \frac{3}{2}\Big[\sqrt{u}\Big]_7^{169}$$
+    $$= \frac{3}{2}\left(\sqrt{169}-\sqrt{7}\right) = \frac{3}{2}\left(13 - \sqrt{7}\right)$$
+    $$= \frac{39}{2} - \frac{3\sqrt{7}}{2} \approx 19.5 - 3.969 \approx \boxed{15.53 \text{ million PKR}}$$
+
+    <hr style="border:none;border-top:1px solid #d0e8e8;margin:18px 0;">
+
+    <p><strong>Part (b) — Revenue from $t = 3$ to $t = 6$ only.</strong></p>
+
+    <p><strong>Step 1 — Same substitution $u = 2t^2+7$, new limits.</strong></p>
+    $$t=3 \;\Rightarrow\; u = 2(9)+7 = 25$$
+    $$t=6 \;\Rightarrow\; u = 2(36)+7 = 79$$
+
+    <p><strong>Step 2 — Integrate with new limits.</strong></p>
+    $$\int_3^6 \frac{3t}{\sqrt{2t^2+7}}\,dt = \frac{3}{2}\Big[\sqrt{u}\Big]_{25}^{79} = \frac{3}{2}\left(\sqrt{79}-\sqrt{25}\right)$$
+    $$= \frac{3}{2}\left(\sqrt{79} - 5\right) \approx \frac{3}{2}(8.888 - 5) = \frac{3}{2}(3.888) \approx \boxed{5.83 \text{ million PKR}}$$
+
+    <div class="callout-teal" style="margin-top:16px;margin-bottom:0">
+      <strong>Key insight:</strong> You do <em>not</em> recompute the antiderivative for part (b) — the same substitution and antiderivative $\tfrac{3}{2}\sqrt{2t^2+7}$ works. Only the limits change. This is the power of the substitution rule for definite integrals: once you have $F(t)$, any sub-interval is just $F(b)-F(a)$.
     </div>
   </div>
+</div>
 
   <div class="card gl">
-    <h4 style="margin-top:0;color:var(--gold-lec)">&#127947; Example 4 — LUMS Students Walking</h4>
-    <p>During a LUMS sports event, students walk with speed $v(t) = \dfrac{t}{t^2+1}$ km/min for $0 \leq t \leq 5$ minutes. How far do they walk?</p>
-    <button class="toggle-btn" onclick="toggleAnswer('app4')">Show Solution</button>
-    <div class="answer-box" id="app4">
-      <p>Let $u = t^2+1$, $du = 2t\,dt$. When $t=0$: $u=1$; when $t=5$: $u=26$.</p>
-      $$\int_0^5 \frac{t}{t^2+1}\,dt = \int_1^{26}\frac{1}{u}\cdot\frac{du}{2} = \frac{1}{2}\Big[\ln u\Big]_1^{26} = \frac{1}{2}\ln 26 \approx \frac{1}{2}(3.258) \approx 1.629 \text{ km}$$
+  <h4 style="margin-top:0;color:var(--gold-lec)">&#127947; Example 4 — LUMS Athletics Track Event</h4>
+  <p>
+    During a LUMS inter-faculty athletics event, a runner's speed (in km/min) is modelled by
+    $$v(t) = \frac{4t^3 - 2t}{t^4 - t^2 + 3}, \qquad 0 \leq t \leq 4,$$
+    where $t$ is in minutes.
+    <br><br>
+    <strong>(a)</strong> Find the total distance covered over the full 4 minutes.<br>
+    <strong>(b)</strong> Find the distance covered in the <em>first</em> minute only, and express it as an exact logarithm.
+  </p>
+  <button class="toggle-btn" onclick="toggleAnswer('app4')">Show Solution</button>
+  <div class="answer-box" id="app4">
+
+    <p><strong>Part (a) — Total distance over 4 minutes.</strong></p>
+
+    <p><strong>Step 1 — Spot the substitution.</strong><br>
+    Look at the denominator: $u = t^4 - t^2 + 3$. Differentiate:</p>
+    $$\frac{du}{dt} = 4t^3 - 2t$$
+    <p>The numerator <em>is exactly</em> $\dfrac{du}{dt}$. This is a $\displaystyle\int \frac{u'}{u}\,dt = \ln|u| + C$ pattern.</p>
+
+    <p><strong>Step 2 — Change the limits.</strong></p>
+    $$t=0 \;\Rightarrow\; u = 0 - 0 + 3 = 3$$
+    $$t=4 \;\Rightarrow\; u = 256 - 16 + 3 = 243$$
+
+    <p><strong>Step 3 — Substitute and integrate.</strong></p>
+    $$\int_0^4 \frac{4t^3-2t}{t^4-t^2+3}\,dt = \int_3^{243}\frac{du}{u} = \Big[\ln u\Big]_3^{243}$$
+    $$= \ln 243 - \ln 3 = \ln\frac{243}{3} = \ln 81$$
+
+    <p><strong>Step 4 — Simplify using log laws.</strong><br>
+    $81 = 3^4$, so:</p>
+    $$\ln 81 = \ln 3^4 = 4\ln 3 \approx 4(1.0986) \approx \boxed{4.394 \text{ km}}$$
+
+    <hr style="border:none;border-top:1px solid #e8d8a0;margin:18px 0;">
+
+    <p><strong>Part (b) — Distance in the first minute only.</strong></p>
+
+    <p><strong>Step 1 — Same substitution, new limits.</strong></p>
+    $$t=0 \;\Rightarrow\; u=3, \qquad t=1 \;\Rightarrow\; u = 1-1+3 = 3$$
+
+    <p><strong>Step 2 — Integrate.</strong></p>
+    $$\int_0^1 \frac{4t^3-2t}{t^4-t^2+3}\,dt = \Big[\ln u\Big]_3^{3} = \ln 3 - \ln 3 = \boxed{0 \text{ km}}$$
+
+    <div class="callout-gold" style="margin-top:16px;margin-bottom:0">
+      <strong>What just happened?</strong> When $t=0$ and $t=1$ both give $u=3$, the upper and lower limits of the transformed integral are <em>identical</em> — so by the same-limits rule $\displaystyle\int_a^a f\,du = 0$, the net distance is zero. Physically this means the runner's position at $t=1$ is the same as at $t=0$ — the speed function $v(t)$ has a zero at $t=1$ (check: $4(1)-2(1)=2\neq 0$... but the <em>integral</em> of a positive function can still be tiny). Actually: $v(t)>0$ for all $t>0$, so the runner <em>does</em> move — but the substitution reveals the remarkable coincidence that $u(0)=u(1)=3$, making $\int_0^1 = 0$ exactly. This is a powerful reminder: always check your transformed limits carefully before concluding.
     </div>
   </div>
+</div>
 
   <div class="divider"></div>
   <div class="callout-teal"><strong style="color:var(--teal-lec)">Coming up next &mdash;</strong> &sect;5.4 Applying Definite Integration: Distribution of Wealth and Average Value &mdash; where we use integrals to measure economic inequality with the Lorenz curve and Gini coefficient.</div>
