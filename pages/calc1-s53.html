@@ -745,72 +745,86 @@ select { font-family: var(--fm-lec); font-size: .8rem; background: #1f2937; colo
   <div class="card al">
     <h4 style="margin-top:0;color:var(--accent)">Example &mdash; Area Using the Limit</h4>
     <p>Find the area under $f(x) = 3x$ from $x = 0$ to $x = 2$ using the limit definition.</p>
-    <div style="text-align:center;margin:1rem 0;">
-  <canvas id="areaCanvas" width="340" height="260"
-    style="max-width:100%;border-radius:8px;"></canvas>
+    <div style="display:flex;justify-content:center;margin:14px 0 10px;">
+  <canvas id="areaCanvas" width="220" height="160"
+    style="border-radius:10px;background:#fdf8f0;border:1.5px solid var(--border-lec);">
+  </canvas>
 </div>
-
 <script>
 (function(){
-  const canvas = document.getElementById('areaCanvas');
-  const ctx = canvas.getContext('2d');
-  const W = canvas.width, H = canvas.height;
+  const cv = document.getElementById('areaCanvas');
+  const ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+  const padL=34, padR=14, padT=12, padB=28;
+  const gW=W-padL-padR, gH=H-padT-padB;
+  const xMax=2.4, yMax=7.5;
+  function cx(x){ return padL + (x/xMax)*gW; }
+  function cy(y){ return padT + gH - (y/yMax)*gH; }
 
-  function cx(x){ return 50 + (x/2.5)*(W-70); }
-  function cy(y){ return H-40 - (y/7)*(H-60); }
-
-  // Shaded region under f(x)=3x from 0 to 2
+  // Shaded triangle under f(x)=3x from 0 to 2
   ctx.beginPath();
   ctx.moveTo(cx(0), cy(0));
   ctx.lineTo(cx(2), cy(0));
   ctx.lineTo(cx(2), cy(6));
   ctx.closePath();
-  ctx.fillStyle = 'rgba(59,130,246,0.25)';
+  ctx.fillStyle = 'rgba(192,57,43,0.13)';
   ctx.fill();
+  ctx.strokeStyle = 'rgba(192,57,43,0.35)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  // "Area = 6" label inside triangle
+  ctx.fillStyle = '#c0392b';
+  ctx.font = 'bold 10px IBM Plex Mono,monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('Area = 6', cx(1.1), cy(1.8));
 
   // Axes
-  ctx.strokeStyle = '#374151';
-  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = '#888';
+  ctx.lineWidth = 1.3;
   ctx.beginPath();
-  ctx.moveTo(cx(0), cy(0)); ctx.lineTo(cx(2.5), cy(0)); // x-axis
-  ctx.moveTo(cx(0), cy(0)); ctx.lineTo(cx(0), cy(7));   // y-axis
+  ctx.moveTo(cx(0), cy(0)); ctx.lineTo(cx(xMax), cy(0));
+  ctx.moveTo(cx(0), cy(0)); ctx.lineTo(cx(0), cy(yMax));
   ctx.stroke();
 
-  // Tick marks and labels
-  ctx.fillStyle = '#374151';
-  ctx.font = '13px sans-serif';
-  ctx.textAlign = 'center';
-  [1, 2].forEach(x => {
-    ctx.beginPath(); ctx.moveTo(cx(x), cy(0)); ctx.lineTo(cx(x), cy(0)+5); ctx.stroke();
-    ctx.fillText(x, cx(x), cy(0)+18);
-  });
-  ctx.textAlign = 'right';
-  [2, 4, 6].forEach(y => {
-    ctx.beginPath(); ctx.moveTo(cx(0), cy(y)); ctx.lineTo(cx(0)-5, cy(y)); ctx.stroke();
-    ctx.fillText(y, cx(0)-8, cy(y)+4);
+  // Axis arrows
+  ctx.fillStyle = '#888';
+  ctx.beginPath(); ctx.moveTo(cx(xMax),cy(0)); ctx.lineTo(cx(xMax)-6,cy(0)-3); ctx.lineTo(cx(xMax)-6,cy(0)+3); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(cx(0),cy(yMax)); ctx.lineTo(cx(0)-3,cy(yMax)+6); ctx.lineTo(cx(0)+3,cy(yMax)+6); ctx.fill();
+
+  // x ticks: 1, 2
+  ctx.strokeStyle = '#aaa'; ctx.lineWidth = 1;
+  ctx.fillStyle = '#555'; ctx.font = '9px IBM Plex Mono,monospace'; ctx.textAlign = 'center';
+  [1,2].forEach(x => {
+    ctx.beginPath(); ctx.moveTo(cx(x),cy(0)); ctx.lineTo(cx(x),cy(0)+4); ctx.stroke();
+    ctx.fillText(x, cx(x), cy(0)+13);
   });
 
-  // f(x) = 3x line
+  // y ticks: 2, 4, 6
+  ctx.textAlign = 'right';
+  [2,4,6].forEach(y => {
+    ctx.beginPath(); ctx.moveTo(cx(0),cy(y)); ctx.lineTo(cx(0)-4,cy(y)); ctx.stroke();
+    ctx.fillText(y, cx(0)-6, cy(y)+3);
+  });
+
+  // f(x)=3x line
   ctx.beginPath();
   ctx.moveTo(cx(0), cy(0));
-  ctx.lineTo(cx(2.3), cy(6.9));
-  ctx.strokeStyle = '#dc2626';
-  ctx.lineWidth = 2.5;
+  ctx.lineTo(cx(2.2), cy(6.6));
+  ctx.strokeStyle = '#c0392b';
+  ctx.lineWidth = 2;
   ctx.stroke();
 
-  // Label
-  ctx.fillStyle = '#dc2626';
-  ctx.font = 'bold 13px sans-serif';
+  // f(x) label
+  ctx.fillStyle = '#c0392b';
+  ctx.font = 'bold 9px IBM Plex Mono,monospace';
   ctx.textAlign = 'left';
-  ctx.fillText('f(x) = 3x', cx(1.55), cy(4.2));
+  ctx.fillText('f(x)=3x', cx(1.65), cy(4.6));
 
-  // Axis arrow tips
-  ctx.fillStyle = '#374151';
-  [[cx(2.5), cy(0), 'x'], [cx(0), cy(7), 'y']].forEach(([x,y,l]) => {
-    ctx.font = '13px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText(l === 'x' ? 'x' : 'y', x + (l==='x'?8:0), y + (l==='y'?-5:4));
-  });
+  // Axis name labels
+  ctx.fillStyle = '#777'; ctx.font = '9px IBM Plex Mono,monospace';
+  ctx.textAlign = 'center'; ctx.fillText('x', cx(xMax)+8, cy(0)+3);
+  ctx.fillText('y', cx(0), cy(yMax)-5);
 })();
 </script>
     <button class="toggle-btn" onclick="toggleAnswer('lim1')">Show Full Solution</button>
