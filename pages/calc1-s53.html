@@ -695,10 +695,10 @@ select { font-family: var(--fm-lec); font-size: .8rem; background: #1f2937; colo
   <div class="sec-label">&sect; 2 &mdash; Interactive Exploration</div>
   <h2>Play With It:<br>The Riemann Sum Explorer</h2>
   <p>Drag the slider to increase the number of rectangles and watch the approximation converge to the exact area. Try different functions and endpoint rules.</p>
-
+  
   <div class="widget">
     <div class="wt">&#11035; Interactive Riemann Sum Explorer</div>
-    <canvas id="riemannCanvas" height="300"></canvas>
+    <canvas id="riemannCanvas" style="display:block;width:100%;height:260px;border-radius:8px;background:#111827;"></canvas>
     <div class="controls">
       <div class="cg">
         <label>Function</label>
@@ -1246,122 +1246,156 @@ function toggleAnswer(id){
 const FDATA={
   sq:{
     fn:x=>x*x/10+0.5,
-    exact:(a,b)=>(b**3-a**3)/30+0.5*(b-a),
-    a:0,b:10,label:'x²/10+0.5'
+    exact:(a,b)=>(b*b*b-a*a*a)/30+0.5*(b-a),
+    a:0,b:10
   },
   sin:{
     fn:x=>2*Math.sin(x/2)+2.5,
     exact:(a,b)=>-4*Math.cos(b/2)+4*Math.cos(a/2)+2.5*(b-a),
-    a:0,b:10,label:'2sin(x/2)+2.5'
+    a:0,b:10
   },
   bell:{
-    fn:x=>4*Math.exp(-(x-5)**2/4),
-    exact:null, // computed numerically
-    a:0,b:10,label:'4e^(−(x−5)²/4)'
+    fn:x=>4*Math.exp(-(x-5)*(x-5)/4),
+    exact:null,
+    a:0,b:10
   },
   wave:{
     fn:x=>3*Math.sin(x/3)+Math.cos(x)+3,
     exact:(a,b)=>-9*Math.cos(b/3)+9*Math.cos(a/3)+Math.sin(b)-Math.sin(a)+3*(b-a),
-    a:0,b:10,label:'3sin(x/3)+cos(x)+3'
+    a:0,b:10
   },
   sqrt:{
     fn:x=>Math.sqrt(2*x)+1,
-    exact:(a,b)=>Math.sqrt(2)*(2/3)*(b**1.5-a**1.5)+(b-a),
-    a:0,b:10,label:'√(2x)+1'
+    exact:(a,b)=>Math.SQRT2*(2/3)*(Math.pow(b,1.5)-Math.pow(a,1.5))+(b-a),
+    a:0,b:10
   },
   logistic:{
     fn:x=>5/(1+Math.exp(-(x-5))),
-    exact:null, // computed numerically
-    a:0,b:10,label:'5/(1+e^(−(x−5)))'
+    exact:null,
+    a:0,b:10
   }
 };
 
-function numInt(fn,a,b,steps=4000){
-  const dx=(b-a)/steps; let s=0;
-  for(let i=0;i<steps;i++) s+=fn(a+(i+0.5)*dx)*dx;
+function numInt(fn,a,b){
+  var steps=4000,dx=(b-a)/steps,s=0;
+  for(var i=0;i<steps;i++) s+=fn(a+(i+0.5)*dx)*dx;
   return s;
 }
 
-let rN=6;
-function updateN(v){rN=+v;document.getElementById('nVal').textContent=v;drawRiemann();}
+var rN=6;
+function updateN(v){
+  rN=parseInt(v);
+  document.getElementById('nVal').textContent=v;
+  document.getElementById('statN').textContent=v;
+  drawRiemann();
+}
 
 function drawRiemann(){
-  const key=document.getElementById('fnSelect').value;
-  const rule=document.getElementById('ruleSelect').value;
-  const {fn,exact,a,b}=FDATA[key];
-  const cv=document.getElementById('riemannCanvas');
-  if(!cv.offsetWidth)return;
+  var key=document.getElementById('fnSelect').value;
+  var rule=document.getElementById('ruleSelect').value;
+  var d=FDATA[key];
+  var fn=d.fn, a=d.a, b=d.b;
 
-  // Responsive height: cap at 55vh to avoid overflowing on mobile
-  const maxH=Math.min(Math.floor(window.innerHeight*0.52),340);
-  cv.width=cv.offsetWidth*devicePixelRatio;
-  cv.height=maxH*devicePixelRatio;
-  const ctx=cv.getContext('2d');
-  ctx.scale(devicePixelRatio,devicePixelRatio);
+  var cv=document.getElementById('riemannCanvas');
+  // Force the canvas pixel dimensions to match its CSS size
+  var W=cv.clientWidth||600;
+  var H=260;
+  cv.width=W;
+  cv.height=H;
 
-  const W=cv.offsetWidth, H=maxH;
-  const pad={l:52,r:20,t:16,b:36};
-  const gW=W-pad.l-pad.r, gH=H-pad.t-pad.b;
+  var ctx=cv.getContext('2d');
+  var padL=52,padR=20,padT=18,padB=34;
+  var gW=W-padL-padR, gH=H-padT-padB;
 
-  // Compute yMax dynamically from the function over [a,b]
-  let yMax=0;
-  for(let i=0;i<=400;i++){const y=fn(a+(b-a)*i/400); if(y>yMax)yMax=y;}
-  yMax*=1.25; if(yMax<0.5)yMax=1;
+  // Find yMax
+  var yMax=0;
+  for(var i=0;i<=400;i++){
+    var y=fn(a+(b-a)*i/400);
+    if(y>yMax) yMax=y;
+  }
+  yMax=yMax*1.25;
+  if(yMax<0.5) yMax=1;
 
-  const tX=x=>pad.l+(x-a)/(b-a)*gW;
-  const tY=y=>pad.t+gH-Math.max(0,y)/yMax*gH;
+  function tX(x){return padL+(x-a)/(b-a)*gW;}
+  function tY(y){return padT+gH-Math.max(0,y)/yMax*gH;}
 
   // Background
-  ctx.fillStyle='#111827'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#111827';
+  ctx.fillRect(0,0,W,H);
 
-  // Grid lines (5 horizontal)
-  for(let i=0;i<=4;i++){
-    const y=yMax*i/4;
-    ctx.strokeStyle='#1f2937'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(pad.l,tY(y)); ctx.lineTo(pad.l+gW,tY(y)); ctx.stroke();
-    ctx.fillStyle='#6b7280'; ctx.font='10px IBM Plex Mono,monospace';
+  // Grid lines
+  ctx.font='10px IBM Plex Mono,monospace';
+  for(var gi=0;gi<=4;gi++){
+    var gy=yMax*gi/4;
+    ctx.strokeStyle='#1f2937';
+    ctx.lineWidth=1;
+    ctx.beginPath();
+    ctx.moveTo(padL,tY(gy));
+    ctx.lineTo(padL+gW,tY(gy));
+    ctx.stroke();
+    ctx.fillStyle='#6b7280';
     ctx.textAlign='right';
-    ctx.fillText(y.toFixed(1),pad.l-6,tY(y)+4);
+    ctx.fillText(gy.toFixed(1),padL-5,tY(gy)+4);
   }
 
   // Rectangles
-  const dx=(b-a)/rN; let sumArea=0;
-  for(let i=0;i<rN;i++){
-    let xs;
+  var dx=(b-a)/rN;
+  var sumArea=0;
+  for(var i=0;i<rN;i++){
+    var xs;
     if(rule==='left') xs=a+i*dx;
     else if(rule==='right') xs=a+(i+1)*dx;
     else xs=a+(i+0.5)*dx;
-    const h=fn(xs); if(h<=0)continue;
+    var h=fn(xs);
+    if(h<=0) continue;
     sumArea+=h*dx;
-    const rx=tX(a+i*dx), rw=Math.max(1,tX(a+(i+1)*dx)-tX(a+i*dx));
-    ctx.fillStyle='rgba(212,160,23,.30)'; ctx.fillRect(rx,tY(h),rw,tY(0)-tY(h));
-    ctx.strokeStyle='#d4a017'; ctx.lineWidth=rN>60?0.6:1.2;
+    var rx=tX(a+i*dx);
+    var rw=Math.max(1,tX(a+(i+1)*dx)-rx);
+    ctx.fillStyle='rgba(212,160,23,0.30)';
+    ctx.fillRect(rx,tY(h),rw,tY(0)-tY(h));
+    ctx.strokeStyle='#d4a017';
+    ctx.lineWidth=rN>80?0.5:1.2;
     ctx.strokeRect(rx,tY(h),rw,tY(0)-tY(h));
   }
 
   // Curve
-  ctx.beginPath(); ctx.moveTo(tX(a),tY(fn(a)));
-  for(let i=1;i<=500;i++){const x=a+(b-a)*i/500; ctx.lineTo(tX(x),tY(fn(x)));}
-  ctx.strokeStyle='#60a5fa'; ctx.lineWidth=2.5; ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(tX(a),tY(fn(a)));
+  for(var i=1;i<=500;i++){
+    var x=a+(b-a)*i/500;
+    ctx.lineTo(tX(x),tY(fn(x)));
+  }
+  ctx.strokeStyle='#60a5fa';
+  ctx.lineWidth=2.5;
+  ctx.stroke();
 
   // Axes
-  ctx.strokeStyle='#4b5563'; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+gH); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(pad.l,pad.t+gH); ctx.lineTo(pad.l+gW,pad.t+gH); ctx.stroke();
+  ctx.strokeStyle='#4b5563';
+  ctx.lineWidth=1.5;
+  ctx.beginPath();
+  ctx.moveTo(padL,padT);
+  ctx.lineTo(padL,padT+gH);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(padL,padT+gH);
+  ctx.lineTo(padL+gW,padT+gH);
+  ctx.stroke();
 
-  // x-axis labels: 0,2,4,6,8,10
-  ctx.fillStyle='#9ca3af'; ctx.font='10px IBM Plex Mono,monospace'; ctx.textAlign='center';
-  for(let x=a;x<=b;x+=2) ctx.fillText(x,tX(x),H-8);
+  // x-axis labels 0,2,4,6,8,10
+  ctx.fillStyle='#9ca3af';
+  ctx.textAlign='center';
+  for(var xi=0;xi<=10;xi+=2){
+    ctx.fillText(xi,tX(xi),H-6);
+  }
 
   // Stats
-  const ex = exact ? exact(a,b) : numInt(fn,a,b);
-  document.getElementById('statN').textContent=rN;
+  var ex=d.exact ? d.exact(a,b) : numInt(fn,a,b);
   document.getElementById('statDx').textContent=dx.toFixed(3);
   document.getElementById('statApprox').textContent=sumArea.toFixed(4);
   document.getElementById('statExact').textContent=ex.toFixed(4);
   document.getElementById('statErr').textContent=Math.abs(sumArea-ex).toFixed(4);
 }
-
+  
 /* ===== SIGNED AREA EXPLORER ===== */
 function updateB(v){document.getElementById('bVal').textContent=parseFloat(v).toFixed(2);drawSigned(parseFloat(v));}
 function drawSigned(b){
